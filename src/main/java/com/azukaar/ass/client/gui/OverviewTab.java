@@ -2,24 +2,25 @@ package com.azukaar.ass.client.gui;
 
 import java.util.UUID;
 
-import com.azukaar.ass.api.Player;
+import com.azukaar.ass.api.PlayerData;
+import com.azukaar.ass.capabilities.IPlayerSkills;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.entity.player.Player;
 
 
 public class OverviewTab {
-  static protected int renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, net.minecraft.world.entity.player.Player player) {
+  static protected int renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, Player player) {
         // Mock archetype levels
         int yOffset = 30;
-        UUID playerUUID = player.getUUID();
 
         // Title
         guiGraphics.drawString(font, "Overview", contentX + 10, contentY + 10, 0xFFFFFF);
         guiGraphics.drawString(font, "Avail. Skill Points: 8", contentX + 120, contentY + 10, 0xFFFF66);
 
         // Main Level
-        guiGraphics.drawString(font, "Level " + Player.getPlayerMainLevel(playerUUID), contentX + 20, contentY + yOffset, 0xFFFFFF);
+        guiGraphics.drawString(font, "Level " + PlayerData.getMainLevel(player), contentX + 20, contentY + yOffset, 0xFFFFFF);
         renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.75f, 0xFF6666);
         yOffset += 12;
         
@@ -27,17 +28,17 @@ public class OverviewTab {
         yOffset += 15;
         
         // Warrior
-        guiGraphics.drawString(font, "Warrior: Level 8", contentX + 20, contentY + yOffset, 0xFFFFFF);
+        guiGraphics.drawString(font, "Warrior: Level " + PlayerData.getPathLevel(player, IPlayerSkills.WARRIOR_PATH), contentX + 20, contentY + yOffset, 0xFFFFFF);
         renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.75f, 0xFF6666);
         yOffset += 12;
         
         // Miner  
-        guiGraphics.drawString(font, "Miner: Level 12", contentX + 20, contentY + yOffset, 0xFFFFFF);
+        guiGraphics.drawString(font, "Miner: Level " + PlayerData.getPathLevel(player, IPlayerSkills.MINER_PATH), contentX + 20, contentY + yOffset, 0xFFFFFF);
         renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.4f, 0x66FF66);
         yOffset += 12;
         
         // Explorer
-        guiGraphics.drawString(font, "Explorer: Level 5", contentX + 20, contentY + yOffset, 0xFFFFFF);
+        guiGraphics.drawString(font, "Explorer: Level " + PlayerData.getPathLevel(player, IPlayerSkills.EXPLORER_PATH), contentX + 20, contentY + yOffset, 0xFFFFFF);
         renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.9f, 0x6666FF);
         // yOffset += 20;
         

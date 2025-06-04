@@ -1,34 +1,45 @@
 package com.azukaar.ass.client.gui;
 
+import com.azukaar.ass.SkillDataManager;
+import com.azukaar.ass.types.IconData;
+import com.azukaar.ass.types.SkillTree;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public enum SkillTab {
-    OVERVIEW("Overview", new ItemStack(Items.BOOK)),
-    COMBAT("Combat Skills", new ItemStack(Items.IRON_SWORD)),
-    ARCHERY("Archery Skills", new ItemStack(Items.BOW)),
-    MINING("Mining Skills", new ItemStack(Items.DIAMOND_PICKAXE)),
-    CRAFTING("Crafting Skills", new ItemStack(Items.CRAFTING_TABLE)),
-    MAGIC("Magic Skills", new ItemStack(Items.ENCHANTED_BOOK));
-
+public class SkillTab {
     private final String displayName;
-    private final ItemStack iconItem;
+    private final IconData icon;
+    private final String skillTree;
 
-    SkillTab(String displayName, ItemStack iconItem) {
+    SkillTab(String displayName, IconData icon, String skillTree) {
         this.displayName = displayName;
-        this.iconItem = iconItem;
+        this.icon = icon;
+        this.skillTree = skillTree;
     }
 
     public Component getDisplayName() {
         return Component.literal(this.displayName);
     }
 
-    public ItemStack getIconItem() {
-        return this.iconItem;
+    public String getRawName() {
+        return this.displayName;
     }
 
-    public static SkillTab[] getVisibleTabs() {
-        return values();
+    public IconData getIconItem() {
+        return this.icon;
+    }
+
+    public String getSkillTreeName() {
+        return this.skillTree;
+    }
+
+    public SkillTree getSkillTree() {
+        if(this.skillTree == null || "".equals(this.skillTree)) {
+            return null;
+        }
+
+        return SkillDataManager.INSTANCE.getSkillTree(this.skillTree);
     }
 }

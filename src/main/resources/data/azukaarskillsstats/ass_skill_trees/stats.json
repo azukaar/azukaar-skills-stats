@@ -1,0 +1,9 @@
+{
+  "id": "azukaarskillsstats:stats",
+  "display_name": "Stats",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:iron_sword"
+  },
+  "background": "azukaarskillsstats:textures/gui/stats_tree_bg.png"
+}

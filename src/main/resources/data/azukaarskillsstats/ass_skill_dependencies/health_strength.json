@@ -1,0 +1,6 @@
+{
+  "skill": "azukaarskillsstats:health",
+  "prerequisites": [
+    "azukaarskillsstats:strength"
+  ]
+}

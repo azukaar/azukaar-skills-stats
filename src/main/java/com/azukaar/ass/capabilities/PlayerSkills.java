@@ -3,7 +3,9 @@ package com.azukaar.ass.capabilities;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.azukaar.ass.PlayerPath;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public class PlayerSkills implements IPlayerSkills {
     private Map<String, Double> experience = new HashMap<>();
@@ -22,12 +24,13 @@ public class PlayerSkills implements IPlayerSkills {
     public void addExperience(String pathName, double exp) {
         double current = getExperience(pathName);
         setExperience(pathName, current + exp);
+        System.out.println("Added " + exp + " to " + current);
     }
 
     @Override
     public double getLevel(String pathName) {
         double exp = getExperience(pathName);
-        return PlayerPath.getLevelFromXp((int) exp);
+        return IPlayerSkills.getLevelFromXp((int) exp);
     }
 
     @Override
@@ -38,5 +41,21 @@ public class PlayerSkills implements IPlayerSkills {
     @Override
     public void setAllExperience(Map<String, Double> experience) {
         this.experience = new HashMap<>(experience);
+    }
+
+    @Override
+    public int getMainLevel() {
+        int mainExperience = 0;
+        int totalLevel = 0; // Assuming totalLevel is calculated from all paths
+
+        for (String pathName : IPlayerSkills.PATH_NAMES) {
+            totalLevel += IPlayerSkills.getLevelFromXp(experience.getOrDefault(pathName, 0.0).intValue());
+        }
+
+        for (int i = 0; i < totalLevel; i++) {
+            mainExperience += Math.pow(i, 0.75) * 150;
+        }
+        if (totalLevel == 1) return 1;
+        return Math.min(IPlayerSkills.getLevelFromXp(mainExperience), totalLevel);
     }
 }

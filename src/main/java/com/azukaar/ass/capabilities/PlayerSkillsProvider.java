@@ -3,9 +3,13 @@ package com.azukaar.ass.capabilities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.azukaar.ass.network.PlayerSkillsSyncPayload;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
     private final PlayerSkills skills = new PlayerSkills();
@@ -31,4 +35,17 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
         }
         skills.setAllExperience(experience);
     }
+
+    // method to sync data to client
+    public void syncToClient(ServerPlayer player) {
+        var payload = new PlayerSkillsSyncPayload(skills.getAllExperience());
+        PacketDistributor.sendToPlayer(player, payload);
+    }
+
+    // method to sync to all players tracking an entity
+    public void syncToTrackingPlayers(ServerPlayer player) {
+        var payload = new PlayerSkillsSyncPayload(skills.getAllExperience());
+        PacketDistributor.sendToPlayersTrackingEntity(player, payload);
+    }
+
 }

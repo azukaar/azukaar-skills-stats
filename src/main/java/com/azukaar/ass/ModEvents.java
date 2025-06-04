@@ -1,6 +1,10 @@
 package com.azukaar.ass;
 
+import com.azukaar.ass.api.PlayerData;
+import com.azukaar.ass.capabilities.IPlayerSkills;
+
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.BowItem;
@@ -28,7 +32,11 @@ public class ModEvents {
         // Get the player manager
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server != null) {
-            PlayerManager.load(server);
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+                // Sync skills when player logs in
+                var provider = serverPlayer.getData(AzukaarSkillsStats.PLAYER_SKILLS_ATTACHMENT.get());
+                provider.syncToClient(serverPlayer);
+            }
         }
     }
     
@@ -46,12 +54,7 @@ public class ModEvents {
             // Award mining XP when breaking any block
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
-                PlayerManager playerManager = PlayerManager.load(server);
-                double added = playerManager.addPlayerExperience("ass.miner", rew, player, event.getPos().getCenter());
-                
-                // Optional: Send message to player
-                // player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                //     "+" + rew + " Miner XP (" + added + " XP)"));
+                PlayerData.addExperience(IPlayerSkills.MINER_PATH, rew, player, event.getPos().getCenter());
             }
         }
     }
@@ -64,10 +67,10 @@ public class ModEvents {
             
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
-                PlayerManager playerManager = PlayerManager.load(server);
+                // PlayerManager playerManager = PlayerManager.load(server);
 
                 // Award warrior XP for direct melee hits
-                playerManager.addPlayerExperience("ass.warrior", XP_REWARD, attacker, event.getEntity().getPosition(1));
+                // playerManager.addPlayerExperience("ass.warrior", XP_REWARD, attacker, event.getEntity().getPosition(1));
             }
         }
     }

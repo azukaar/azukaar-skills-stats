@@ -1,28 +1,33 @@
-package com.azukaar.ass;
+package com.azukaar.ass.types;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.azukaar.ass.client.gui.SkillScreen;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class SkillTree {
+    
+    @Expose @SerializedName("id")
+    private String id;
+
+    @Expose @SerializedName("display_name")
+    private String displayName;
+
+    @Expose @SerializedName("icon")
+    private IconData iconData;
+
     private final Map<String, Skill> skills;
-    private final List<Skill> rootSkills;
     private float minX, maxX, minY, maxY; // Bounds for scrolling
     
     public SkillTree() {
         this.skills = new HashMap<>();
-        this.rootSkills = new ArrayList<>();
     }
     
     public void addSkill(Skill skill) {
         skills.put(skill.getId(), skill);
-        if (skill.getPrerequisites().isEmpty()) {
-            rootSkills.add(skill);
-        }
         updateBounds();
     }
     
@@ -41,4 +46,14 @@ public class SkillTree {
     public float getMaxX() { return maxX; }
     public float getMinY() { return minY; }
     public float getMaxY() { return maxY; }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+    
+    public IconData getIconData() { return iconData; }
 }

@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:strength",
+  "display_name": "Strength",
+  "description": "Increases your attack damage",
+  "icon": {
+    "type": "item", 
+    "item": "minecraft:iron_sword"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "max_level": 10,
+  "skill_tree": "azukaarskillsstats:stats"
+}

@@ -1,12 +1,15 @@
 package com.azukaar.ass.client.gui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.azukaar.ass.Skill;
-import com.azukaar.ass.SkillTree;
+import com.azukaar.ass.SkillDataManager;
+import com.azukaar.ass.types.IconData;
+import com.azukaar.ass.types.Skill;
+import com.azukaar.ass.types.SkillTree;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.ChatFormatting;
@@ -24,6 +27,7 @@ import net.minecraft.world.item.Items;
 @OnlyIn(Dist.CLIENT)
 public class SkillScreen extends Screen {
     protected final Player player;
+    SkillDataManager skills = SkillDataManager.INSTANCE;
     
     // Tab sprite resources (same as creative inventory)
     private static final ResourceLocation[] UNSELECTED_TOP_TABS = new ResourceLocation[]{
@@ -58,9 +62,6 @@ public class SkillScreen extends Screen {
     private boolean isDragging = false;
     private double lastMouseX;
     private double lastMouseY;
-
-    // Skill tree for each tab
-    private final Map<SkillTab, SkillTree> skillTrees;
     
     // Skill node rendering constants
     public static final int SKILL_NODE_SIZE = 24;
@@ -74,9 +75,11 @@ public class SkillScreen extends Screen {
     private static final int TAB_WIDTH = 26;
     private static final int TAB_HEIGHT = 32;
 
-    private SkillTab selectedTab = SkillTab.OVERVIEW;
+    private SkillTab selectedTab;
     private int leftPos;
     private int topPos;
+
+    SkillTab[] tabs;
 
     // Scroll
     private int currentTabOffsetY = 0;
@@ -84,42 +87,28 @@ public class SkillScreen extends Screen {
     public SkillScreen(Player player) {
         super(Component.literal("Skills"));
         this.player = player;
-        this.skillTrees = new HashMap<>();
-        initializeSkillTrees();
-    }
-    
-    private void initializeSkillTrees() {
-        // Initialize skill trees for each tab
-        for (SkillTab tab : SkillTab.values()) {
-            if (tab == SkillTab.OVERVIEW) continue; // Skip overview tab for now
-            SkillTree tree = new SkillTree();
-            createSkillTreeForTab(tree, tab);
-            skillTrees.put(tab, tree);
+
+        // Initialize skill trees tabs
+        this.tabs = new SkillTab[]{};
+
+        Collection<SkillTree> skillTrees = skills.getAllSkillTrees();
+        if (skillTrees != null && !skillTrees.isEmpty()) {
+            List<SkillTab> skillTabs = new ArrayList<>();
+            for (SkillTree tree : skillTrees) {
+                if (tree.getId() != null && !tree.getId().isEmpty()) {
+                    System.out.println("CACA XX Adding skill tree tab: " + tree.getDisplayName() + " with ID: " + tree.getId());
+                    skillTabs.add(new SkillTab(tree.getDisplayName(), tree.getIconData(), tree.getId()));
+                }
+            }
+            // Add skill tree tabs after overview
+            this.tabs = new SkillTab[skillTabs.size() + 1];
+            this.tabs[0] = new SkillTab("Overview", new IconData("minecraft:book"), "");
+            for (int i = 0; i < skillTabs.size(); i++) {
+                this.tabs[i + 1] = skillTabs.get(i);
+            }
         }
-    }
-    
-    private void createSkillTreeForTab(SkillTree tree, SkillTab tab) {
-        // Example: Create a simple tree structure for combat tab
-        if (tab == SkillTab.COMBAT) {
-            Skill swordBasics = new Skill("sword_basics", 
-                Component.literal("Sword Basics"), 
-                new ItemStack(Items.WOODEN_SWORD), 0, 0);
-            
-            Skill swordMastery = new Skill("sword_mastery", 
-                Component.literal("Sword Mastery"), 
-                new ItemStack(Items.IRON_SWORD), -50, SKILL_SPACING * 1);
-            swordMastery.addPrerequisite(swordBasics);
-            
-            Skill berserker = new Skill("berserker", 
-                Component.literal("Berserker"), 
-                new ItemStack(Items.DIAMOND_SWORD), 50, SKILL_SPACING * 2);
-            berserker.addPrerequisite(swordMastery);
-            
-            tree.addSkill(swordBasics);
-            tree.addSkill(swordMastery);
-            tree.addSkill(berserker);
-        }
-        // Add similar logic for other tabs...
+
+        this.selectedTab = this.tabs[0]; // Default to overview tab
     }
 
     @Override
@@ -166,8 +155,6 @@ public class SkillScreen extends Screen {
         // Set proper render settings
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         
-        SkillTab[] tabs = SkillTab.getVisibleTabs();
-        
         // Render unselected tabs first
         for (int i = 0; i < tabs.length; i++) {
             SkillTab tab = tabs[i];
@@ -213,8 +200,9 @@ public class SkillScreen extends Screen {
         guiGraphics.pose().pushPose();
         int iconX = tabX + 5;
         int iconY = tabY + 8;
-        guiGraphics.renderItem(tab.getIconItem(), iconX, iconY);
-        guiGraphics.renderItemDecorations(this.font, tab.getIconItem(), iconX, iconY);
+        // guiGraphics.renderItem(tab.getIconItem(), iconX, iconY);
+        tab.getIconItem().render(guiGraphics, iconX, iconY);
+        // guiGraphics.renderItemDecorations(this.font, tab.getIconItem(), iconX, iconY);
         guiGraphics.pose().popPose();
         
         RenderSystem.disableBlend(); // Clean up
@@ -231,7 +219,7 @@ public class SkillScreen extends Screen {
         // Enable scissor test for clipping
         guiGraphics.enableScissor(contentX, contentY, contentX + contentWidth, contentY + contentHeight);
 
-        if(selectedTab == SkillTab.OVERVIEW) {
+        if(selectedTab.getRawName().equals("Overview")) {
             // Save current pose
             guiGraphics.pose().pushPose();
             
@@ -250,8 +238,12 @@ public class SkillScreen extends Screen {
             guiGraphics.pose().popPose();
         } else {
             // render tree
-            SkillTree currentTree = skillTrees.get(selectedTab);
-            if (currentTree == null) return;
+            SkillTree currentTree = selectedTab.getSkillTree();
+            if (currentTree == null)  {
+                guiGraphics.disableScissor();
+                System.out.println("No skill tree found for tab: " + selectedTab.getRawName());
+                return;
+            }
             
             // Save current pose
             guiGraphics.pose().pushPose();
@@ -294,7 +286,7 @@ public class SkillScreen extends Screen {
         int toY = (int)to.getY() + (this.topPos + WINDOW_INSIDE_Y) + (SCREEN_HEIGHT-WINDOW_INSIDE_Y) / 2;
 
         // Color based on unlock status
-        int color = to.isUnlocked() ? 0xFF00FF00 : 0xFF666666; // Green if unlocked, gray if not
+        int color = 0xFF00FF00; // to.isUnlocked() ? 0xFF00FF00 : 0xFF666666; // Green if unlocked, gray if not
         
         // Draw line connection
         drawLine(guiGraphics, fromX, fromY, toX, toY, color);
@@ -346,35 +338,37 @@ public class SkillScreen extends Screen {
         int y = (int)skill.getY() + (this.topPos + WINDOW_INSIDE_Y) + (SCREEN_HEIGHT-WINDOW_INSIDE_Y) / 2 - SKILL_NODE_SIZE / 2;
         
         // Background color based on skill state
-        int backgroundColor;
-        if (skill.isUnlocked()) {
-            backgroundColor = skill.getLevel() == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
-        } else {
-            backgroundColor = 0xFF333333;
-        }
+        int backgroundColor = 0xFF333333;
+        // if (skill.isUnlocked()) {
+        //     backgroundColor = skill.getLevel() == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
+        // } else {
+        //     backgroundColor = 0xFF333333;
+        // }
         
         // Draw skill background
         guiGraphics.fill(x, y, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, backgroundColor);
         
         // Draw border
-        int borderColor = skill.isUnlocked() ? 0xFFFFFFFF : 0xFF666666;
+        // int borderColor = skill.isUnlocked() ? 0xFFFFFFFF : 0xFF666666;
+        int borderColor = 0xFFFFFFFF;
         guiGraphics.fill(x, y, x + SKILL_NODE_SIZE, y + 1, borderColor); // Top
         guiGraphics.fill(x, y + SKILL_NODE_SIZE - 1, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, borderColor); // Bottom
         guiGraphics.fill(x, y, x + 1, y + SKILL_NODE_SIZE, borderColor); // Left
         guiGraphics.fill(x + SKILL_NODE_SIZE - 1, y, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, borderColor); // Right
         
         // Render skill icon
-        guiGraphics.renderItem(skill.getIcon(), x + 4, y + 4);
+        IconData iconData = skill.getIconData();
+        iconData.render(guiGraphics, x + 4, y + 4);
         
         // Render level indicator if skill has levels
-        if (skill.getLevel() > 0) {
-            String levelText = String.valueOf(skill.getLevel());
+       /*if (skill.getLevel() > 0) {
+            String levelText = "NO"; // String.valueOf(skill.getLevel());
             int textWidth = this.font.width(levelText);
             guiGraphics.drawString(this.font, levelText, 
                 x + SKILL_NODE_SIZE - textWidth - 2, 
                 y + SKILL_NODE_SIZE - 8, 
                 0xFFFFFF, true);
-        }
+        }*/
     }
 
     private void renderSkillTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -383,11 +377,11 @@ public class SkillScreen extends Screen {
             if (hoveredSkill != null) {
                 List<Component> tooltip = new ArrayList<>();
                 tooltip.add(hoveredSkill.getDisplayName());
-                tooltip.add(Component.literal("Level: " + hoveredSkill.getLevel() + "/" + hoveredSkill.getMaxLevel()));
+                /*tooltip.add(Component.literal("Level: " + hoveredSkill.getLevel() + "/" + hoveredSkill.getMaxLevel()));
                 
                 if (!hoveredSkill.isUnlocked()) {
                     tooltip.add(Component.literal("Locked").withStyle(ChatFormatting.RED));
-                }
+                }*/
                 
                 guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
             }
@@ -395,8 +389,6 @@ public class SkillScreen extends Screen {
     }
 
     protected void renderTabTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        SkillTab[] tabs = SkillTab.getVisibleTabs();
-        
         for (int i = 0; i < tabs.length; i++) {
             SkillTab tab = tabs[i];
             if (this.isHoveringTab(tab, i, mouseX, mouseY)) {
@@ -440,9 +432,7 @@ public class SkillScreen extends Screen {
         
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) { // Left click
-            // Check for tab clicks first
-            SkillTab[] tabs = SkillTab.getVisibleTabs();
+        if (button == 0) {
             for (int i = 0; i < tabs.length; i++) {
                 SkillTab tab = tabs[i];
                 if (this.isHoveringTab(tab, i, (int)mouseX, (int)mouseY)) {
@@ -510,7 +500,7 @@ public class SkillScreen extends Screen {
         int contentHeight = (SCREEN_HEIGHT-WINDOW_INSIDE_Y) / 2; // Content height minus scrollbar
             
 
-        SkillTree currentTree = skillTrees.get(selectedTab);
+        SkillTree currentTree = selectedTab.getSkillTree();
         if (currentTree == null) {
             scrollX = 0.0;
             scrollY = Mth.clamp(scrollY, -currentTabOffsetY + contentHeight -10, 0);
@@ -533,7 +523,7 @@ public class SkillScreen extends Screen {
     }
 
     private Skill getSkillAtPosition(double mouseX, double mouseY) {
-        SkillTree currentTree = skillTrees.get(selectedTab);
+        SkillTree currentTree = selectedTab.getSkillTree();
         if (currentTree == null) return null;
         
         // Convert screen coordinates to world coordinates
@@ -556,7 +546,7 @@ public class SkillScreen extends Screen {
     public boolean mouseScrolled(double mouseX, double mouseY, double mouseScrollX, double mouseScrollY) {
         // Handle zooming with mouse wheel
         if (isInContentArea(mouseX, mouseY)) {
-            SkillTree currentTree = skillTrees.get(selectedTab);
+            SkillTree currentTree = selectedTab.getSkillTree();
             if (currentTree == null) {
                 scrollY += mouseScrollY * 10; // Allow normal scrolling if no tree
                 clampScrolling();

@@ -1,0 +1,15 @@
+{
+  "skill": "azukaarskillsstats:strength",
+  "effects": [
+    {
+      "effects": [
+        {
+          "type": "attribute_modifier",
+          "attribute": "minecraft:generic.attack_damage",
+          "value": 1.0,
+          "operation": "add"
+        }
+      ]
+    }
+  ]
+}
