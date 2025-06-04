@@ -9,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 
 public class PlayerSkills implements IPlayerSkills {
     private Map<String, Double> experience = new HashMap<>();
+    private int skillPoints = 0;
+    private Map<String, Integer> skills = new HashMap<>();
 
     @Override
     public double getExperience(String pathName) {
@@ -57,5 +59,54 @@ public class PlayerSkills implements IPlayerSkills {
         }
         if (totalLevel == 1) return 1;
         return Math.min(IPlayerSkills.getLevelFromXp(mainExperience), totalLevel);
+    }
+    
+    // Skill points implementation
+    @Override
+    public int getSkillPoints() {
+        return skillPoints;
+    }
+
+    @Override
+    public void setSkillPoints(int skillPoints) {
+        this.skillPoints = skillPoints;
+    }
+
+    @Override
+    public void addSkillPoints(int skillPoints) {
+        this.skillPoints += skillPoints;
+    }
+    
+    @Override
+    public void spendSkillPoints(int skillPoints, String skill) {
+        this.skillPoints -= skillPoints;
+        addSkillLevel(skill, skillPoints);
+    }
+
+    // Skills implementation
+    @Override
+    public int getSkillLevel(String skillName) {
+        return skills.getOrDefault(skillName, 0);
+    }
+
+    @Override
+    public void setSkillLevel(String skillName, int level) {
+        skills.put(skillName, level);
+    }
+
+    @Override
+    public void addSkillLevel(String skillName, int levels) {
+        int current = getSkillLevel(skillName);
+        setSkillLevel(skillName, current + levels);
+    }
+
+    @Override
+    public Map<String, Integer> getAllSkills() {
+        return new HashMap<>(skills);
+    }
+
+    @Override
+    public void setAllSkills(Map<String, Integer> skills) {
+        this.skills = new HashMap<>(skills);
     }
 }

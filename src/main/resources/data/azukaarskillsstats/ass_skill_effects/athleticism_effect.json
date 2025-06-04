@@ -1,14 +1,14 @@
 {
-  "skill": "azukaarskillsstats:strength",
+  "skill": "azukaarskillsstats:athleticism",
   "effects": [
     {
       "type": "attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "value": 0.5,
+      "attribute": "minecraft:generic.movement_speed",
+      "value": 0.005,
       "operation": "add_value",
       "scaling": {
         "type": "per_level",
-        "multiplier": 0.5
+        "multiplier": 0.005
       }
     }
   ]

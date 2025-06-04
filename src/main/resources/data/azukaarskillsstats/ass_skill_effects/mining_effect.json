@@ -1,14 +1,14 @@
 {
-  "skill": "azukaarskillsstats:strength",
+  "skill": "azukaarskillsstats:mining",
   "effects": [
     {
       "type": "attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "value": 0.5,
+      "attribute": "azukaarskillsstats:mining_speed",
+      "value": 2.0,
       "operation": "add_value",
       "scaling": {
         "type": "per_level",
-        "multiplier": 0.5
+        "multiplier": 2.0
       }
     }
   ]

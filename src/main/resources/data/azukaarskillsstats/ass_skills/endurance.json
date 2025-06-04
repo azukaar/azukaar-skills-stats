@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:endurance",
+  "display_name": "Endurance",
+  "description": "Reduces hunger depletion rate",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:cooked_beef"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 45.0
+  },
+  "max_level": 20,
+  "skill_tree": "azukaarskillsstats:stats"
+}

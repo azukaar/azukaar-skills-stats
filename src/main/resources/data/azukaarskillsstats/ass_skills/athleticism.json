@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:athleticism",
+  "display_name": "Athleticism",
+  "description": "Increases your movement speed",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:leather_boots"
+  },
+  "position": {
+    "x": -38.97,
+    "y": 22.5
+  },
+  "max_level": 50,
+  "skill_tree": "azukaarskillsstats:stats"
+}

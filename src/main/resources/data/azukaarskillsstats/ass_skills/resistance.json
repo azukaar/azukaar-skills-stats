@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:resistance",
+  "display_name": "Resistance",
+  "description": "Increases your armor rating",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:iron_chestplate"
+  },
+  "position": {
+    "x": -38.97,
+    "y": -22.5
+  },
+  "max_level": 40,
+  "skill_tree": "azukaarskillsstats:stats"
+}

@@ -1,6 +1,7 @@
 package com.azukaar.ass.network;
 
 import com.azukaar.ass.AzukaarSkillsStats;
+import com.azukaar.ass.api.PlayerData;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,6 +15,48 @@ public class NetworkHandler {
     public static void register(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
         
+        // Client-to-Server packets
+        registrar.playToServer(
+            AddExperiencePacket.TYPE,
+            AddExperiencePacket.STREAM_CODEC,
+            (payload, context) -> {
+                context.enqueueWork(() -> {
+                    var player = context.player();
+                    if (player != null) {
+                        // Execute the server-side logic
+                        PlayerData.addExperienceServerSide(payload.pathName(), payload.experience(), player, payload.position());
+                    }
+                });
+            }
+        );
+
+        registrar.playToServer(
+            AddSkillPointPacket.TYPE,
+            AddSkillPointPacket.STREAM_CODEC,
+            (payload, context) -> {
+                context.enqueueWork(() -> {
+                    var player = context.player();
+                    if (player != null) {
+                        PlayerData.addSkillPointServerSide(payload.getAmount(), player);
+                    }
+                });
+            }
+        );
+
+        registrar.playToServer(
+            SpendSkillPointPacket.TYPE,
+            SpendSkillPointPacket.STREAM_CODEC,
+            (payload, context) -> {
+                context.enqueueWork(() -> {
+                    var player = context.player();
+                    if (player != null) {
+                        PlayerData.spendSkillPointServerSide(player, payload.getAmount(), payload.getSkill());
+                    }
+                });
+            }
+        );
+        
+        // Server-to-Client sync packet
         registrar.playToClient(
             PlayerSkillsSyncPayload.TYPE,
             PlayerSkillsSyncPayload.STREAM_CODEC,
@@ -23,7 +66,12 @@ public class NetworkHandler {
                     var player = context.player();
                     if (player != null) {
                         var skillsProvider = player.getData(com.azukaar.ass.AzukaarSkillsStats.PLAYER_SKILLS_ATTACHMENT.get());
-                        skillsProvider.getSkills().setAllExperience(payload.skillData());
+                        var skills = skillsProvider.getSkills();
+                        
+                        // Sync all data
+                        skills.setAllExperience(payload.experienceData());
+                        skills.setSkillPoints(payload.skillPoints());
+                        skills.setAllSkills(payload.skillsData());
                     }
                 });
             }

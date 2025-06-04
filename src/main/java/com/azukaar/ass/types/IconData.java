@@ -33,7 +33,6 @@ public class IconData {
             return ItemStack.EMPTY;
         }
         Item itemObj = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(item));
-        System.out.println("PIPI " + item + " is " + itemObj);
         if (itemObj == null) {
             return ItemStack.EMPTY;
         }

@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.types.DependencyData;
 import com.azukaar.ass.types.Skill;
+import com.azukaar.ass.types.SkillEffect;
 import com.azukaar.ass.types.SkillTree;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,6 +21,7 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 
 public class SkillDataManager implements PreparableReloadListener {
     public static final SkillDataManager INSTANCE = new SkillDataManager();
@@ -30,6 +33,7 @@ public class SkillDataManager implements PreparableReloadListener {
     
     private final Map<ResourceLocation, Skill> skills = new HashMap<>();
     private final Map<String, SkillTree> skillTrees = new HashMap<>();
+    private final Map<String, SkillEffect> skillEffects = new HashMap<>();
     
     @Override
     public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager resourceManager,
@@ -40,11 +44,13 @@ public class SkillDataManager implements PreparableReloadListener {
             // Clear existing data
             skills.clear();
             skillTrees.clear();
+            skillEffects.clear();
             
             // Load all data
             loadSkillTrees(resourceManager);
             loadSkills(resourceManager);
             loadDependencies(resourceManager);
+            loadSkillEffects(resourceManager);
             
             return null;
         }, backgroundExecutor).thenCompose(barrier::wait).thenRunAsync(() -> {
@@ -171,5 +177,114 @@ public class SkillDataManager implements PreparableReloadListener {
     
     public Collection<SkillTree> getAllSkillTrees() {
         return skillTrees.values();
+    }
+
+    
+    private void loadSkillEffects(ResourceManager resourceManager) {
+        Map<ResourceLocation, List<Resource>> effectResources =
+            resourceManager.listResourceStacks("ass_skill_effects", path -> path.getPath().endsWith(".json"));
+        
+        for (Map.Entry<ResourceLocation, List<Resource>> entry : effectResources.entrySet()) {
+            ResourceLocation resourceLocation = entry.getKey();
+            List<Resource> resources = entry.getValue();
+            
+            // Use the last resource (highest priority datapack)
+            if (!resources.isEmpty()) {
+                Resource resource = resources.get(resources.size() - 1);
+                
+                try (Reader reader = resource.openAsReader()) {
+                    SkillEffect skillEffect = GSON.fromJson(reader, SkillEffect.class);
+                    skillEffect.postDeserialize(); // Initialize effects properly
+                    
+                    skillEffects.put(skillEffect.getSkillId(), skillEffect);
+                    
+                    AzukaarSkillsStats.LOGGER.debug("Loaded effects for skill: {}", skillEffect.getSkillId());
+                } catch (Exception e) {
+                    AzukaarSkillsStats.LOGGER.error("Failed to load skill effects from {}: {}", 
+                        resourceLocation, e.getMessage());
+                }
+            }
+        }
+    }
+    
+    /**
+     * Apply all effects for a specific skill at the given level
+     */
+    public void applySkillEffects(Player player, String skillId, int skillLevel) {
+        SkillEffect skillEffect = skillEffects.get(skillId);
+        if (skillEffect == null) return;
+        
+        try {
+            skillEffect.applyEffects(player, skillLevel);
+        } catch (Exception e) {
+            AzukaarSkillsStats.LOGGER.error("Failed to apply effects for skill {}: {}", 
+                skillId, e.getMessage());
+        }
+    }
+    
+    /**
+     * Remove all effects for a specific skill
+     */
+    public void removeSkillEffects(Player player, String skillId) {
+        SkillEffect skillEffect = skillEffects.get(skillId);
+        if (skillEffect == null) return;
+        
+        try {
+            skillEffect.removeEffects(player);
+        } catch (Exception e) {
+            AzukaarSkillsStats.LOGGER.error("Failed to remove effects for skill {}: {}", 
+                skillId, e.getMessage());
+        }
+    }
+
+    /**
+     * Update skill effects for a player based on their current skill level
+     */
+    public void updateSkillEffects(Player player, String skillId) {
+        int skillLevel = PlayerData.getSkillLevel(player, skillId);
+        
+        if (skillLevel > 0) {
+            applySkillEffects(player, skillId, skillLevel);
+        } else {
+            removeSkillEffects(player, skillId);
+        }
+    }
+    
+    /**
+     * Update all skill effects for a player based on their current skill levels
+     */
+    public void updateAllSkillEffects(Player player) {
+        // Get all skills with effects
+        for (String skillId : skillEffects.keySet()) {
+            int skillLevel = PlayerData.getSkillLevel(player, skillId);
+            
+            if (skillLevel > 0) {
+                applySkillEffects(player, skillId, skillLevel);
+            } else {
+                removeSkillEffects(player, skillId);
+            }
+        }
+    }
+    
+    /**
+     * Get effect data for a specific skill
+     */
+    public SkillEffect getSkillEffects(String skillId) {
+        return skillEffects.get(skillId);
+    }
+    
+    /**
+     * Get all loaded skill effects
+     */
+    public Collection<SkillEffect> getAllSkillEffects() {
+        return skillEffects.values();
+    }
+    
+    /**
+     * Check if a skill has any effects defined
+     */
+    public boolean hasEffects(String skillId) {
+        SkillEffect skillEffect = skillEffects.get(skillId);
+        return skillEffect != null && skillEffect.getEffects() != null && !skillEffect.getEffects().isEmpty();
     }
 }

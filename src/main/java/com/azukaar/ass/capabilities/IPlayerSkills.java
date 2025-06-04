@@ -5,10 +5,10 @@ import java.util.Map;
 import net.minecraft.world.entity.player.Player;
 
 public interface IPlayerSkills {
-    static final String MAIN = "ass.main"; 
-    static final String WARRIOR_PATH = "ass.warrior"; 
-    static final String MINER_PATH = "ass.miner"; 
-    static final String EXPLORER_PATH = "ass.explorer";
+    static final String MAIN = "azukaarskillsstats.main"; 
+    static final String WARRIOR_PATH = "azukaarskillsstats.warrior"; 
+    static final String MINER_PATH = "azukaarskillsstats.miner"; 
+    static final String EXPLORER_PATH = "azukaarskillsstats.explorer";
 
     static final String[] PATH_NAMES = {
         WARRIOR_PATH, MINER_PATH, EXPLORER_PATH
@@ -54,4 +54,18 @@ public interface IPlayerSkills {
     Map<String, Double> getAllExperience();
     void setAllExperience(Map<String, Double> experience);
     int getMainLevel();
+    
+    // Skill points methods
+    int getSkillPoints();
+    void setSkillPoints(int skillPoints);
+    void addSkillPoints(int skillPoints);
+    
+    // Skills methods
+    int getSkillLevel(String skillName);
+    void setSkillLevel(String skillName, int level);
+    void addSkillLevel(String skillName, int levels);
+    Map<String, Integer> getAllSkills();
+    void setAllSkills(Map<String, Integer> skills);
+    void spendSkillPoints(int skillPoints, String skill);
+
 }

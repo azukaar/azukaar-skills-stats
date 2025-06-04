@@ -1,14 +1,14 @@
 {
-  "skill": "azukaarskillsstats:strength",
+  "skill": "azukaarskillsstats:dexterity",
   "effects": [
     {
       "type": "attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "value": 0.5,
+      "attribute": "minecraft:generic.attack_speed",
+      "value": 0.1,
       "operation": "add_value",
       "scaling": {
         "type": "per_level",
-        "multiplier": 0.5
+        "multiplier": 0.1
       }
     }
   ]

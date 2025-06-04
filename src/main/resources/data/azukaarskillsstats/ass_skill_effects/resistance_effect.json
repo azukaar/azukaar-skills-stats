@@ -1,9 +1,9 @@
 {
-  "skill": "azukaarskillsstats:strength",
+  "skill": "azukaarskillsstats:resistance",
   "effects": [
     {
       "type": "attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
+      "attribute": "minecraft:generic.armor",
       "value": 0.5,
       "operation": "add_value",
       "scaling": {

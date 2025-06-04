@@ -17,7 +17,7 @@ public class OverviewTab {
 
         // Title
         guiGraphics.drawString(font, "Overview", contentX + 10, contentY + 10, 0xFFFFFF);
-        guiGraphics.drawString(font, "Avail. Skill Points: 8", contentX + 120, contentY + 10, 0xFFFF66);
+        guiGraphics.drawString(font, "Avail. Skill Points: " + PlayerData.getSkillPoints(player), contentX + 120, contentY + 10, 0xFFFF66);
 
         // Main Level
         guiGraphics.drawString(font, "Level " + PlayerData.getMainLevel(player), contentX + 20, contentY + yOffset, 0xFFFFFF);

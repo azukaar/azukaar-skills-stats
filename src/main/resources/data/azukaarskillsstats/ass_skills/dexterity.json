@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:dexterity",
+  "display_name": "Dexterity",
+  "description": "Increases your attack speed",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_sword"
+  },
+  "position": {
+    "x": 38.97,
+    "y": -22.5
+  },
+  "max_level": 50,
+  "skill_tree": "azukaarskillsstats:stats"
+}

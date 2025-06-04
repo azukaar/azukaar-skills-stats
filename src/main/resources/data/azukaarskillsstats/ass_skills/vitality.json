@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:vitality",
+  "display_name": "Vitality",
+  "description": "Increases your maximum health",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "position": {
+    "x": 38.97,
+    "y": 22.5
+  },
+  "max_level": 40,
+  "skill_tree": "azukaarskillsstats:stats"
+}

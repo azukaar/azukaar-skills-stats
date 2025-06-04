@@ -1,14 +1,14 @@
 {
-  "skill": "azukaarskillsstats:strength",
+  "skill": "azukaarskillsstats:endurance",
   "effects": [
     {
       "type": "attribute_modifier",
-      "attribute": "minecraft:generic.attack_damage",
-      "value": 0.5,
+      "attribute": "azukaarskillsstats:hunger_efficiency",
+      "value": 0.025,
       "operation": "add_value",
       "scaling": {
         "type": "per_level",
-        "multiplier": 0.5
+        "multiplier": 0.025
       }
     }
   ]

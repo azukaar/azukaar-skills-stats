@@ -19,20 +19,14 @@ public class GUIClientModEvents {
         GLFW.GLFW_KEY_H,
         "key.categories.gameplay"
     );
-    
-    // @SubscribeEvent
-    // public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
-    //     event.register(OPEN_SKILLS_KEY);
-    // }
   
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
         while (OPEN_SKILLS_KEY.consumeClick()) {
-            System.out.println("FUCK");
             Minecraft minecraft = Minecraft.getInstance();
             
             if (minecraft.screen == null) {
-                minecraft.setScreen(new SkillScreen(minecraft.getInstance().player));
+                minecraft.setScreen(new SkillScreen(minecraft.player));
             }
         }
     }

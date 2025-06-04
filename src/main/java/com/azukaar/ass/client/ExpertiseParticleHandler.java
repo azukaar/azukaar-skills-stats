@@ -1,6 +1,8 @@
 package com.azukaar.ass.client;
 
 import com.azukaar.ass.api.events.ExperienceGainedEvent;
+import com.azukaar.ass.capabilities.IPlayerSkills;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
@@ -39,7 +41,7 @@ public class ExpertiseParticleHandler {
         //     return;
         // }
 
-        if (event.getAmount() <= 0) {
+        if (event.getAmount() <= 0 || event.getExpertisePath() == IPlayerSkills.MAIN) {
             return; // No XP gained
         }
 
@@ -135,10 +137,9 @@ public class ExpertiseParticleHandler {
     // Helper method to get color based on expertise path
     private static int getColorForPath(String path) {
         return switch(path) {
-            case "ass.warrior" -> 0xFF5555; // Red
-            case "ass.archer" -> 0x55FF55;  // Green
-            case "ass.miner" -> 0xFFAA00;   // Gold
-            case "ass.explorer" -> 0x55FFFF; // Cyan
+            case IPlayerSkills.WARRIOR_PATH -> 0xFF5555; // Red
+            case IPlayerSkills.MINER_PATH -> 0x55FF55;  // Green
+            case IPlayerSkills.EXPLORER_PATH -> 0x55FFFF; // Cyan
             default -> 0xFFFF55; // Yellow (default XP color)
         };
     }

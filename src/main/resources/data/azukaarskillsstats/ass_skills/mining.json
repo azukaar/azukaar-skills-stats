@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:mining",
+  "display_name": "Mining",
+  "description": "Increases your mining speed",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:diamond_pickaxe"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "max_level": 50,
+  "skill_tree": "azukaarskillsstats:stats"
+}

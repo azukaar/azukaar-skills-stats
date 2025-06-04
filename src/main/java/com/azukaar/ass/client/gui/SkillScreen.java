@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.azukaar.ass.SkillDataManager;
+import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.types.IconData;
 import com.azukaar.ass.types.Skill;
 import com.azukaar.ass.types.SkillTree;
@@ -339,18 +340,17 @@ public class SkillScreen extends Screen {
         
         // Background color based on skill state
         int backgroundColor = 0xFF333333;
-        // if (skill.isUnlocked()) {
-        //     backgroundColor = skill.getLevel() == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
-        // } else {
-        //     backgroundColor = 0xFF333333;
-        // }
+        if (PlayerData.getSkillLevel(player, skill.getId()) > 0) {
+            backgroundColor = PlayerData.getSkillLevel(player, skill.getId()) == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
+        } else {
+            backgroundColor = 0xFF333333;
+        }
         
         // Draw skill background
         guiGraphics.fill(x, y, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, backgroundColor);
         
         // Draw border
-        // int borderColor = skill.isUnlocked() ? 0xFFFFFFFF : 0xFF666666;
-        int borderColor = 0xFFFFFFFF;
+        int borderColor = PlayerData.getSkillLevel(player, skill.getId()) > 0 ? 0xFFFFFFFF : 0xFF666666;
         guiGraphics.fill(x, y, x + SKILL_NODE_SIZE, y + 1, borderColor); // Top
         guiGraphics.fill(x, y + SKILL_NODE_SIZE - 1, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, borderColor); // Bottom
         guiGraphics.fill(x, y, x + 1, y + SKILL_NODE_SIZE, borderColor); // Left
@@ -361,14 +361,14 @@ public class SkillScreen extends Screen {
         iconData.render(guiGraphics, x + 4, y + 4);
         
         // Render level indicator if skill has levels
-       /*if (skill.getLevel() > 0) {
-            String levelText = "NO"; // String.valueOf(skill.getLevel());
+       if (PlayerData.getSkillLevel(player, skill.getId()) > 0 && skill.getMaxLevel() > 1) {
+            String levelText = String.valueOf(PlayerData.getSkillLevel(player, skill.getId()));
             int textWidth = this.font.width(levelText);
             guiGraphics.drawString(this.font, levelText, 
                 x + SKILL_NODE_SIZE - textWidth - 2, 
                 y + SKILL_NODE_SIZE - 8, 
                 0xFFFFFF, true);
-        }*/
+        }
     }
 
     private void renderSkillTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -377,11 +377,13 @@ public class SkillScreen extends Screen {
             if (hoveredSkill != null) {
                 List<Component> tooltip = new ArrayList<>();
                 tooltip.add(hoveredSkill.getDisplayName());
-                /*tooltip.add(Component.literal("Level: " + hoveredSkill.getLevel() + "/" + hoveredSkill.getMaxLevel()));
-                
-                if (!hoveredSkill.isUnlocked()) {
+                if ( hoveredSkill.getMaxLevel() > 1) {
+                    tooltip.add(Component.literal("Level: " + PlayerData.getSkillLevel(player, hoveredSkill.getId()) + "/" + hoveredSkill.getMaxLevel()));
+                } else if(hoveredSkill.getMaxLevel() == 1 && PlayerData.getSkillLevel(player, hoveredSkill.getId()) > 0) {
+                    tooltip.add(Component.literal("Unlocked").withStyle(ChatFormatting.GREEN));
+                } else if (PlayerData.getSkillLevel(player, hoveredSkill.getId()) == 0) {
                     tooltip.add(Component.literal("Locked").withStyle(ChatFormatting.RED));
-                }*/
+                }
                 
                 guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
             }
@@ -569,7 +571,17 @@ public class SkillScreen extends Screen {
     }
 
     private void onSkillClicked(Skill skill) {
-        // Handle skill selection/upgrade logic
-        // This is where you'd implement skill unlocking, upgrading, etc.
+        // Handle skill click logic here
+        // For example, open skill details or spend points
+        System.out.println("Clicked skill: " + skill.getId());
+        
+        // Example: Spend a skill point if the skill is unlocked
+        if (PlayerData.getSkillLevel(player, skill.getId()) < skill.getMaxLevel()) {
+            System.out.println("Spending skill point on: " + skill.getId());
+
+            PlayerData.spendSkillPoint(player, 1, skill.getId());
+        } else {
+            System.out.println("Skill is locked or at max level: " + skill.getId());
+        }
     }
 }
