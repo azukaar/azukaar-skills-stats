@@ -1,13 +1,20 @@
 package com.azukaar.ass;
+import java.util.function.Supplier;
+
 import org.slf4j.Logger;
 
 import com.azukaar.ass.capabilities.IPlayerSkills;
 import com.azukaar.ass.capabilities.PlayerSkillsProvider;
 import com.azukaar.ass.client.ExpertiseParticleHandler;
 import com.azukaar.ass.client.GUIClientModEvents;
+import com.azukaar.ass.client.particles.OrbParticle;
+import com.azukaar.ass.client.particles.OrbParticleOptions;
 import com.mojang.logging.LogUtils;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -32,6 +39,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -39,6 +47,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -92,6 +101,25 @@ public class AzukaarSkillsStats
             () -> AttachmentType.serializable(() -> new PlayerSkillsProvider()).build()
         );
 
+    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = 
+        DeferredRegister.create(Registries.PARTICLE_TYPE, AzukaarSkillsStats.MODID); // Replace with your mod ID
+
+    public static final Supplier<ParticleType<OrbParticleOptions>> ORB_PARTICLE = 
+        PARTICLE_TYPES.register("orb", () -> new ParticleType<OrbParticleOptions>(false) {
+            @Override
+            public MapCodec<OrbParticleOptions> codec() {
+                return OrbParticleOptions.CODEC.fieldOf("orb");
+            }
+
+            @Override
+            public StreamCodec<? super RegistryFriendlyByteBuf, OrbParticleOptions> streamCodec() {
+                return StreamCodec.of(
+                    (buffer, options) -> options.writeToNetwork(buffer),
+                    (buffer) -> OrbParticleOptions.fromNetwork(this, buffer)
+                );
+            }
+        });
+        
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.azukaarskillsstats")) //The language key for the title of your CreativeModeTab
             .withTabsBefore(CreativeModeTabs.COMBAT)
@@ -118,6 +146,9 @@ public class AzukaarSkillsStats
         CREATIVE_MODE_TABS.register(modEventBus);
 
         ATTACHMENT_TYPES.register(modEventBus);
+
+        // Register the Deferred Register to the mod event bus so particle types get registered
+        PARTICLE_TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (AzukaarSkillsStats) to respond directly to events.
@@ -221,6 +252,11 @@ public class AzukaarSkillsStats
         @SubscribeEvent
         public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
             event.register(GUIClientModEvents.OPEN_SKILLS_KEY);
+        }
+
+        @SubscribeEvent
+        public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(ORB_PARTICLE.get(), OrbParticle.Provider::new);
         }
     }
 

@@ -122,21 +122,15 @@ public class ModEvents {
             }
         }
     }
-
+    
     @SubscribeEvent
     public static void onBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
-
-        // Only process on server side to avoid duplication
-        if (player.level().isClientSide) {
-            return;
-        }
         
-        // Simply read the mining speed attribute
+        
         double miningSpeedBonus = player.getAttributeValue(ModAttributes.MINING_SPEED);
         
         if (miningSpeedBonus > 0) {
-            // Apply the mining speed bonus
             float newSpeed = event.getOriginalSpeed() * (1.0f + (float)miningSpeedBonus);
             event.setNewSpeed(newSpeed);
         }

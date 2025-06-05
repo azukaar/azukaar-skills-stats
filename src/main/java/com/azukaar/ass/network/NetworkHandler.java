@@ -1,6 +1,7 @@
 package com.azukaar.ass.network;
 
 import com.azukaar.ass.AzukaarSkillsStats;
+import com.azukaar.ass.SkillDataManager;
 import com.azukaar.ass.api.PlayerData;
 
 import net.neoforged.bus.api.SubscribeEvent;
@@ -72,6 +73,7 @@ public class NetworkHandler {
                         skills.setAllExperience(payload.experienceData());
                         skills.setSkillPoints(payload.skillPoints());
                         skills.setAllSkills(payload.skillsData());
+                        SkillDataManager.INSTANCE.updateAllSkillEffects(player);
                     }
                 });
             }
