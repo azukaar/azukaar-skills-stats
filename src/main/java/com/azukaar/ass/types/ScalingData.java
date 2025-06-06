@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ScalingData {
     @Expose @SerializedName("type")
-    private String type = "per_level";
+    private String type = "fixed";
     
     @Expose @SerializedName("multiplier")
     private double multiplier = 1.0;

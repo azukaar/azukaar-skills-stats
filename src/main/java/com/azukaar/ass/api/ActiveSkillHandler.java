@@ -137,7 +137,7 @@ public class ActiveSkillHandler {
     private static EffectData createEffectDataFromAttributes(Player player, String skillId, SkillEffect.Effect effect) {
         Map<String, Object> currentData = new HashMap<>();
         
-        // Read current values using the parameter system (no longer includes cooldown)
+        // Read current values using the parameter system
         for (Map.Entry<String, ScalingData> entry : effect.getData().entrySet()) {
             String dataKey = entry.getKey();
             double value = SkillEffect.getSkillParameter(player, skillId, dataKey);

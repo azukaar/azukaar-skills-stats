@@ -3,7 +3,15 @@
   "effects": [
     {
       "type": "active",
-      "active_effect": "azukaarskillsstats:heal"
+      "active_effect": "azukaarskillsstats:heal",
+      "description": "Healing",
+      "data": {
+        "health_restored": {
+          "base": 20,
+          "type": "per_level",
+          "multiplier": 10
+        }
+      }
     }
   ]
 }

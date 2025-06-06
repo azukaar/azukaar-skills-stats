@@ -4,6 +4,7 @@
     {
       "type": "attribute_modifier",
       "attribute": "minecraft:generic.attack_speed",
+      "description": "Attack Speed",
       "value": 0.1,
       "operation": "add_value",
       "scaling": {

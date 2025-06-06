@@ -1,5 +1,6 @@
 {
   "skill": "azukaarskillsstats:resistance",
+      "description": "Armor",
   "effects": [
     {
       "type": "attribute_modifier",

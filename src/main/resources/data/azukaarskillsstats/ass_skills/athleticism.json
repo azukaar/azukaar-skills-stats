@@ -1,7 +1,7 @@
 {
   "id": "azukaarskillsstats:athleticism",
   "display_name": "Athleticism",
-  "description": "Increases your movement speed",
+  "description": "Let your run faster than wind",
   "icon": {
     "type": "item",
     "item": "minecraft:leather_boots"

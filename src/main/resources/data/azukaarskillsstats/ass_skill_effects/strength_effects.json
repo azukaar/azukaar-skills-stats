@@ -1,5 +1,6 @@
 {
   "skill": "azukaarskillsstats:strength",
+      "description": "Attack Damage",
   "effects": [
     {
       "type": "attribute_modifier",

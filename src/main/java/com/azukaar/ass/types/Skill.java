@@ -30,6 +30,9 @@ public class Skill {
     @Expose @SerializedName("cooldown")
     private ScalingData cooldown;
     
+    @Expose @SerializedName("description")
+    private String description;
+
     private Component displayName;
     private final List<Skill> prerequisites;
     private final List<Skill> children;
@@ -68,7 +71,8 @@ public class Skill {
     public List<Skill> getChildren() { return children; }
     public String getSkillTree() { return skillTree; }
     public ScalingData getCooldown() { return cooldown; }
-    
+    public String getDescription() { return description; }
+
     public void addPrerequisite(Skill skill) {
         prerequisites.add(skill);
         skill.children.add(this);

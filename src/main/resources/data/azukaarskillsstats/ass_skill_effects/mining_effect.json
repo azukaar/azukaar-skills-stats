@@ -1,5 +1,6 @@
 {
   "skill": "azukaarskillsstats:mining",
+  "description": "Mining Speed",
   "effects": [
     {
       "type": "attribute_modifier",

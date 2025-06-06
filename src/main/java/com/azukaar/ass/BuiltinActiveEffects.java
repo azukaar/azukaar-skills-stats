@@ -46,40 +46,16 @@ public class BuiltinActiveEffects {
     public static class HealEffect implements ActiveSkillEffect {
         @Override
         public boolean execute(Player player, String skillId, int skillLevel, EffectData effectData) {
-            double amount = effectData.getDouble("amount", 10.0);
-            double range = effectData.getDouble("range", 0.0);
+            double amount = effectData.getDouble("health_restored", 0.0);
 
             System.out.println("Executing HealEffect for player: " + player.getName().getString());
             
-            if (range <= 0) {
-                // Self heal
-                player.heal((float) amount);
-                AzukaarSkillsStats.LOGGER.info("Player {} healed self for: {}", 
-                    player.getName().getString(), amount);
-            } else {
-                // Area heal - implement as needed
-                areaHeal(player, amount, range);
-            }
+            // Self heal
+            player.heal((float) amount);
+            AzukaarSkillsStats.LOGGER.info("Player {} healed self for: {}", 
+                player.getName().getString(), amount);
             
             return true;
-        }
-        
-        @Override
-        public boolean canUse(Player player, String skillId, int skillLevel, EffectData effectData) {
-            double range = effectData.getDouble("range", 0.0);
-            
-            if (range <= 0) {
-                // Self heal - only if not at full health
-                return player.getHealth() < player.getMaxHealth();
-            } else {
-                // Area heal - always usable
-                return true;
-            }
-        }
-        
-        private void areaHeal(Player caster, double amount, double range) {
-            // TODO: Implement area healing logic
-            AzukaarSkillsStats.LOGGER.info("Area heal: amount={}, range={}", amount, range);
         }
     }
 }

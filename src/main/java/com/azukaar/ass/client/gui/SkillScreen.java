@@ -69,16 +69,17 @@ public class SkillScreen extends Screen {
     public static final int SKILL_SPACING = 48;
     
     // Screen dimensions
-    private static final int SCREEN_WIDTH = 252;
-    private static final int SCREEN_HEIGHT = 140;
-    private static final int WINDOW_INSIDE_X = 9;
-    private static final int WINDOW_INSIDE_Y = 18;
-    private static final int TAB_WIDTH = 26;
-    private static final int TAB_HEIGHT = 32;
+    public static final int SCREEN_WIDTH = 252;
+    public static final int SCREEN_HEIGHT = 140;
+    public static final int WINDOW_INSIDE_X = 9;
+    public static final int WINDOW_INSIDE_Y = 18;
+    public static final int TAB_WIDTH = 26;
+    public static final int TAB_HEIGHT = 32;
 
     private SkillTab selectedTab;
+    private Skill selectedSkill;
     private int leftPos;
-    private int topPos;
+    private int topPos; 
 
     SkillTab[] tabs;
 
@@ -97,7 +98,6 @@ public class SkillScreen extends Screen {
             List<SkillTab> skillTabs = new ArrayList<>();
             for (SkillTree tree : skillTrees) {
                 if (tree.getId() != null && !tree.getId().isEmpty()) {
-                    System.out.println("CACA XX Adding skill tree tab: " + tree.getDisplayName() + " with ID: " + tree.getId());
                     skillTabs.add(new SkillTab(tree.getDisplayName(), tree.getIconData(), tree.getId()));
                 }
             }
@@ -244,9 +244,7 @@ public class SkillScreen extends Screen {
                 guiGraphics.disableScissor();
                 System.out.println("No skill tree found for tab: " + selectedTab.getRawName());
                 return;
-            }
-            
-            // Save current pose
+            }            // Save current pose
             guiGraphics.pose().pushPose();
             
             // guiGraphics.pose().scale(zoomScale, zoomScale, 1.0f);
@@ -254,120 +252,22 @@ public class SkillScreen extends Screen {
             // Apply scroll translation
             guiGraphics.pose().translate(scrollX, scrollY, 0);
             
-            // Render skill connections first (so they appear behind nodes)
-            renderSkillConnections(guiGraphics, currentTree);
-            
-            // Render skill nodes
-            renderSkillNodes(guiGraphics, currentTree, mouseX, mouseY);
-            
+            if(this.selectedSkill == null) {
+                selectedTab.renderContent(guiGraphics, mouseX, mouseY, partialTick, this.leftPos + WINDOW_INSIDE_X, this.topPos + WINDOW_INSIDE_Y, this.font, player, leftPos, topPos);
+            }
+
             // Restore pose
             guiGraphics.pose().popPose();
-            
+
             // Disable scissor test
             guiGraphics.disableScissor();
-            
-            // Render skill tooltip if hovering over a skill
-            renderSkillTooltip(guiGraphics, mouseX, mouseY);
-        }
-    }
 
-    private void renderSkillConnections(GuiGraphics guiGraphics, SkillTree tree) {
-        for (Skill skill : tree.getAllSkills()) {
-            for (Skill child : skill.getChildren()) {
-                renderConnection(guiGraphics, skill, child);
+            if(this.selectedSkill != null) {
+                selectedTab.renderModal(this.selectedSkill, guiGraphics, mouseX, mouseY, partialTick, this.leftPos + WINDOW_INSIDE_X, this.topPos + WINDOW_INSIDE_Y, this.font, player, leftPos, topPos);
+            } else {
+                // Render skill tooltip if hovering over a skill
+                renderSkillTooltip(guiGraphics, mouseX, mouseY);
             }
-        }
-    }
-
-    private void renderConnection(GuiGraphics guiGraphics, Skill from, Skill to) {
-        int fromX = (int)from.getX() + (this.leftPos + WINDOW_INSIDE_X) + (SCREEN_WIDTH-WINDOW_INSIDE_X) / 2;
-        int fromY = (int)from.getY() + (this.topPos + WINDOW_INSIDE_Y) + (SCREEN_HEIGHT-WINDOW_INSIDE_Y) / 2;
-
-        int toX = (int)to.getX() + (this.leftPos + WINDOW_INSIDE_X) + (SCREEN_WIDTH-WINDOW_INSIDE_X) / 2;
-        int toY = (int)to.getY() + (this.topPos + WINDOW_INSIDE_Y) + (SCREEN_HEIGHT-WINDOW_INSIDE_Y) / 2;
-
-        // Color based on unlock status
-        int color = 0xFF00FF00; // to.isUnlocked() ? 0xFF00FF00 : 0xFF666666; // Green if unlocked, gray if not
-        
-        // Draw line connection
-        drawLine(guiGraphics, fromX, fromY, toX, toY, color);
-    }
-
-    private void drawLine(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int color) {
-        // Draw black outline first (thicker line)
-        // drawThickLine(guiGraphics, x1, y1, x2, y2, 3, 0xFFFFFFFF);
-
-        // Draw main colored line (centered)
-        drawThickLine(guiGraphics, x1, y1, x2, y2, 2, color);
-    }
-
-    // Helper to draw a line with thickness using Bresenham's algorithm
-    private void drawThickLine(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int thickness, int color) {
-        int dx = Math.abs(x2 - x1);
-        int dy = Math.abs(y2 - y1);
-        int sx = x1 < x2 ? 1 : -1;
-        int sy = y1 < y2 ? 1 : -1;
-        int err = dx - dy;
-
-        while (true) {
-            // Draw a square of size thickness x thickness centered at (x1, y1)
-            int half = thickness / 2;
-            guiGraphics.fill(x1 - half, y1 - half, x1 - half + thickness, y1 - half + thickness, color);
-
-            if (x1 == x2 && y1 == y2) break;
-
-            int e2 = 2 * err;
-            if (e2 > -dy) {
-                err -= dy;
-                x1 += sx;
-            }
-            if (e2 < dx) {
-                err += dx;
-                y1 += sy;
-            }
-        }
-    }
-
-    private void renderSkillNodes(GuiGraphics guiGraphics, SkillTree tree, int mouseX, int mouseY) {
-        for (Skill skill : tree.getAllSkills()) {
-            renderSkillNode(guiGraphics, skill);
-        }
-    }
-
-    private void renderSkillNode(GuiGraphics guiGraphics, Skill skill) {
-        int x = (int)skill.getX() + (this.leftPos + WINDOW_INSIDE_X) + (SCREEN_WIDTH-WINDOW_INSIDE_X) / 2 - SKILL_NODE_SIZE / 2;
-        int y = (int)skill.getY() + (this.topPos + WINDOW_INSIDE_Y) + (SCREEN_HEIGHT-WINDOW_INSIDE_Y) / 2 - SKILL_NODE_SIZE / 2;
-        
-        // Background color based on skill state
-        int backgroundColor = 0xFF333333;
-        if (PlayerData.getSkillLevel(player, skill.getId()) > 0) {
-            backgroundColor = PlayerData.getSkillLevel(player, skill.getId()) == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
-        } else {
-            backgroundColor = 0xFF333333;
-        }
-        
-        // Draw skill background
-        guiGraphics.fill(x, y, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, backgroundColor);
-        
-        // Draw border
-        int borderColor = PlayerData.getSkillLevel(player, skill.getId()) > 0 ? 0xFFFFFFFF : 0xFF666666;
-        guiGraphics.fill(x, y, x + SKILL_NODE_SIZE, y + 1, borderColor); // Top
-        guiGraphics.fill(x, y + SKILL_NODE_SIZE - 1, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, borderColor); // Bottom
-        guiGraphics.fill(x, y, x + 1, y + SKILL_NODE_SIZE, borderColor); // Left
-        guiGraphics.fill(x + SKILL_NODE_SIZE - 1, y, x + SKILL_NODE_SIZE, y + SKILL_NODE_SIZE, borderColor); // Right
-        
-        // Render skill icon
-        IconData iconData = skill.getIconData();
-        iconData.render(guiGraphics, x + 4, y + 4);
-        
-        // Render level indicator if skill has levels
-       if (PlayerData.getSkillLevel(player, skill.getId()) > 0 && skill.getMaxLevel() > 1) {
-            String levelText = String.valueOf(PlayerData.getSkillLevel(player, skill.getId()));
-            int textWidth = this.font.width(levelText);
-            guiGraphics.drawString(this.font, levelText, 
-                x + SKILL_NODE_SIZE - textWidth - 2, 
-                y + SKILL_NODE_SIZE - 8, 
-                0xFFFFFF, true);
         }
     }
 
@@ -434,7 +334,28 @@ public class SkillScreen extends Screen {
         
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(this.selectedTab != null && this.selectedTab.handleKeyPress(button, 0,0, selectedSkill)) {
+            return true; // Modal click was handled
+        }
+
         if (button == 0) {
+            if (this.selectedSkill != null) {
+                if (this.selectedTab.handleModalClick(mouseX, mouseY, this.selectedSkill, player)) {
+                    return true; // Button click was handled
+                }
+                
+                // Check if click is outside modal to close it
+                int modalX = this.leftPos + (SCREEN_WIDTH - 220) / 2;
+                int modalY = this.topPos + (SCREEN_HEIGHT - 180) / 2;
+                
+                if (mouseX < modalX || mouseX > modalX + 220 || 
+                    mouseY < modalY || mouseY > modalY + 180) {
+                    this.selectedSkill = null; // Close modal
+                    return true;
+                }
+                return true; // Click inside modal but not on button - consume it
+            }
+
             for (int i = 0; i < tabs.length; i++) {
                 SkillTab tab = tabs[i];
                 if (this.isHoveringTab(tab, i, (int)mouseX, (int)mouseY)) {
@@ -576,12 +497,27 @@ public class SkillScreen extends Screen {
         System.out.println("Clicked skill: " + skill.getId());
         
         // Example: Spend a skill point if the skill is unlocked
-        if (PlayerData.getSkillLevel(player, skill.getId()) < skill.getMaxLevel()) {
-            System.out.println("Spending skill point on: " + skill.getId());
+        // if (PlayerData.getSkillLevel(player, skill.getId()) < skill.getMaxLevel()) {
+        //     System.out.println("Spending skill point on: " + skill.getId());
 
-            PlayerData.spendSkillPoint(player, 1, skill.getId());
+        //     PlayerData.spendSkillPoint(player, 1, skill.getId());
+        // } else {
+        //     System.out.println("Skill is locked or at max level: " + skill.getId());
+        // }
+
+        this.selectedSkill = skill; // Set selected skill for potential further actions
+    }
+    
+    // handle key presses
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        if(!this.selectedTab.handleKeyPress(keyCode, scanCode, modifiers, selectedSkill)) {
+            // Handle other keys if needed
+            // For example, you could handle skill navigation or other actions here
+            
+            return super.keyReleased(keyCode, scanCode, modifiers);
         } else {
-            System.out.println("Skill is locked or at max level: " + skill.getId());
+            return true; // Key was handled by the tab
         }
     }
 }

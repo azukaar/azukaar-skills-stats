@@ -73,6 +73,7 @@ public class SkillEffect {
                 // Check data parameters
                 ScalingData scalingData = effect.getData().get(parameter);
                 if (scalingData != null) {
+                    System.out.println("Calculating with " + scalingData.getBase() + " and " + skillLevel);
                     return scalingData.calculateValue(scalingData.getBase(), skillLevel);
                 }
             }
@@ -103,6 +104,9 @@ public class SkillEffect {
         
         @Expose @SerializedName("data")
         private Map<String, ScalingData> data;
+
+        @Expose @SerializedName("description")
+        private String description;
         
         // Cooldown removed - now handled at skill level
 
@@ -241,6 +245,7 @@ public class SkillEffect {
         public String getType() { return type; }
         public String getActiveEffectId() { return activeEffectId; }
         public Map<String, ScalingData> getData() { return data != null ? new HashMap<>(data) : new HashMap<>(); }
+        public String getDescription() { return description; }
         // getCooldown() method removed
     }
 }

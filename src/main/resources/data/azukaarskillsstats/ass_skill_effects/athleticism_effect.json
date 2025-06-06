@@ -3,6 +3,7 @@
   "effects": [
     {
       "type": "attribute_modifier",
+      "description": "Movement Speed",
       "attribute": "minecraft:generic.movement_speed",
       "value": 0.005,
       "operation": "add_value",

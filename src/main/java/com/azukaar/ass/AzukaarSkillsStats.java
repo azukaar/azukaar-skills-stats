@@ -7,6 +7,7 @@ import com.azukaar.ass.capabilities.IPlayerSkills;
 import com.azukaar.ass.capabilities.PlayerSkillsProvider;
 import com.azukaar.ass.client.ExpertiseParticleHandler;
 import com.azukaar.ass.client.GUIClientModEvents;
+import com.azukaar.ass.client.KeybindRegistry;
 import com.azukaar.ass.client.particles.OrbParticle;
 import com.azukaar.ass.client.particles.OrbParticleOptions;
 import com.mojang.logging.LogUtils;
@@ -244,7 +245,9 @@ public class AzukaarSkillsStats
         {
             NeoForge.EVENT_BUS.register(ExpertiseParticleHandler.class);
             NeoForge.EVENT_BUS.register(GUIClientModEvents.class);
-            
+                        
+            KeybindRegistry.getInstance().init();
+
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());

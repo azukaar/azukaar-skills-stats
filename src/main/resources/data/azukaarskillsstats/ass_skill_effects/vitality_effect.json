@@ -1,5 +1,6 @@
 {
   "skill": "azukaarskillsstats:vitality",
+      "description": "Max Health",
   "effects": [
     {
       "type": "attribute_modifier",

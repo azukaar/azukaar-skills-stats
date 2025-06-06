@@ -4,6 +4,7 @@
     {
       "type": "attribute_modifier",
       "attribute": "azukaarskillsstats:hunger_efficiency",
+      "description": "Hunger Efficiency",
       "value": 0.025,
       "operation": "add_value",
       "scaling": {
