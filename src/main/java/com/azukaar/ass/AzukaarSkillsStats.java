@@ -163,6 +163,7 @@ public class AzukaarSkillsStats
         
         NeoForge.EVENT_BUS.register(ModEvents.class);
 
+        BuiltinActiveEffects.registerAll();
 
         // // Debug values
         // System.out.println("Level from 150 XP: " + PlayerPath.getLevelFromXp(150));

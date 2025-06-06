@@ -7,10 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 
-
-// Modified Skill class for direct JSON serialization
 public class Skill {
     @Expose @SerializedName("id")
     private String id;
@@ -29,6 +26,9 @@ public class Skill {
     
     @Expose @SerializedName("skill_tree")
     private String skillTree;
+    
+    @Expose @SerializedName("cooldown")
+    private ScalingData cooldown;
     
     private Component displayName;
     private final List<Skill> prerequisites;
@@ -67,9 +67,27 @@ public class Skill {
     public List<Skill> getPrerequisites() { return prerequisites; }
     public List<Skill> getChildren() { return children; }
     public String getSkillTree() { return skillTree; }
+    public ScalingData getCooldown() { return cooldown; }
     
     public void addPrerequisite(Skill skill) {
         prerequisites.add(skill);
         skill.children.add(this);
+    }
+    
+    /**
+     * Calculate the effective cooldown for this skill at the given level
+     */
+    public int getEffectiveCooldown(int skillLevel) {
+        if (cooldown == null) return 0; // No cooldown means instant reuse
+        
+        double cooldownValue = cooldown.calculateValue(cooldown.getBase(), skillLevel);
+        return Math.max(1, (int) cooldownValue);
+    }
+    
+    /**
+     * Check if this skill has a cooldown defined
+     */
+    public boolean hasCooldown() {
+        return cooldown != null;
     }
 }

@@ -30,7 +30,7 @@ public class ScalingData {
                 // Only applies if skill level meets threshold
                 return skillLevel >= multiplier ? baseValue : 0;
             default:
-                return baseValue + ((skillLevel - 1) * multiplier);
+                return baseValue;
         }
     }
     

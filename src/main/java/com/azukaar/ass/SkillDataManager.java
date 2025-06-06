@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.types.DependencyData;
@@ -286,5 +287,16 @@ public class SkillDataManager implements PreparableReloadListener {
     public boolean hasEffects(String skillId) {
         SkillEffect skillEffect = skillEffects.get(skillId);
         return skillEffect != null && skillEffect.getEffects() != null && !skillEffect.getEffects().isEmpty();
+    }
+    
+    public Collection<String> getActivatableSkills() {
+        return skillEffects.entrySet().stream()
+            .filter(entry -> {
+                SkillEffect skillEffect = entry.getValue();
+                return skillEffect.getEffects().stream()
+                    .anyMatch(effect -> "active".equals(effect.getType()));
+            })
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
     }
 }

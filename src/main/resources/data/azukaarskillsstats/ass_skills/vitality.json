@@ -4,7 +4,7 @@
   "description": "Increases your maximum health",
   "icon": {
     "type": "item",
-    "item": "minecraft:golden_apple"
+    "item": "minecraft:apple"
   },
   "position": {
     "x": 38.97,

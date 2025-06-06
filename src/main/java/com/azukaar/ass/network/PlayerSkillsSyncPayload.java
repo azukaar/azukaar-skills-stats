@@ -14,7 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 public record PlayerSkillsSyncPayload(
         Map<String, Double> experienceData, 
         int skillPoints, 
-        Map<String, Integer> skillsData
+        Map<String, Integer> skillsData,
+        Map<Integer, String> activeSkillSlots, 
+        Map<String, Long> skillCooldowns        
 ) implements CustomPacketPayload {
     
     public static final Type<PlayerSkillsSyncPayload> TYPE = 
@@ -40,6 +42,20 @@ public record PlayerSkillsSyncPayload(
             buf.writeUtf(entry.getKey());
             buf.writeInt(entry.getValue());
         }
+        
+        // Write active skill slots
+        buf.writeInt(payload.activeSkillSlots.size());
+        for (Map.Entry<Integer, String> entry : payload.activeSkillSlots.entrySet()) {
+            buf.writeInt(entry.getKey());   // slot index
+            buf.writeUtf(entry.getValue()); // skill id
+        }
+        
+        // Write skill cooldowns
+        buf.writeInt(payload.skillCooldowns.size());
+        for (Map.Entry<String, Long> entry : payload.skillCooldowns.entrySet()) {
+            buf.writeUtf(entry.getKey());   // skill id
+            buf.writeLong(entry.getValue()); // cooldown end time
+        }
     }
 
     private static PlayerSkillsSyncPayload read(RegistryFriendlyByteBuf buf) {
@@ -64,7 +80,25 @@ public record PlayerSkillsSyncPayload(
             skillsData.put(key, value);
         }
         
-        return new PlayerSkillsSyncPayload(experienceData, skillPoints, skillsData);
+        // Read active skill slots
+        int slotsSize = buf.readInt();
+        Map<Integer, String> activeSkillSlots = new HashMap<>();
+        for (int i = 0; i < slotsSize; i++) {
+            int slotIndex = buf.readInt();
+            String skillId = buf.readUtf();
+            activeSkillSlots.put(slotIndex, skillId);
+        }
+        
+        // Read skill cooldowns
+        int cooldownsSize = buf.readInt();
+        Map<String, Long> skillCooldowns = new HashMap<>();
+        for (int i = 0; i < cooldownsSize; i++) {
+            String skillId = buf.readUtf();
+            long cooldownEnd = buf.readLong();
+            skillCooldowns.put(skillId, cooldownEnd);
+        }
+        
+        return new PlayerSkillsSyncPayload(experienceData, skillPoints, skillsData, activeSkillSlots, skillCooldowns);
     }
 
     @Override

@@ -39,6 +39,20 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
         }
         tag.put("skills", skillsTag);
         
+        // NEW: Serialize active skill slots
+        CompoundTag slotsTag = new CompoundTag();
+        for (Map.Entry<Integer, String> entry : skills.getAllActiveSkillSlots().entrySet()) {
+            slotsTag.putString(String.valueOf(entry.getKey()), entry.getValue());
+        }
+        tag.put("activeSkillSlots", slotsTag);
+        
+        // NEW: Serialize cooldowns
+        CompoundTag cooldownsTag = new CompoundTag();
+        for (Map.Entry<String, Long> entry : skills.getAllSkillCooldowns().entrySet()) {
+            cooldownsTag.putLong(entry.getKey(), entry.getValue());
+        }
+        tag.put("skillCooldowns", cooldownsTag);
+        
         return tag;
     }
 
@@ -56,7 +70,8 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
             // Legacy support: if no "experience" tag, read directly from root
             Map<String, Double> experience = new HashMap<>();
             for (String key : tag.getAllKeys()) {
-                if (!key.equals("skillPoints") && !key.equals("skills")) {
+                if (!key.equals("skillPoints") && !key.equals("skills") && 
+                    !key.equals("activeSkillSlots") && !key.equals("skillCooldowns")) {
                     experience.put(key, tag.getDouble(key));
                 }
             }
@@ -77,21 +92,52 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
             }
             skills.setAllSkills(skillsMap);
         }
+        
+        // NEW: Deserialize active skill slots
+        if (tag.contains("activeSkillSlots")) {
+            CompoundTag slotsTag = tag.getCompound("activeSkillSlots");
+            for (String key : slotsTag.getAllKeys()) {
+                try {
+                    int slotIndex = Integer.parseInt(key);
+                    String skillId = slotsTag.getString(key);
+                    skills.setActiveSkillSlot(slotIndex, skillId);
+                } catch (NumberFormatException e) {
+                    // Skip invalid entries
+                }
+            }
+        }
+        
+        // NEW: Deserialize cooldowns
+        if (tag.contains("skillCooldowns")) {
+            CompoundTag cooldownsTag = tag.getCompound("skillCooldowns");
+            for (String skillId : cooldownsTag.getAllKeys()) {
+                long cooldownEnd = cooldownsTag.getLong(skillId);
+                skills.setSkillCooldown(skillId, cooldownEnd);
+            }
+        }
     }
 
     // method to sync data to client
     public void syncToClient(ServerPlayer player) {
-        var payload = new PlayerSkillsSyncPayload(skills.getAllExperience(),
-                                                  skills.getSkillPoints(),
-                                                  skills.getAllSkills());
+        var payload = new PlayerSkillsSyncPayload(
+            skills.getAllExperience(),
+            skills.getSkillPoints(),
+            skills.getAllSkills(),
+            skills.getAllActiveSkillSlots(),    // NEW
+            skills.getAllSkillCooldowns()       // NEW
+        );
         PacketDistributor.sendToPlayer(player, payload);
     }
 
     // method to sync to all players tracking an entity
     public void syncToTrackingPlayers(ServerPlayer player) {
-        var payload = new PlayerSkillsSyncPayload(skills.getAllExperience(),
-                                                  skills.getSkillPoints(),
-                                                  skills.getAllSkills());
+        var payload = new PlayerSkillsSyncPayload(
+            skills.getAllExperience(),
+            skills.getSkillPoints(),
+            skills.getAllSkills(),
+            skills.getAllActiveSkillSlots(),    // NEW
+            skills.getAllSkillCooldowns()       // NEW
+        );
         PacketDistributor.sendToPlayersTrackingEntity(player, payload);
     }
 }

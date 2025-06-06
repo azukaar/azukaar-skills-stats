@@ -11,6 +11,9 @@ public class PlayerSkills implements IPlayerSkills {
     private Map<String, Double> experience = new HashMap<>();
     private int skillPoints = 0;
     private Map<String, Integer> skills = new HashMap<>();
+    
+    private Map<Integer, String> activeSkillSlots = new HashMap<>();
+    private Map<String, Long> skillCooldowns = new HashMap<>();
 
     @Override
     public double getExperience(String pathName) {
@@ -108,5 +111,55 @@ public class PlayerSkills implements IPlayerSkills {
     @Override
     public void setAllSkills(Map<String, Integer> skills) {
         this.skills = new HashMap<>(skills);
+    }
+    
+    @Override
+    public String getActiveSkillInSlot(int slotIndex) {
+        return activeSkillSlots.get(slotIndex);
+    }
+    
+    @Override
+    public void setActiveSkillSlot(int slotIndex, String skillId) {
+        if (skillId == null) {
+            activeSkillSlots.remove(slotIndex);
+        } else {
+            activeSkillSlots.put(slotIndex, skillId);
+        }
+    }
+    
+    @Override
+    public Map<Integer, String> getAllActiveSkillSlots() {
+        return new HashMap<>(activeSkillSlots);
+    }
+    
+    @Override
+    public Long getSkillCooldown(String skillId) {
+        return skillCooldowns.get(skillId);
+    }
+    
+    @Override
+    public void setSkillCooldown(String skillId, long cooldownEndTime) {
+        skillCooldowns.put(skillId, cooldownEndTime);
+    }
+    
+    @Override
+    public Map<String, Long> getAllSkillCooldowns() {
+        return new HashMap<>(skillCooldowns);
+    }
+    
+    @Override
+    public boolean isSkillOnCooldown(String skillId, long currentTime) {
+        Long cooldownEnd = skillCooldowns.get(skillId);
+        System.out.println("Checking cooldown for skill: " + skillId + ", current time: " + currentTime + ", cooldown end: " + cooldownEnd);
+        return cooldownEnd != null && currentTime < cooldownEnd;
+    }
+    
+    @Override
+    public int getRemainingCooldown(String skillId, long currentTime) {
+        Long cooldownEnd = skillCooldowns.get(skillId);
+        if (cooldownEnd == null || currentTime >= cooldownEnd) {
+            return 0;
+        }
+        return (int)(cooldownEnd - currentTime);
     }
 }

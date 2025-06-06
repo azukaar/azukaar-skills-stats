@@ -1,8 +1,11 @@
 package com.azukaar.ass.types;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.azukaar.ass.CustomEffectHandler;
+import com.azukaar.ass.api.PlayerData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import net.minecraft.world.entity.player.Player;
@@ -50,6 +53,34 @@ public class SkillEffect {
         }
     }
     
+    /**
+     * Get current value of a skill parameter based on player's skill level
+     * Note: Cooldown is no longer handled here - it's moved to the Skill level
+     */
+    public static double getSkillParameter(Player player, String skillId, String parameter) {
+        // Get the skill effect data
+        var skillDataManager = com.azukaar.ass.SkillDataManager.INSTANCE;
+        SkillEffect skillEffect = skillDataManager.getSkillEffects(skillId);
+        if (skillEffect == null) return 0.0;
+        
+        // Get player's current skill level
+        int skillLevel = PlayerData.getSkillLevel(player, skillId);
+        if (skillLevel <= 0) return 0.0;
+        
+        // Find the active effect and calculate the parameter value
+        for (Effect effect : skillEffect.getEffects()) {
+            if ("active".equals(effect.getType())) {
+                // Check data parameters
+                ScalingData scalingData = effect.getData().get(parameter);
+                if (scalingData != null) {
+                    return scalingData.calculateValue(scalingData.getBase(), skillLevel);
+                }
+            }
+        }
+        
+        return 0.0;
+    }
+    
     public static class Effect {
         @Expose @SerializedName("type")
         private String type;
@@ -65,23 +96,34 @@ public class SkillEffect {
         
         @Expose @SerializedName("scaling")
         private ScalingData scaling;
+            
+        // For active effects
+        @Expose @SerializedName("active_effect")
+        private String activeEffectId;
         
-        // Transient fields for resolved data
+        @Expose @SerializedName("data")
+        private Map<String, ScalingData> data;
+        
+        // Cooldown removed - now handled at skill level
+
+        // Transient fields for resolved data (only for attribute modifiers)
         private transient net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> resolvedAttribute;
         private transient net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation resolvedOperation;
         private transient String parentSkillId; // To track which skill this effect belongs to
-        
+
         public Effect() {
             // Default scaling if not specified
             this.scaling = new ScalingData();
+            this.data = new HashMap<>();
         }
         
         public void postDeserialize() {
             if ("attribute_modifier".equals(type)) {
                 resolveAttributeModifier();
             }
+            // Active effects don't need any special setup
         }
-        
+
         private void resolveAttributeModifier() {
             // Resolve attribute
             net.minecraft.resources.ResourceLocation attrLoc = net.minecraft.resources.ResourceLocation.parse(attribute);
@@ -114,8 +156,12 @@ public class SkillEffect {
             if ("attribute_modifier".equals(type)) {
                 System.out.println("Applying effect: " + type + " for skill: " + parentSkillId + " at level: " + skillLevel);
                 applyAttributeModifier(player, skillLevel);
+            } else if ("active".equals(type)) {
+                System.out.println("Registered active effect: " + type + " for skill: " + parentSkillId + " at level: " + skillLevel);
+                // Active effects don't need to "apply" anything - they're just data definitions
+                // The values are calculated on-demand when skills are used
             } else if ("custom_attribute_modifier".equals(type)) {
-                System.out.println("Applying CUSTOM  effect: " + type + " for skill: " + parentSkillId + " at level: " + skillLevel);
+                System.out.println("Applying CUSTOM effect: " + type + " for skill: " + parentSkillId + " at level: " + skillLevel);
                 // Delegate to custom effect handler
                 CustomEffectHandler.applyCustomEffect(player, attribute, this, skillLevel);
             }
@@ -124,12 +170,15 @@ public class SkillEffect {
         public void remove(Player player) {
             if ("attribute_modifier".equals(type)) {
                 removeAttributeModifier(player);
+            } else if ("active".equals(type)) {
+                // Active effects don't need cleanup - they're just data
+                System.out.println("Unregistered active effect for skill: " + parentSkillId);
             } else if ("custom_attribute_modifier".equals(type)) {
                 // Delegate to custom effect handler
                 CustomEffectHandler.removeCustomEffect(player, attribute, this);
             }
         }
-        
+
         private void applyAttributeModifier(Player player, int skillLevel) {
             if (resolvedAttribute == null) {
                 postDeserialize(); // Try to resolve if not already done
@@ -152,7 +201,7 @@ public class SkillEffect {
                 " operation: " + resolvedOperation + 
                 " for skill: " + parentSkillId);
             
-            // Create unique modifier ID based on skill and attribute - NEEDS SKILL ID
+            // Create unique modifier ID based on skill and attribute
             net.minecraft.resources.ResourceLocation modifierId = getModifierId();
             
             var modifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
@@ -177,17 +226,21 @@ public class SkillEffect {
         public void setParentSkillId(String skillId) {
             this.parentSkillId = skillId;
         }
-        
+                
         private net.minecraft.resources.ResourceLocation getModifierId() {
             return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(
                 "azukaarskillsstats", 
                 parentSkillId.replace(":", "_") + "_" + attribute.replace(":", "_")
             );
         }
+
         public String getAttribute() { return attribute; }
         public double getValue() { return value; }
         public String getOperation() { return operation; }
         public ScalingData getScaling() { return scaling; }
         public String getType() { return type; }
+        public String getActiveEffectId() { return activeEffectId; }
+        public Map<String, ScalingData> getData() { return data != null ? new HashMap<>(data) : new HashMap<>(); }
+        // getCooldown() method removed
     }
 }

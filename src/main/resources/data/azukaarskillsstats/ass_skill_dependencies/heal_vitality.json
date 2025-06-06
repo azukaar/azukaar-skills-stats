@@ -1,0 +1,6 @@
+{
+  "skill": "azukaarskillsstats:heal",
+  "prerequisites": [
+    "azukaarskillsstats:vitality"
+  ]
+}

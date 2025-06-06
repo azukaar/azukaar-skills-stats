@@ -68,4 +68,18 @@ public interface IPlayerSkills {
     void setAllSkills(Map<String, Integer> skills);
     void spendSkillPoints(int skillPoints, String skill);
 
+    
+    // Active skill slot management
+    String getActiveSkillInSlot(int slotIndex);
+    void setActiveSkillSlot(int slotIndex, String skillId);
+    Map<Integer, String> getAllActiveSkillSlots();
+    
+    // Cooldown management  
+    Long getSkillCooldown(String skillId);
+    void setSkillCooldown(String skillId, long cooldownEndTime);
+    Map<String, Long> getAllSkillCooldowns();
+    
+    // Utility methods
+    boolean isSkillOnCooldown(String skillId, long currentTime);
+    int getRemainingCooldown(String skillId, long currentTime);
 }

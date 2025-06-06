@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:heal",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:heal"
+    }
+  ]
+}
