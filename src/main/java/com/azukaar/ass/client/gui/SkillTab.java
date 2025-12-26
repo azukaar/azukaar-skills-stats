@@ -1,5 +1,6 @@
 package com.azukaar.ass.client.gui;
 
+import java.util.List;
 import java.util.Map;
 
 import com.azukaar.ass.SkillDataManager;
@@ -217,10 +218,14 @@ public class SkillTab {
         guiGraphics.drawString(font, levelText, contentStartX, currentY, levelColor, false);
         currentY += lineHeight + 4;
         
-        // Show description if available
+        // Show description if available (with text wrapping)
         if(selectedSkill.getDescription() != null && !"".equals(selectedSkill.getDescription())) {
-            guiGraphics.drawString(font, selectedSkill.getDescription(), contentStartX, currentY, 0xCCCCCC, false);
-            currentY += lineHeight + 4;
+            List<String> descLines = Utils.wrapText(selectedSkill.getDescription(), 30);
+            for (String line : descLines) {
+                guiGraphics.drawString(font, line, contentStartX, currentY, 0xCCCCCC, false);
+                currentY += lineHeight;
+            }
+            currentY += 4;
         }
         
         // Render cooldown information if applicable
@@ -277,13 +282,21 @@ public class SkillTab {
                         
                         effectColor = 0xFF8800;
                     } else if ("custom_attribute_modifier".equals(effect.getType())) {
-                        effectText = "Special Effect: " + effect.getAttribute();
+                        if (effect.getDescription() != null && !"".equals(effect.getDescription())) {
+                            effectText = effect.getDescription();
+                        } else {
+                            effectText = Utils.toDisplayString(effect.getAttribute());
+                        }
                         effectColor = 0x8800FF;
                     }
                     
                     if (!effectText.isEmpty() && currentY + lineHeight < modalY + modalHeight - 10) {
-                        guiGraphics.drawString(font, "  " + effectText, contentStartX, currentY, effectColor, false);
-                        currentY += lineHeight;
+                        // Wrap effect text
+                        List<String> wrappedEffectText = Utils.wrapText(effectText, 28);
+                        for (String line : wrappedEffectText) {
+                            guiGraphics.drawString(font, "  " + line, contentStartX, currentY, effectColor, false);
+                            currentY += lineHeight;
+                        }
 
                         if ("active".equals(effect.getType())) {
                             // display all the "data" lines of the active effect

@@ -7,9 +7,9 @@ The Scholar tree focuses on knowledge-based abilities including enchantment mani
 
 ## **Core Entry Skills** *(No Aspect Requirements)*
 
-### **Student** (1sp, max 3)
-- **Effect:** +10% XP gain per level
-- **Max Benefit:** 30% increased XP at max level
+### **Student** (1sp, max 5)
+- **Effect:** Keep +20% XP on death per level
+- **Max Benefit:** 50% increased XP at max level
 - **Purpose:** Foundation for enchanting branch and overall progression acceleration
 
 ### **Life Sense** (1sp, max 3) 

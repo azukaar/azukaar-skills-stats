@@ -7,8 +7,8 @@
     "item": "minecraft:cooked_beef"
   },
   "position": {
-    "x": 0.0,
-    "y": 45.0
+    "x": 31.82,
+    "y": 31.82
   },
   "max_level": 20,
   "skill_tree": "azukaarskillsstats:stats"

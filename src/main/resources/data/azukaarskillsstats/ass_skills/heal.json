@@ -10,8 +10,8 @@
     "base": 100
   },
   "position": {
-    "x": 77.94,
-    "y": 45
+    "x": 90.0,
+    "y": 0.0
   },
   "max_level": 6,
   "skill_tree": "azukaarskillsstats:stats"

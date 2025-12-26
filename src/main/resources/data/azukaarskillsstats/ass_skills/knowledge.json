@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:knowledge",
+  "display_name": "Knowledge",
+  "description": "Increases Minecraft experience gained from picking up XP orbs",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:book"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 45.0
+  },
+  "max_level": 10,
+  "skill_tree": "azukaarskillsstats:stats"
+}

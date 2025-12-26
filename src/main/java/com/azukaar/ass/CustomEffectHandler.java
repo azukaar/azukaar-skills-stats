@@ -20,7 +20,9 @@ public class CustomEffectHandler {
             case "azukaarskillsstats:mining_speed":
                 applyMiningSpeed(player, effect, skillLevel);
                 break;
-            // Add more custom effects here
+            case "azukaarskillsstats:xp_bonus":
+                applyXpBonus(player, effect, skillLevel);
+                break;
             default:
                 // Unknown effect type - log warning
                 com.azukaar.ass.AzukaarSkillsStats.LOGGER.warn("Unknown custom effect type: {}", effectType);
@@ -38,7 +40,9 @@ public class CustomEffectHandler {
             case "azukaarskillsstats:mining_speed":
                 removeMiningSpeed(player, effect);
                 break;
-            // Add more custom effects here
+            case "azukaarskillsstats:xp_bonus":
+                removeXpBonus(player, effect);
+                break;
         }
     }
     
@@ -85,5 +89,27 @@ public class CustomEffectHandler {
     
     private static void removeMiningSpeed(Player player, SkillEffect.Effect effect) {
         // No cleanup needed for mining speed
+    }
+
+    // === XP Bonus ===
+
+    private static void applyXpBonus(Player player, SkillEffect.Effect effect, int skillLevel) {
+        // This effect doesn't need active application - it's checked during XP gain
+        // The effect is handled in PlayerData.addExperienceServerSide()
+    }
+
+    private static void removeXpBonus(Player player, SkillEffect.Effect effect) {
+        // No cleanup needed for XP bonus
+    }
+
+    /**
+     * Get the Minecraft XP bonus multiplier for a player based on their Knowledge skill
+     */
+    public static double getMinecraftXpBonusMultiplier(Player player) {
+        int knowledgeLevel = PlayerData.getSkillLevel(player, "azukaarskillsstats:knowledge");
+        if (knowledgeLevel <= 0) return 1.0;
+
+        // 5% per level
+        return 1.0 + (knowledgeLevel * 0.05);
     }
 }

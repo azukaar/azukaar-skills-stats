@@ -19,6 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -194,5 +195,21 @@ public class ModEvents {
         // Clean up tracking when player leaves
         previousHungerLevels.remove(event.getEntity().getUUID());
         realHungerLevels.remove(event.getEntity().getUUID());
+    }
+
+    @SubscribeEvent
+    public static void onXpPickup(PlayerXpEvent.PickupXp event) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide()) return;
+
+        double multiplier = CustomEffectHandler.getMinecraftXpBonusMultiplier(player);
+        if (multiplier > 1.0) {
+            // Add bonus XP directly to the player
+            int originalXp = event.getOrb().getValue();
+            int bonusXp = (int) Math.round(originalXp * (multiplier - 1.0));
+            if (bonusXp > 0) {
+                player.giveExperiencePoints(bonusXp);
+            }
+        }
     }
 }

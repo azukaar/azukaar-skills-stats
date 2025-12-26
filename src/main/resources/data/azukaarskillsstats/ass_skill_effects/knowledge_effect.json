@@ -1,0 +1,16 @@
+{
+  "skill": "azukaarskillsstats:knowledge",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:xp_bonus",
+      "value": 0.05,
+      "operation": "add_value",
+      "scaling": {
+        "type": "per_level",
+        "multiplier": 0.05
+      },
+      "description": "+5% Minecraft XP gain per level"
+    }
+  ]
+}
