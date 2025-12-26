@@ -7,10 +7,10 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 
 ## **Core Entry Skills** *(No Aspect Requirements)*
 
-### **Dash** (2sp, max 3)
-- **Level 1:** 2 blocks forward, 10sec cooldown, 0.5sec invulnerability
-- **Level 2:** 3 blocks forward, 5sec cooldown, 0.5sec invulnerability  
-- **Level 3:** 4 blocks forward, 2sec cooldown, 0.5sec invulnerability
+### **Leap** (2sp, max 3)
+- **Level 1:** 3 blocks upward, 10sec cooldown, 0.5sec invulnerability
+- **Level 2:** 4 blocks upward, 5sec cooldown, 0.5sec invulnerability  
+- **Level 3:** 5 blocks upward, 2sec cooldown, 0.5sec invulnerability
 - **Purpose:** Foundation mobility with brief damage immunity
 
 ### **Fleet Footed** (1sp, max 3)
@@ -28,7 +28,7 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 ## **Teleportation Branch**
 
 ### **Recall Home** (3sp) 🔒
-- **Prerequisites:** Dash level 2 + **Explorer Aspect 30**
+- **Prerequisites:** Leap level 2 + **Explorer Aspect 30**
 - **Effect:** Teleport to your bed/spawn point (5min cooldown)
 - **Vulnerability:** Take +75% damage for 60 seconds after teleport
 - **Purpose:** Strategic repositioning with risk
@@ -121,8 +121,8 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 - **Trade-off:** Improved status resistance
 
 ### **Momentum** (3sp)
-- **Prerequisites:** Enhanced Resistance + Dash level 3
-- **Effect:** Each consecutive dash increases next dash distance by 1 block (stacks 3 times, resets if you stop moving)
+- **Prerequisites:** Enhanced Resistance + Leap level 3
+- **Effect:** Each consecutive Leap increases next Leap distance by 1 block (stacks 3 times, resets if you stop moving)
 - **Scaling:** Accelerating movement capability
 
 ### **Emergency Landing** (5sp) 🔒
@@ -166,7 +166,7 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 4. **Engineer Shield synergy** → Eliminate vulnerability windows completely
 
 ### **Mobility Specialist:**
-1. **Dash** (max) → 4-block dash every 2 seconds with invulnerability
+1. **Leap** (max) → 4-block Leap every 2 seconds with invulnerability
 2. **Parkour** + **Climber** → Double-jump and wall climbing
 3. **Grappling Hook** + **Advanced Grappling** → 40-block range entity grappling
 4. **Fleet Footed** (max) → +24% base movement speed
@@ -174,7 +174,7 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 ### **Status Effect Counter:**
 1. **Slowness Resistance** + **Enhanced Resistance** → 75% slowness reduction
 2. **Engineer Power Core synergy** → Counter Engineer slowness penalties
-3. **Momentum** → Stacking dash distance bonuses
+3. **Momentum** → Stacking Leap distance bonuses
 4. **Emergency Landing** → Automatic fall damage negation
 
 ### **Utility Nomad:**
@@ -187,7 +187,7 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 1. **Emergency Escape** → Auto-teleport at 25% health with +100% vulnerability
 2. **Escape Route** → Return to danger once per escape
 3. **Emergency Landing** → Auto-negate fall damage on cooldown
-4. **Dash invulnerability** → 0.5-second damage immunity every 2 seconds
+4. **Leap invulnerability** → 0.5-second damage immunity every 2 seconds
 
 ## **Vulnerability Management**
 
@@ -198,7 +198,7 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 
 ### **Mitigation Strategies:**
 - **Engineer Shield Protection:** Powered Shield eliminates vulnerability completely
-- **Dash Invulnerability:** 0.5-second immunity windows for damage dodging
+- **Leap Invulnerability:** 0.5-second immunity windows for damage dodging
 - **Strategic Timing:** Plan teleports around team support availability
 - **Escape Route Planning:** Use return portals for safe recovery operations
 
@@ -219,7 +219,7 @@ The Nomad tree focuses on enhanced mobility, teleportation abilities, portable u
 ## **Resource Economy**
 
 ### **Cooldown Management:**
-- **Dash:** 2-second cooldown at max level enables rapid repositioning
+- **Leap:** 2-second cooldown at max level enables rapid repositioning
 - **Portal Stones:** 3-minute cooldown between teleports
 - **Emergency Escape:** 15-minute cooldown for auto-survival
 - **Emergency Landing:** 2-minute cooldown for fall damage negation

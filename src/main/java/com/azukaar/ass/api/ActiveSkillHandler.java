@@ -24,9 +24,9 @@ public class ActiveSkillHandler {
     public static boolean isActivatable(String skillId) {
         SkillEffect skillEffect = SkillDataManager.INSTANCE.getSkillEffects(skillId);
         if (skillEffect == null) return false;
-        
+
         return skillEffect.getEffects().stream()
-            .anyMatch(effect -> "active".equals(effect.getType()));
+            .anyMatch(effect -> "active".equals(effect.getType()) || "potion".equals(effect.getType()));
     }
     
     /**
@@ -86,10 +86,14 @@ public class ActiveSkillHandler {
         SkillEffect skillEffect = SkillDataManager.INSTANCE.getSkillEffects(skillId);
         int skillLevel = PlayerData.getSkillLevel(player, skillId);
         boolean anySucceeded = false;
-        
+
         for (SkillEffect.Effect effect : skillEffect.getEffects()) {
             if ("active".equals(effect.getType())) {
                 if (executeActiveEffect(player, skillId, skillLevel, effect)) {
+                    anySucceeded = true;
+                }
+            } else if ("potion".equals(effect.getType())) {
+                if (applyPotionEffect(player, effect, skillLevel)) {
                     anySucceeded = true;
                 }
             }
@@ -136,14 +140,46 @@ public class ActiveSkillHandler {
     
     private static EffectData createEffectDataFromAttributes(Player player, String skillId, SkillEffect.Effect effect) {
         Map<String, Object> currentData = new HashMap<>();
-        
+
         // Read current values using the parameter system
         for (Map.Entry<String, ScalingData> entry : effect.getData().entrySet()) {
             String dataKey = entry.getKey();
             double value = SkillEffect.getSkillParameter(player, skillId, dataKey);
             currentData.put(dataKey, value);
         }
-        
+
         return new EffectData(currentData);
+    }
+
+    private static boolean applyPotionEffect(Player player, SkillEffect.Effect effect, int skillLevel) {
+        String potionId = effect.getPotion();
+        if (potionId == null) return false;
+
+        try {
+            net.minecraft.resources.ResourceLocation potionLoc = net.minecraft.resources.ResourceLocation.parse(potionId);
+            var mobEffect = net.minecraft.core.registries.BuiltInRegistries.MOB_EFFECT.getHolder(potionLoc).orElse(null);
+
+            if (mobEffect == null) {
+                AzukaarSkillsStats.LOGGER.warn("Unknown potion effect: {}", potionId);
+                return false;
+            }
+
+            int duration = effect.getDuration(skillLevel);
+            int amplifier = effect.getAmplifier(skillLevel);
+
+            player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                mobEffect,
+                duration,
+                amplifier
+            ));
+
+            AzukaarSkillsStats.LOGGER.info("Applied potion {} (level {}) to player {} for {} ticks",
+                potionId, amplifier + 1, player.getName().getString(), duration);
+
+            return true;
+        } catch (Exception e) {
+            AzukaarSkillsStats.LOGGER.error("Failed to apply potion effect: {}", e.getMessage());
+            return false;
+        }
     }
 }

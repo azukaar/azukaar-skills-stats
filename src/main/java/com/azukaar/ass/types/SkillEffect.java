@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 public class SkillEffect {
     @Expose @SerializedName("skill")
     private String skillId;
-    
+
     @Expose @SerializedName("effects")
     private List<Effect> effects;
     
@@ -106,8 +106,16 @@ public class SkillEffect {
 
         @Expose @SerializedName("description")
         private String description;
-        
-        // Cooldown removed - now handled at skill level
+
+        // For potion effects
+        @Expose @SerializedName("potion")
+        private String potion;
+
+        @Expose @SerializedName("duration")
+        private ScalingData duration;
+
+        @Expose @SerializedName("amplifier")
+        private ScalingData amplifier;
 
         // Transient fields for resolved data (only for attribute modifiers)
         private transient net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> resolvedAttribute;
@@ -245,6 +253,18 @@ public class SkillEffect {
         public String getActiveEffectId() { return activeEffectId; }
         public Map<String, ScalingData> getData() { return data != null ? new HashMap<>(data) : new HashMap<>(); }
         public String getDescription() { return description; }
-        // getCooldown() method removed
+        public String getPotion() { return potion; }
+        public ScalingData getDurationScaling() { return duration; }
+        public ScalingData getAmplifierScaling() { return amplifier; }
+
+        public int getDuration(int skillLevel) {
+            if (duration == null) return 200; // default
+            return (int) duration.calculateValue(duration.getBase(), skillLevel);
+        }
+
+        public int getAmplifier(int skillLevel) {
+            if (amplifier == null) return 0; // default
+            return (int) amplifier.calculateValue(amplifier.getBase(), skillLevel);
+        }
     }
 }

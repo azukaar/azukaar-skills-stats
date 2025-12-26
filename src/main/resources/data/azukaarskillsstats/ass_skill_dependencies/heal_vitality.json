@@ -1,6 +1,9 @@
 {
   "skill": "azukaarskillsstats:heal",
   "prerequisites": [
-    "azukaarskillsstats:vitality"
+    {
+      "skill": "azukaarskillsstats:vitality",
+      "level": 3
+    }
   ]
 }

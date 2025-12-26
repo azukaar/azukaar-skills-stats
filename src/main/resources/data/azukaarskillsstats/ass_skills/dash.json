@@ -1,0 +1,20 @@
+{
+  "id": "azukaarskillsstats:dash",
+  "display_name": "Dash",
+  "description": "Quickly dash forward in the direction you're looking",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:feather"
+  },
+  "cooldown": {
+    "base": 200,
+    "type": "per_level",
+    "multiplier": -70
+  },
+  "position": {
+    "x": -63.64,
+    "y": 63.64
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:stats"
+}

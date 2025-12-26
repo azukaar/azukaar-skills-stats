@@ -1,5 +1,7 @@
 {
   "itemGroup.azukaarskillsstats": "Example Mod Tab",
   "block.azukaarskillsstats.example_block": "Example Block",
-  "item.azukaarskillsstats.example_item": "Example Item"
+  "item.azukaarskillsstats.example_item": "Example Item",
+  "effect.azukaarskillsstats.instinct": "Instinct",
+  "effect.azukaarskillsstats.instinct.description": "Increases critical hit chance"
 }

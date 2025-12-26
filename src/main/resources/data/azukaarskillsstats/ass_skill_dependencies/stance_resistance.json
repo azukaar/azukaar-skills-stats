@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:stance",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:resistance",
+      "level": 3
+    }
+  ]
+}

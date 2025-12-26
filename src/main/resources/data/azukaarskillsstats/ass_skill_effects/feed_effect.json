@@ -1,0 +1,22 @@
+{
+  "skill": "azukaarskillsstats:feed",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:feed",
+      "description": "Restore hunger",
+      "data": {
+        "hunger_restored": {
+          "base": 4,
+          "type": "per_level",
+          "multiplier": 2
+        },
+        "saturation_restored": {
+          "base": 2,
+          "type": "per_level",
+          "multiplier": 1
+        }
+      }
+    }
+  ]
+}

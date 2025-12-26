@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:feed",
+  "display_name": "Leftovers",
+  "description": "Survive on leftovers others would have discarded",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:bread"
+  },
+  "cooldown": {
+    "base": 120
+  },
+  "position": {
+    "x": 63.64,
+    "y": 63.64
+  },
+  "max_level": 6,
+  "skill_tree": "azukaarskillsstats:stats"
+}

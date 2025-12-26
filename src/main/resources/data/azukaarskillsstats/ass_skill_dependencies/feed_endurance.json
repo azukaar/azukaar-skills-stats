@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:feed",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:endurance",
+      "level": 3
+    }
+  ]
+}

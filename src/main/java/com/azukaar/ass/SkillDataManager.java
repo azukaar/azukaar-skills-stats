@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.types.DependencyData;
+import com.azukaar.ass.types.Prerequisite;
 import com.azukaar.ass.types.Skill;
 import com.azukaar.ass.types.SkillEffect;
 import com.azukaar.ass.types.SkillTree;
@@ -117,26 +118,27 @@ public class SkillDataManager implements PreparableReloadListener {
     }
     
     private void loadDependencies(ResourceManager resourceManager) {
-        Map<ResourceLocation, List<Resource>> dependencyResources = 
+        Map<ResourceLocation, List<Resource>> dependencyResources =
             resourceManager.listResourceStacks("ass_skill_dependencies", path -> path.getPath().endsWith(".json"));
-            
+
         for (Map.Entry<ResourceLocation, List<Resource>> entry : dependencyResources.entrySet()) {
             List<Resource> resources = entry.getValue();
-            
+
             if (!resources.isEmpty()) {
                 Resource resource = resources.get(resources.size() - 1);
-                
+
                 try (Reader reader = resource.openAsReader()) {
                     DependencyData dep = GSON.fromJson(reader, DependencyData.class);
-                    
+
                     Skill skill = findSkillById(dep.getSkill());
                     if (skill != null) {
-                        for (String prereqId : dep.getPrerequisites()) {
-                            Skill prereq = findSkillById(prereqId);
-                            if (prereq != null) {
+                        for (Prerequisite prereq : dep.getPrerequisites()) {
+                            Skill prereqSkill = findSkillById(prereq.getSkillId());
+                            if (prereqSkill != null) {
+                                prereq.setSkillRef(prereqSkill);
                                 skill.addPrerequisite(prereq);
                             } else {
-                                AzukaarSkillsStats.LOGGER.warn("Missing prerequisite skill: {} for {}", prereqId, dep.getSkill());
+                                AzukaarSkillsStats.LOGGER.warn("Missing prerequisite skill: {} for {}", prereq.getSkillId(), dep.getSkill());
                             }
                         }
                     } else {

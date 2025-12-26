@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:power",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:strength",
+      "level": 3
+    }
+  ]
+}

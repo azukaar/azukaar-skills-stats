@@ -34,7 +34,7 @@ public class Skill {
     private String description;
 
     private Component displayName;
-    private final List<Skill> prerequisites;
+    private final List<Prerequisite> prerequisites;
     private final List<Skill> children;
     
     public Skill(String id, String displayName, IconData iconData, PositionData position) {
@@ -67,15 +67,32 @@ public class Skill {
     public float getX() { return position.x; }
     public float getY() { return position.y; }
     public int getMaxLevel() { return maxLevel; }
-    public List<Skill> getPrerequisites() { return prerequisites; }
+    public List<Prerequisite> getPrerequisites() { return prerequisites; }
     public List<Skill> getChildren() { return children; }
     public String getSkillTree() { return skillTree; }
     public ScalingData getCooldown() { return cooldown; }
     public String getDescription() { return description; }
 
-    public void addPrerequisite(Skill skill) {
-        prerequisites.add(skill);
-        skill.children.add(this);
+    public void addPrerequisite(Prerequisite prereq) {
+        prerequisites.add(prereq);
+        if (prereq.getSkillRef() != null) {
+            prereq.getSkillRef().children.add(this);
+        }
+    }
+
+    /**
+     * Check if all prerequisites are met for a player
+     * @param getSkillLevel A function that returns the player's level in a skill
+     * @return true if all prerequisites are met
+     */
+    public boolean arePrerequisitesMet(java.util.function.Function<String, Integer> getSkillLevel) {
+        for (Prerequisite prereq : prerequisites) {
+            int playerLevel = getSkillLevel.apply(prereq.getSkillId());
+            if (playerLevel < prereq.getRequiredLevel()) {
+                return false;
+            }
+        }
+        return true;
     }
     
     /**

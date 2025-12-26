@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:quick_repair",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:mining",
+      "level": 5
+    }
+  ]
+}

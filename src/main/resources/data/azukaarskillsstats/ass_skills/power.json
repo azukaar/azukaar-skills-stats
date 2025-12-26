@@ -1,0 +1,20 @@
+{
+  "id": "azukaarskillsstats:power",
+  "display_name": "Power",
+  "description": "Activate to gain the Strength potion effect",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:blaze_powder"
+  },
+  "cooldown": {
+    "base": 3600,
+    "type": "flat",
+    "multiplier": 0
+  },
+  "position": {
+    "x": 0.0,
+    "y": -90.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:stats"
+}

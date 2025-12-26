@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -210,6 +211,28 @@ public class ModEvents {
             if (bonusXp > 0) {
                 player.giveExperiencePoints(bonusXp);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {
+        // Check if damage source is a player with Instinct effect
+        if (!(event.getSource().getEntity() instanceof Player attacker)) return;
+        if (attacker.level().isClientSide()) return;
+
+        // Check if player has Instinct effect
+        var instinctEffect = attacker.getEffect(ModMobEffects.INSTINCT);
+        if (instinctEffect == null) return;
+
+        // Get crit chance based on amplifier
+        double critChance = ModMobEffects.InstinctEffect.getCritChance(instinctEffect.getAmplifier());
+
+        // Roll for crit
+        if (attacker.getRandom().nextDouble() < critChance) {
+            // Apply crit damage (1.5x multiplier)
+            float newDamage = event.getAmount() * 1.5f;
+            event.setAmount(newDamage);
+            AzukaarSkillsStats.LOGGER.debug("Instinct crit! Damage increased to {}", newDamage);
         }
     }
 }

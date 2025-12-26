@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:meditate",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:knowledge",
+      "level": 3
+    }
+  ]
+}

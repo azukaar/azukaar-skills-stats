@@ -1,0 +1,20 @@
+{
+  "id": "azukaarskillsstats:instinct",
+  "display_name": "Instinct",
+  "description": "Activate to gain increased critical hit chance",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:feather"
+  },
+  "cooldown": {
+    "base": 3600,
+    "type": "flat",
+    "multiplier": 0
+  },
+  "position": {
+    "x": 63.64,
+    "y": -63.64
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:stats"
+}

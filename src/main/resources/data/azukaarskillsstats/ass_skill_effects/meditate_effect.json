@@ -1,0 +1,23 @@
+{
+  "skill": "azukaarskillsstats:meditate",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:meditate",
+      "description": "Gain Minecraft XP",
+      "data": {
+        "xp_gained": {
+          "base": 10,
+          "type": "per_level",
+          "multiplier": 5
+        }
+      }
+    },
+    {
+      "type": "potion",
+      "potion": "minecraft:slowness",
+      "duration": 200,
+      "amplifier": 0
+    }
+  ]
+}

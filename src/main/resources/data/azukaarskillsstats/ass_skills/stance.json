@@ -1,0 +1,20 @@
+{
+  "id": "azukaarskillsstats:stance",
+  "display_name": "Stance",
+  "description": "Activate to gain the Resistance potion effect",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:shield"
+  },
+  "cooldown": {
+    "base": 3600,
+    "type": "flat",
+    "multiplier": 0
+  },
+  "position": {
+    "x": -63.64,
+    "y": -63.64
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:stats"
+}

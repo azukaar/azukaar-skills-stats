@@ -96,7 +96,7 @@ public class SkillTab {
                 effectLines++;
                 
                 for (SkillEffect.Effect effect : skillEffect.getEffects()) {
-                    if ("active".equals(effect.getType())) {
+                    if ("active".equals(effect.getType()) || "potion".equals(effect.getType())) {
                         hasActiveEffects = true;
                     }
                     tempY += lineHeight;
@@ -142,9 +142,9 @@ public class SkillTab {
         
         // Render skill icon
         selectedSkill.getIconData().render(guiGraphics, contentStartX, currentY);
-        
+
         // Render skill name next to icon
-        guiGraphics.drawString(font, selectedSkill.getDisplayName(), 
+        guiGraphics.drawString(font, selectedSkill.getDisplayName(),
             contentStartX + 20, currentY + 4, 0xFFFFFF, false);
         
         currentY += 24;
@@ -240,7 +240,7 @@ public class SkillTab {
         try {
             SkillDataManager skillDataManager = SkillDataManager.INSTANCE;
             SkillEffect skillEffect = skillDataManager.getSkillEffects(selectedSkill.getId());
-            
+
             if (skillEffect != null && skillEffect.getEffects() != null && !skillEffect.getEffects().isEmpty()) {
                 guiGraphics.drawString(font, "Effects:", contentStartX, currentY, 0xCCCCCC, false);
                 currentY += lineHeight;
@@ -254,9 +254,6 @@ public class SkillTab {
                         double value = effect.getScaling().calculateValue(effect.getValue(), Math.max(1, currentLevel));
                         String operation = effect.getOperation();
                         String attribute = effect.getAttribute();
-
-                        System.out.println("Rendering effect: " + effect.getType() + " for skill: " + selectedSkill.getId());
-                        System.out.println("  Attribute: " + attribute + ", Value: " + value + ", Operation: " + operation + ", Level: " + currentLevel);
 
                         // Simplify attribute name for display
                         String displayAttribute = Utils.toDisplayString(attribute);
@@ -288,9 +285,17 @@ public class SkillTab {
                             effectText = Utils.toDisplayString(effect.getAttribute());
                         }
                         effectColor = 0x8800FF;
+                    } else if ("potion".equals(effect.getType())) {
+                        // Auto-generate description from potion data
+                        String potionName = Utils.toDisplayString(effect.getPotion());
+                        int durationSecs = effect.getDuration(Math.max(1, currentLevel)) / 20;
+                        int level = effect.getAmplifier(Math.max(1, currentLevel)) + 1;
+                        String levelStr = toRomanNumeral(level);
+                        effectText = potionName + " " + levelStr + " (" + durationSecs + "s)";
+                        effectColor = 0xFF88FF;
                     }
-                    
-                    if (!effectText.isEmpty() && currentY + lineHeight < modalY + modalHeight - 10) {
+
+                    if (!effectText.isEmpty() /*&& currentY + lineHeight < modalY + modalHeight - 10*/) {
                         // Wrap effect text
                         List<String> wrappedEffectText = Utils.wrapText(effectText, 28);
                         for (String line : wrappedEffectText) {
@@ -334,10 +339,13 @@ public class SkillTab {
         
         // Check if skill can be upgraded
         boolean canUpgrade = currentLevel < maxLevel;
+        boolean prerequisitesMet = selectedSkill.arePrerequisitesMet(
+            skillId -> PlayerData.getSkillLevel(player, skillId)
+        );
         int upgradeCost = 1;
         int availablePoints = PlayerData.getSkillPoints(player);
         boolean canAfford = availablePoints >= upgradeCost;
-        boolean buttonEnabled = canUpgrade && canAfford;
+        boolean buttonEnabled = canUpgrade && canAfford && prerequisitesMet;
         
         // Render upgrade button background
         int buttonBgColor = buttonEnabled ? 0xFF4CAF50 : 0xFF666666;
@@ -356,6 +364,9 @@ public class SkillTab {
         if (!canUpgrade) {
             buttonText = maxLevel == 1 ? "Unlocked" : "Max Level";
             buttonTextColor = 0xCCCCCC;
+        } else if (!prerequisitesMet) {
+            buttonText = "Locked";
+            buttonTextColor = 0xFFAAAA;
         } else if (!canAfford) {
             buttonText = "Need " + upgradeCost + " SP";
             buttonTextColor = 0xFFAAAA;
@@ -377,32 +388,36 @@ public class SkillTab {
         this.upgradeButtonVisible = true;
     }
     
-    protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, Player player, int leftPos, int topPos) {             
+    protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, Player player, int leftPos, int topPos) {
         // Render skill connections first (so they appear behind nodes)
-        renderSkillConnections(guiGraphics, getSkillTree(), leftPos, topPos);
-        
+        renderSkillConnections(guiGraphics, getSkillTree(), leftPos, topPos, player);
+
         // Render skill nodes
         renderSkillNodes(guiGraphics, getSkillTree(), mouseX, mouseY, font, player, leftPos, topPos);
     }
 
-    private void renderSkillConnections(GuiGraphics guiGraphics, SkillTree tree, int leftPos, int topPos) {
+    private void renderSkillConnections(GuiGraphics guiGraphics, SkillTree tree, int leftPos, int topPos, Player player) {
         for (Skill skill : tree.getAllSkills()) {
             for (Skill child : skill.getChildren()) {
-                renderConnection(guiGraphics, skill, child, leftPos, topPos);
+                renderConnection(guiGraphics, skill, child, leftPos, topPos, player);
             }
         }
     }
 
-    private void renderConnection(GuiGraphics guiGraphics, Skill from, Skill to, int leftPos, int topPos) {
+    private void renderConnection(GuiGraphics guiGraphics, Skill from, Skill to, int leftPos, int topPos, Player player) {
         int fromX = (int)from.getX() + (leftPos + SkillScreen.WINDOW_INSIDE_X) + (SkillScreen.SCREEN_WIDTH-SkillScreen.WINDOW_INSIDE_X) / 2;
         int fromY = (int)from.getY() + (topPos + SkillScreen.WINDOW_INSIDE_Y) + (SkillScreen.SCREEN_HEIGHT-SkillScreen.WINDOW_INSIDE_Y) / 2;
 
         int toX = (int)to.getX() + (leftPos + SkillScreen.WINDOW_INSIDE_X) + (SkillScreen.SCREEN_WIDTH-SkillScreen.WINDOW_INSIDE_X) / 2;
         int toY = (int)to.getY() + (topPos + SkillScreen.WINDOW_INSIDE_Y) + (SkillScreen.SCREEN_HEIGHT-SkillScreen.WINDOW_INSIDE_Y) / 2;
 
-        // Color based on unlock status
-        int color = 0xFF00FF00;
-        
+        // Color based on dependency fulfillment
+        // Gray = not fulfilled, Blue = fulfilled
+        boolean dependencyMet = to.arePrerequisitesMet(
+            skillId -> PlayerData.getSkillLevel(player, skillId)
+        );
+        int color = dependencyMet ? 0xFF4488FF : 0xFF666666;
+
         // Draw line connection
         drawLine(guiGraphics, fromX, fromY, toX, toY, color);
     }
@@ -447,20 +462,31 @@ public class SkillTab {
     private void renderSkillNode(GuiGraphics guiGraphics, Skill skill, Font font, Player player, int leftPos, int topPos) {
         int x = (int)skill.getX() + (leftPos + SkillScreen.WINDOW_INSIDE_X) + (SkillScreen.SCREEN_WIDTH-SkillScreen.WINDOW_INSIDE_X) / 2 - SkillScreen.SKILL_NODE_SIZE / 2;
         int y = (int)skill.getY() + (topPos + SkillScreen.WINDOW_INSIDE_Y) + (SkillScreen.SCREEN_HEIGHT-SkillScreen.WINDOW_INSIDE_Y) / 2 - SkillScreen.SKILL_NODE_SIZE / 2;
-        
+
+        int currentLevel = PlayerData.getSkillLevel(player, skill.getId());
+        boolean prerequisitesMet = skill.arePrerequisitesMet(
+            skillId -> PlayerData.getSkillLevel(player, skillId)
+        );
+
         // Background color based on skill state
         int backgroundColor = 0xFF333333;
-        if (PlayerData.getSkillLevel(player, skill.getId()) > 0) {
-            backgroundColor = PlayerData.getSkillLevel(player, skill.getId()) == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
-        } else {
-            backgroundColor = 0xFF333333;
+        if (currentLevel > 0) {
+            backgroundColor = currentLevel == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
         }
-        
+
         // Draw skill background
         guiGraphics.fill(x, y, x + SkillScreen.SKILL_NODE_SIZE, y + SkillScreen.SKILL_NODE_SIZE, backgroundColor);
-        
+
         // Draw border
-        int borderColor = PlayerData.getSkillLevel(player, skill.getId()) > 0 ? 0xFFFFFFFF : 0xFF666666;
+        // White = has points, Blue = prerequisites met (unlockable), Gray = locked
+        int borderColor;
+        if (currentLevel > 0) {
+            borderColor = 0xFFFFFFFF; // White - skill has points
+        } else if (prerequisitesMet) {
+            borderColor = 0xFF4488FF; // Blue - can be unlocked
+        } else {
+            borderColor = 0xFF666666; // Gray - locked
+        }
         guiGraphics.fill(x, y, x + SkillScreen.SKILL_NODE_SIZE, y + 1, borderColor); // Top
         guiGraphics.fill(x, y + SkillScreen.SKILL_NODE_SIZE - 1, x + SkillScreen.SKILL_NODE_SIZE, y + SkillScreen.SKILL_NODE_SIZE, borderColor); // Bottom
         guiGraphics.fill(x, y, x + 1, y + SkillScreen.SKILL_NODE_SIZE, borderColor); // Left
@@ -471,12 +497,12 @@ public class SkillTab {
         iconData.render(guiGraphics, x + 4, y + 4);
         
         // Render level indicator if skill has levels
-       if (PlayerData.getSkillLevel(player, skill.getId()) > 0 && skill.getMaxLevel() > 1) {
-            String levelText = String.valueOf(PlayerData.getSkillLevel(player, skill.getId()));
+        if (currentLevel > 0 && skill.getMaxLevel() > 1) {
+            String levelText = String.valueOf(currentLevel);
             int textWidth = font.width(levelText);
-            guiGraphics.drawString(font, levelText, 
-                x + SkillScreen.SKILL_NODE_SIZE - textWidth - 2, 
-                y + SkillScreen.SKILL_NODE_SIZE - 8, 
+            guiGraphics.drawString(font, levelText,
+                x + SkillScreen.SKILL_NODE_SIZE - textWidth - 2,
+                y + SkillScreen.SKILL_NODE_SIZE - 8,
                 0xFFFFFF, true);
         }
     }
@@ -715,5 +741,11 @@ public class SkillTab {
         }
 
         return SkillDataManager.INSTANCE.getSkillTree(this.skillTree);
+    }
+
+    private String toRomanNumeral(int num) {
+        if (num <= 0 || num > 10) return String.valueOf(num);
+        String[] numerals = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+        return numerals[num];
     }
 }

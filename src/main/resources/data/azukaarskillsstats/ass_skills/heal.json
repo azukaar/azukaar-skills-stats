@@ -1,6 +1,6 @@
 {
   "id": "azukaarskillsstats:heal",
-  "display_name": "Heal",
+  "display_name": "First Aid",
   "description": "Heal yourself by sheer will",
   "icon": {
     "type": "item",

@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:dash",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:athleticism",
+      "level": 3
+    }
+  ]
+}

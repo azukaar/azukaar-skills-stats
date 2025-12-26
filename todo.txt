@@ -1,0 +1,2 @@
+- sidebar UI with active shortcuts and their cooldown
+- display requierements on locked skills

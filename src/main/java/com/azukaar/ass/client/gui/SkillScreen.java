@@ -348,9 +348,10 @@ public class SkillScreen extends Screen {
                 int modalX = this.leftPos + (SCREEN_WIDTH - 220) / 2;
                 int modalY = this.topPos + (SCREEN_HEIGHT - 180) / 2;
                 
-                if (mouseX < modalX || mouseX > modalX + 220 || 
+                if (mouseX < modalX || mouseX > modalX + 220 ||
                     mouseY < modalY || mouseY > modalY + 180) {
                     this.selectedSkill = null; // Close modal
+                    this.selectedTab.currentKeybind = ""; // Reset keybind state
                     return true;
                 }
                 return true; // Click inside modal but not on button - consume it

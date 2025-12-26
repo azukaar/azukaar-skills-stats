@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:meditate",
+  "display_name": "Meditate",
+  "description": "Focus your mind to gain experience",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:experience_bottle"
+  },
+  "cooldown": {
+    "base": 200
+  },
+  "position": {
+    "x": 0.0,
+    "y": 90.0
+  },
+  "max_level": 6,
+  "skill_tree": "azukaarskillsstats:stats"
+}

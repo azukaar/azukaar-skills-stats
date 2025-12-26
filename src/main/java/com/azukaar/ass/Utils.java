@@ -3,7 +3,19 @@ package com.azukaar.ass;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.world.item.ItemStack;
+
 public class Utils {
+
+  /**
+   * Check if an item can be repaired (has durability and can have mending)
+   */
+  public static boolean isRepairable(ItemStack stack) {
+    if (stack.isEmpty()) return false;
+    if (!stack.isDamageableItem()) return false;
+    if (stack.getDamageValue() <= 0) return false; // Already at full durability
+    return true;
+  }
   public static String toDisplayString(String raw) {
     // Simplify attribute name for display
     String displayAttribute = raw.substring(raw.lastIndexOf(':') + 1)

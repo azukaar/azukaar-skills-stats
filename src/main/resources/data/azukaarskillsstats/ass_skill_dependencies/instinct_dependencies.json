@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:instinct",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:dexterity",
+      "level": 5
+    }
+  ]
+}
