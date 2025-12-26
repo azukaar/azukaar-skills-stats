@@ -73,7 +73,6 @@ public class SkillEffect {
                 // Check data parameters
                 ScalingData scalingData = effect.getData().get(parameter);
                 if (scalingData != null) {
-                    System.out.println("Calculating with " + scalingData.getBase() + " and " + skillLevel);
                     return scalingData.calculateValue(scalingData.getBase(), skillLevel);
                 }
             }
