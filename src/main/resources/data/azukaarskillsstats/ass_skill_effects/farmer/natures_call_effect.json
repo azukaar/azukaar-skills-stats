@@ -1,0 +1,22 @@
+{
+  "skill": "azukaarskillsstats:natures_call",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:natures_call",
+      "description": "Crop growth acceleration",
+      "data": {
+        "radius": {
+          "base": 3,
+          "type": "per_level",
+          "multiplier": 3
+        },
+        "power": {
+          "base": 0.05,
+          "type": "per_level",
+          "multiplier": 0.05
+        }
+      }
+    }
+  ]
+}

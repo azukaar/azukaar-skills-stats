@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:harvest_area",
+  "display_name": "Harvest Area",
+  "description": "Increase Harvest Sweep area",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:hay_block"
+  },
+  "position": {
+    "x": -225.0,
+    "y": 135.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

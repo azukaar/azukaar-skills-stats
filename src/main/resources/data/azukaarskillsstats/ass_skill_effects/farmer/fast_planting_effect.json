@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:fast_planting",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:fast_planting",
+      "description": "Plant crops in area"
+    }
+  ]
+}

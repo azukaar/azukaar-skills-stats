@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:harvests_blessing",
+  "display_name": "Harvest's Blessing",
+  "description": "Crops yield more when you harvest them",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_carrot"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 45.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

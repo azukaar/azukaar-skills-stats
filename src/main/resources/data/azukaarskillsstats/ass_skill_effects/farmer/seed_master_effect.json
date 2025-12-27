@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:seed_master",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:seed_master",
+      "description": "Seed retention chance",
+      "data": {
+        "retention": {
+          "base": 20,
+          "type": "per_level",
+          "multiplier": 20
+        }
+      }
+    }
+  ]
+}

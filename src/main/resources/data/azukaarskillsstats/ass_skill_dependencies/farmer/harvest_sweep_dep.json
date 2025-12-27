@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:harvest_sweep",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:natures_domain",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 40
+    }
+  ]
+}

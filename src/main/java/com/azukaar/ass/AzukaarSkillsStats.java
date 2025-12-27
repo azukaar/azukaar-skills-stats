@@ -164,6 +164,7 @@ public class AzukaarSkillsStats
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         
         NeoForge.EVENT_BUS.register(ModEvents.class);
+        NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.farmer.TreeEvents.class);
 
         BuiltinActiveEffects.registerAll();
 

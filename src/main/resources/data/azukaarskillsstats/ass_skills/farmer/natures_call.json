@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:natures_call",
+  "display_name": "Nature's Call",
+  "description": "Crops grow faster near you",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:wheat_seeds"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

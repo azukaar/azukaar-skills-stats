@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:breeding_mastery",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:animal_whisperer",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 10
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:planting_area",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:fast_planting",
+      "level": 1
+    }
+  ]
+}

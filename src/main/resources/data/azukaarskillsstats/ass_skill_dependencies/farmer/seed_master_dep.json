@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:seed_master",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:planting_area",
+      "level": 1
+    }
+  ]
+}

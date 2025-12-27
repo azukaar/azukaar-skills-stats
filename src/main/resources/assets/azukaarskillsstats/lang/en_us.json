@@ -3,5 +3,9 @@
   "block.azukaarskillsstats.example_block": "Example Block",
   "item.azukaarskillsstats.example_item": "Example Item",
   "effect.azukaarskillsstats.instinct": "Instinct",
-  "effect.azukaarskillsstats.instinct.description": "Increases critical hit chance"
+  "effect.azukaarskillsstats.instinct.description": "Increases critical hit chance",
+  "effect.azukaarskillsstats.animal_whisperer": "Animal Whisperer",
+  "effect.azukaarskillsstats.animal_whisperer.description": "Attracts nearby passive animals",
+  "effect.azukaarskillsstats.foragers_appetite": "Forager's Appetite",
+  "effect.azukaarskillsstats.foragers_appetite.description": "Seeds become edible"
 }

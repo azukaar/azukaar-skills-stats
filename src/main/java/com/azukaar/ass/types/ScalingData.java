@@ -43,6 +43,13 @@ public class ScalingData {
         return Math.round(result * 1000.0) / 1000.0;
     }
     
+    /**
+     * Calculate value using the stored base and given skill level
+     */
+    public double getValue(int skillLevel) {
+        return calculateValue(base, skillLevel);
+    }
+
     // Getters
     public String getType() { return type; }
     public double getMultiplier() { return multiplier; }

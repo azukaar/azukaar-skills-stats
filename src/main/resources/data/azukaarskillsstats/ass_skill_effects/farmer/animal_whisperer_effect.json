@@ -1,0 +1,21 @@
+{
+  "skill": "azukaarskillsstats:animal_whisperer",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:animal_whisperer",
+      "description": "Attract animals",
+      "data": {
+        "radius": {
+          "base": 10,
+          "type": "per_level",
+          "multiplier": 5
+        },
+        "duration": {
+          "base": 2400,
+          "type": "fixed"
+        }
+      }
+    }
+  ]
+}

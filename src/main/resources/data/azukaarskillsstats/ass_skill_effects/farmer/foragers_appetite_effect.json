@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:foragers_appetite",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:foragers_appetite",
+      "description": "Seeds become edible after Harvest Sweep"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:foragers_appetite",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:harvest_sweep",
+      "level": 1
+    }
+  ]
+}

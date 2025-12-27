@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:natures_domain",
+  "display_name": "Nature's Domain",
+  "description": "Green Touch affects a larger area",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:grass_block"
+  },
+  "position": {
+    "x": -135.0,
+    "y": 135.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

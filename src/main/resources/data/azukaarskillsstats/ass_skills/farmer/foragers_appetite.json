@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:foragers_appetite",
+  "display_name": "Forager's Appetite",
+  "description": "Harvest Sweep grants a buff making seeds edible",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:wheat_seeds"
+  },
+  "position": {
+    "x": -225.0,
+    "y": 180.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

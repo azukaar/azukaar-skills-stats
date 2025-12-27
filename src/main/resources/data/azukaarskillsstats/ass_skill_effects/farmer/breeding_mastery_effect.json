@@ -1,0 +1,16 @@
+{
+  "skill": "azukaarskillsstats:breeding_mastery",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:breeding_mastery",
+      "description": "Twin chance",
+      "data": {
+        "chance": {
+          "base": 50,
+          "type": "fixed"
+        }
+      }
+    }
+  ]
+}

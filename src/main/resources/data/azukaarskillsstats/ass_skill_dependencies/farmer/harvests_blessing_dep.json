@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:harvests_blessing",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:natures_call",
+      "level": 2
+    },
+    {
+      "aspect": "nature",
+      "level": 10
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:natures_domain",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:green_touch",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 30
+    }
+  ]
+}

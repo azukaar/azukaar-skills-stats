@@ -14,10 +14,15 @@ public class ModMobEffects {
     public static final DeferredHolder<MobEffect, MobEffect> INSTINCT =
         com.azukaar.ass.trees.stats.MobEffects.INSTINCT;
 
+    // Re-export from farmer tree
+    public static final DeferredHolder<MobEffect, MobEffect> ANIMAL_WHISPERER =
+        com.azukaar.ass.trees.farmer.MobEffects.ANIMAL_WHISPERER;
+
     /**
      * Register all mob effects from all trees
      */
     public static void registerAll(IEventBus modEventBus) {
         com.azukaar.ass.trees.stats.MobEffects.MOB_EFFECTS.register(modEventBus);
+        com.azukaar.ass.trees.farmer.MobEffects.MOB_EFFECTS.register(modEventBus);
     }
 }

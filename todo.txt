@@ -1,2 +1,9 @@
+- add missing aspect XP
 - sidebar UI with active shortcuts and their cooldown
 - display requierements on locked skills
+- button to unbind key skills
+- per difficulty level up
+- add aspect requierements to skills 
+- add requirements to trees
+- allow togglable passive type
+- zoom

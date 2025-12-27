@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:harvest_sweep",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:harvest_sweep",
+      "description": "Harvest mature crops in area"
+    }
+  ]
+}

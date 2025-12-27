@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:planting_area",
+  "display_name": "Planting Area",
+  "description": "Increase Fast Planting area",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:grass_block"
+  },
+  "position": {
+    "x": -270.0,
+    "y": 90.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

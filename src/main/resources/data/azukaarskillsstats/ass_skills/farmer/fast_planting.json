@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:fast_planting",
+  "display_name": "Fast Planting",
+  "description": "Instantly plant crops in an area",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:farmland"
+  },
+  "cooldown": {
+    "base": 1800
+  },
+  "position": {
+    "x": -225.0,
+    "y": 90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

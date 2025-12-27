@@ -1,7 +1,6 @@
 package com.azukaar.ass;
 
 import com.azukaar.ass.api.PlayerData;
-import com.azukaar.ass.trees.stats.CustomEffects;
 import com.azukaar.ass.types.SkillEffect;
 import net.minecraft.world.entity.player.Player;
 
@@ -15,8 +14,12 @@ public class CustomEffectHandler {
      * Apply a custom effect to a player
      */
     public static void applyCustomEffect(Player player, String effectType, SkillEffect.Effect effect, int skillLevel) {
-        if (CustomEffects.handles(effectType)) {
-            CustomEffects.applyCustomEffect(player, effectType, effect, skillLevel);
+        if (com.azukaar.ass.trees.stats.CustomEffects.handles(effectType)) {
+            com.azukaar.ass.trees.stats.CustomEffects.applyCustomEffect(player, effectType, effect, skillLevel);
+            return;
+        }
+        if (com.azukaar.ass.trees.farmer.CustomEffects.handles(effectType)) {
+            com.azukaar.ass.trees.farmer.CustomEffects.applyCustomEffect(player, effectType, effect, skillLevel);
             return;
         }
 
@@ -27,8 +30,11 @@ public class CustomEffectHandler {
      * Remove a custom effect from a player
      */
     public static void removeCustomEffect(Player player, String effectType, SkillEffect.Effect effect) {
-        if (CustomEffects.handles(effectType)) {
-            CustomEffects.removeCustomEffect(player, effectType, effect);
+        if (com.azukaar.ass.trees.stats.CustomEffects.handles(effectType)) {
+            com.azukaar.ass.trees.stats.CustomEffects.removeCustomEffect(player, effectType, effect);
+        }
+        if (com.azukaar.ass.trees.farmer.CustomEffects.handles(effectType)) {
+            com.azukaar.ass.trees.farmer.CustomEffects.removeCustomEffect(player, effectType, effect);
         }
     }
 

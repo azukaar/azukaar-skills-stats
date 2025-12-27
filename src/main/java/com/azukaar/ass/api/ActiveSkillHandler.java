@@ -76,9 +76,14 @@ public class ActiveSkillHandler {
         // Check cooldown
         IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
         if (skills == null) return false;
-        
+
         long currentTime = player.level().getGameTime();
         if (skills.isSkillOnCooldown(skillId, currentTime)) {
+            int remainingTicks = skills.getRemainingCooldown(skillId, currentTime);
+            int remainingSeconds = remainingTicks / 20;
+            player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+                "Can't use skill, cooldown: " + remainingSeconds + "s"
+            ));
             return false;
         }
         
@@ -140,11 +145,12 @@ public class ActiveSkillHandler {
     
     private static EffectData createEffectDataFromAttributes(Player player, String skillId, SkillEffect.Effect effect) {
         Map<String, Object> currentData = new HashMap<>();
+        int skillLevel = PlayerData.getSkillLevel(player, skillId);
 
-        // Read current values using the parameter system
+        // Calculate values directly from the effect's data
         for (Map.Entry<String, ScalingData> entry : effect.getData().entrySet()) {
             String dataKey = entry.getKey();
-            double value = SkillEffect.getSkillParameter(player, skillId, dataKey);
+            double value = entry.getValue().getValue(skillLevel);
             currentData.put(dataKey, value);
         }
 

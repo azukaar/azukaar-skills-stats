@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:harvest_sweep",
+  "display_name": "Harvest Sweep",
+  "description": "Instantly harvest all mature crops in an area",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_hoe"
+  },
+  "cooldown": {
+    "base": 2400
+  },
+  "position": {
+    "x": -180.0,
+    "y": 135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:harvest_area",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:harvest_sweep",
+      "level": 1
+    }
+  ]
+}

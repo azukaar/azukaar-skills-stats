@@ -151,6 +151,17 @@ public class AssCommand {
                     .executes(context -> getSkillPoints(context, context.getSource().getPlayerOrException()))
                     .then(Commands.argument("target", EntityArgument.player())
                         .executes(context -> getSkillPoints(context, EntityArgument.getPlayer(context, "target"))))))
+
+            // Cooldown commands
+            .then(Commands.literal("cooldown")
+                // /ass cooldown reset [player]
+                .then(Commands.literal("reset")
+                    .executes(context -> resetCooldowns(context, context.getSource().getPlayerOrException()))
+                    .then(Commands.argument("targets", EntityArgument.players())
+                        .executes(context -> {
+                            Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                            return resetCooldownsForTargets(context, targets);
+                        }))))
         );
     }
 
@@ -340,6 +351,32 @@ public class AssCommand {
         int skillPoints = PlayerData.getSkillPoints(player);
         context.getSource().sendSuccess(() -> Component.literal("Skill points for " + player.getName().getString() + ": " + skillPoints), false);
         return 1;
+    }
+
+    // Cooldown command implementations
+    private static int resetCooldowns(CommandContext<CommandSourceStack> context, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        // Clear all cooldowns by setting them to 0
+        for (String skillId : skills.getAllSkillCooldowns().keySet()) {
+            skills.setSkillCooldown(skillId, 0);
+        }
+
+        syncToClient(player);
+        context.getSource().sendSuccess(() -> Component.literal("Reset all cooldowns for " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int resetCooldownsForTargets(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            resetCooldowns(context, target);
+        }
+        context.getSource().sendSuccess(() -> Component.literal("Reset all cooldowns for " + targets.size() + " players"), true);
+        return targets.size();
     }
 
     // Helper method to sync data to client

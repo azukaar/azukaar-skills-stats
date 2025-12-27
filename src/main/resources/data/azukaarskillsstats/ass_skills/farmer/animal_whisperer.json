@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:animal_whisperer",
+  "display_name": "Animal Whisperer",
+  "description": "Attract passive animals to you",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:lead"
+  },
+  "cooldown": {
+    "base": 6000
+  },
+  "position": {
+    "x": 45.0,
+    "y": 0.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

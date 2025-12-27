@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:breeding_mastery",
+  "display_name": "Breeding Mastery",
+  "description": "Chance for twins when animals breed",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:egg"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 45.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

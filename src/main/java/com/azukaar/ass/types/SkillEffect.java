@@ -54,31 +54,40 @@ public class SkillEffect {
     }
     
     /**
-     * Get current value of a skill parameter based on player's skill level
-     * Note: Cooldown is no longer handled here - it's moved to the Skill level
+     * Get the ScalingData for a parameter from a specific effect
+     * @param skillId The skill ID
+     * @param effectId The effect ID (e.g. "azukaarskillsstats:animal_whisperer"), or null to search all
+     * @param parameter The parameter name
      */
-    public static double getSkillParameter(Player player, String skillId, String parameter) {
-        // Get the skill effect data
+    public static ScalingData getParameterData(String skillId, String effectId, String parameter) {
         var skillDataManager = com.azukaar.ass.SkillDataManager.INSTANCE;
         SkillEffect skillEffect = skillDataManager.getSkillEffects(skillId);
-        if (skillEffect == null) return 0.0;
-        
-        // Get player's current skill level
-        int skillLevel = PlayerData.getSkillLevel(player, skillId);
-        if (skillLevel <= 0) return 0.0;
-        
-        // Find the active effect and calculate the parameter value
+        if (skillEffect == null) return null;
+
         for (Effect effect : skillEffect.getEffects()) {
-            if ("active".equals(effect.getType())) {
-                // Check data parameters
-                ScalingData scalingData = effect.getData().get(parameter);
-                if (scalingData != null) {
-                    return scalingData.calculateValue(scalingData.getBase(), skillLevel);
-                }
+            if (effectId == null || effectId.equals(effect.getActiveEffectId()) || effectId.equals(effect.getAttribute())) {
+                ScalingData data = effect.getData().get(parameter);
+                if (data != null) return data;
             }
         }
-        
-        return 0.0;
+        return null;
+    }
+
+    /**
+     * Get current value of a skill parameter based on player's skill level
+     * @param player The player
+     * @param skillId The skill ID
+     * @param effectId The effect ID, or null to search all effects
+     * @param parameter The parameter name
+     */
+    public static double getSkillParameter(Player player, String skillId, String effectId, String parameter) {
+        int skillLevel = PlayerData.getSkillLevel(player, skillId);
+        if (skillLevel <= 0) return 0.0;
+
+        ScalingData data = getParameterData(skillId, effectId, parameter);
+        if (data == null) return 0.0;
+
+        return data.getValue(skillLevel);
     }
     
     public static class Effect {

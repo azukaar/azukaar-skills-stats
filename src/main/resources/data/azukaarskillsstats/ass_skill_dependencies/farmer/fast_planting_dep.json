@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:fast_planting",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:harvest_sweep",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 50
+    }
+  ]
+}

@@ -303,24 +303,22 @@ public class SkillTab {
                             currentY += lineHeight;
                         }
 
-                        if ("active".equals(effect.getType())) {
-                            // display all the "data" lines of the active effect
+                        // Display data lines for active and custom effects
+                        // if ("active".equals(effect.getType()) || "custom_attribute_modifier".equals(effect.getType())) {
                             Map<String, ScalingData> data = effect.getData();
 
                             if (data != null && !data.isEmpty()) {
+                                int skillLevel = com.azukaar.ass.api.PlayerData.getSkillLevel(player, selectedSkill.getId());
                                 for (Map.Entry<String, ScalingData> entry : data.entrySet()) {
                                     String dataKey = entry.getKey();
-                                    
-                                    // Calculate value based on current level
-                                    double value = SkillEffect.getSkillParameter(player, selectedSkill.getId(), dataKey);
-                                    
-                                    // Display the data line
+                                    double value = entry.getValue().getValue(skillLevel);
+
                                     String dataText = "  " + Utils.toDisplayString(dataKey) + ": " + value;
                                     guiGraphics.drawString(font, dataText, contentStartX + 20, currentY, 0xAAAAAA, false);
                                     currentY += lineHeight;
                                 }
                             }
-                        }
+                        // }
                     }
 
                 }

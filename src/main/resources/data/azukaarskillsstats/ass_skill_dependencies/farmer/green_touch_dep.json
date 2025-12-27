@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:green_touch",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:harvests_blessing",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 20
+    }
+  ]
+}

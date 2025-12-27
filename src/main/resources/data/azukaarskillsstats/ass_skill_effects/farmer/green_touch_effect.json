@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:green_touch",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:green_touch",
+      "description": "Mature crops instantly"
+    }
+  ]
+}
