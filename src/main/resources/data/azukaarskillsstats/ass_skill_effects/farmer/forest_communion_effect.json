@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:forest_communion",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:forest_communion",
+      "description": "Harvest Sweep harvests trees"
+    }
+  ]
+}

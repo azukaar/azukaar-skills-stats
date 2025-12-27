@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:tree_calling",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:tree_calling",
+      "description": "Spawn a random sapling"
+    }
+  ]
+}

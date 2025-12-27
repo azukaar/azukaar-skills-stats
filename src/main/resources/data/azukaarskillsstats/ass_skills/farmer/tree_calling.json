@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:tree_calling",
+  "display_name": "Tree Calling",
+  "description": "Spawn a grown tree based on held sapling",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:spruce_sapling"
+  },
+  "cooldown": {
+    "base": 200
+  },
+  "position": {
+    "x": -90.0,
+    "y": 90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

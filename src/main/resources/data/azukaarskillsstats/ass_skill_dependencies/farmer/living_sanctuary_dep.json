@@ -1,0 +1,21 @@
+{
+  "skill": "azukaarskillsstats:living_sanctuary",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:harvest_sweep",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:herd_communion",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:forest_communion",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 75
+    }
+  ]
+}

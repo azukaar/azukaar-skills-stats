@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:timber",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:timber",
+      "description": "Cut down a tree"
+    }
+  ]
+}

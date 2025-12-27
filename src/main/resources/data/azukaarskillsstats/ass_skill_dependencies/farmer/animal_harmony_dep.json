@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:animal_harmony",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:breeding_mastery",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 20
+    }
+  ]
+}

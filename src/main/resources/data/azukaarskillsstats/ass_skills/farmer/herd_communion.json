@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:herd_communion",
+  "display_name": "Herd Communion",
+  "description": "Harvest Sweep also loots passive animals",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:leather"
+  },
+  "position": {
+    "x": 90.0,
+    "y": 180.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

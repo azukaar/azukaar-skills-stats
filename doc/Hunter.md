@@ -1,5 +1,10 @@
 # **HUNTER** *(Paragon: Farmer + Barbarian)*
 
+## TODO
+- Should +50% skills from farmer/barbarian
+- Should have a spawn animals
+- Should have a Harvest can harvest hsotiles skills
+
 ## **Core Philosophy:**
 **Beast Master** - Ultimate animal control and pack coordination  
 **Resource Bridge** - Connects Farmer's production with Barbarian's consumption  

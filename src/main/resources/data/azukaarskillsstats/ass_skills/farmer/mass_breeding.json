@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:mass_breeding",
+  "display_name": "Cupidon's Arrow",
+  "description": "All animals in radius enter love mode to breed, even if they already bred today",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_carrot"
+  },
+  "cooldown": {
+    "base": 5000
+  },
+  "position": {
+    "x": 120.0,
+    "y": 225.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

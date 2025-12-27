@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:livestock_guardian",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:animal_harmony",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 30
+    }
+  ]
+}

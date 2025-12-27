@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:nature_renewal",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:forest_communion",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 50
+    }
+  ]
+}

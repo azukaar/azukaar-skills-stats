@@ -1,0 +1,16 @@
+{
+  "skill": "azukaarskillsstats:mass_breeding",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:mass_breeding",
+      "description": "Breed all nearby animals",
+      "data": {
+        "radius": {
+          "base": 16,
+          "type": "fixed"
+        }
+      }
+    }
+  ]
+}

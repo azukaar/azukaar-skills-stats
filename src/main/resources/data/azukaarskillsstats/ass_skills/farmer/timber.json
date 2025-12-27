@@ -1,0 +1,20 @@
+{
+  "id": "azukaarskillsstats:timber",
+  "display_name": "Timber",
+  "description": "Cut down the tree you are looking at",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:iron_axe"
+  },
+  "cooldown": {
+    "base": 900,
+    "type": "per_level",
+    "multiplier": -300
+  },
+  "position": {
+    "x": -90.0,
+    "y": 45.0
+  },
+  "max_level": 2,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

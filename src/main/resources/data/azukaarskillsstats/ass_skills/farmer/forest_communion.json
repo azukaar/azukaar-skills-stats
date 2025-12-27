@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:forest_communion",
+  "display_name": "Forest Communion",
+  "description": "Harvest Sweep also harvests trees",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:oak_log"
+  },
+  "position": {
+    "x": -90.0,
+    "y": 180.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

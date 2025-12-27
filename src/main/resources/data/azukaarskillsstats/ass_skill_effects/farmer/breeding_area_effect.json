@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:breeding_area",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:breeding_area",
+      "description": "Increase breeding radius",
+      "data": {
+        "radius_bonus": {
+          "base": 8,
+          "type": "per_level",
+          "multiplier": 8
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:nature_renewal",
+  "display_name": "Nature Renewal",
+  "description": "Harvest Sweep and Timber auto-replant saplings and seeds",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:oak_sapling"
+  },
+  "position": {
+    "x": -120.0,
+    "y": 225.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

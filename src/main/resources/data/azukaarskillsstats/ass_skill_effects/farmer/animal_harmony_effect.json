@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:animal_harmony",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:animal_harmony",
+      "description": "Passive mobs won't attack you"
+    }
+  ]
+}

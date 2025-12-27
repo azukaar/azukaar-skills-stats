@@ -11,6 +11,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -38,15 +42,27 @@ public class TreeEvents {
     private static final String HARVESTS_BLESSING_EFFECT = "azukaarskillsstats:harvests_blessing";
     private static final String BREEDING_MASTERY_SKILL = "azukaarskillsstats:breeding_mastery";
     private static final String BREEDING_MASTERY_EFFECT = "azukaarskillsstats:breeding_mastery";
+    private static final String ANIMAL_HARMONY_SKILL = "azukaarskillsstats:animal_harmony";
+    private static final String LIVESTOCK_GUARDIAN_SKILL = "azukaarskillsstats:livestock_guardian";
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (player.level().isClientSide()) return;
 
-        // Nature's Call: every 10 ticks
-        if (player.tickCount % 10 == 0) {
+        // Animal Harmony: every 5 ticks
+        if (player.tickCount % 5 == 0) {
+            tickAnimalHarmony(player);
+        }
+
+        // Nature's Call: every 15 ticks
+        if (player.tickCount % 15 == 0) {
             tickNaturesCall(player);
+        }
+
+        // Livestock Guardian: every 30 ticks
+        if (player.tickCount % 30 == 0) {
+            tickLivestockGuardian(player);
         }
     }
 
@@ -92,6 +108,71 @@ public class TreeEvents {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Animal Harmony: Neutral mobs won't aggro you
+     */
+    private static void tickAnimalHarmony(Player player) {
+        int skillLevel = PlayerData.getSkillLevel(player, ANIMAL_HARMONY_SKILL);
+        if (skillLevel <= 0) return;
+
+        ServerLevel level = (ServerLevel) player.level();
+        AABB searchBox = player.getBoundingBox().inflate(16);
+
+        // Find all neutral mobs that have the player as target
+        List<Mob> mobs = level.getEntitiesOfClass(Mob.class, searchBox, mob -> {
+            if (mob instanceof NeutralMob neutral) {
+                return neutral.getPersistentAngerTarget() != null &&
+                       neutral.getPersistentAngerTarget().equals(player.getUUID());
+            }
+            return mob.getTarget() == player;
+        });
+
+        for (Mob mob : mobs) {
+            // Only affect "passive" neutral mobs (bees, wolves, etc.)
+            if (mob instanceof Bee || mob instanceof Wolf || mob instanceof NeutralMob) {
+                mob.setTarget(null);
+                if (mob instanceof NeutralMob neutral) {
+                    neutral.stopBeingAngry();
+                }
+            }
+        }
+    }
+
+    /**
+     * Livestock Guardian: Nearby animals regenerate health from player's hunger
+     */
+    private static void tickLivestockGuardian(Player player) {
+        int skillLevel = PlayerData.getSkillLevel(player, LIVESTOCK_GUARDIAN_SKILL);
+        if (skillLevel <= 0) return;
+
+        // Need at least 1 hunger to heal animals
+        if (player.getFoodData().getFoodLevel() <= 0) return;
+
+        ServerLevel level = (ServerLevel) player.level();
+        AABB searchBox = player.getBoundingBox().inflate(16);
+
+        // Find all hurt animals
+        List<Animal> animals = level.getEntitiesOfClass(Animal.class, searchBox, animal -> {
+            return animal.getHealth() < animal.getMaxHealth();
+        });
+
+        for (Animal animal : animals) {
+            // Check if player still has hunger
+            if (player.getFoodData().getFoodLevel() <= 0) break;
+
+            // Heal 2 health, consume 1 hunger
+            animal.heal(2.0f);
+            player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - 1);
+
+            // Play heart particles
+            level.sendParticles(
+                net.minecraft.core.particles.ParticleTypes.HEART,
+                animal.getX(), animal.getY() + animal.getBbHeight() / 2, animal.getZ(),
+                5, 0.5, 0.5, 0.5, 0.1
+            );
         }
     }
 

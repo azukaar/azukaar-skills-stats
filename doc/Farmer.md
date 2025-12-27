@@ -91,75 +91,65 @@
 ### **Animal Harmony** (2sp)
 - **Prerequisite:** Breeding Mastery
 - **Aspect Requirement:** Nature 20
-- **Effect:** Passive mobs won't aggro you (includes bees)
+- **Effect:** Passive mobs won't aggro you (includes bees, wolf, etc...)
 - **Type:** Passive
 
 ### **Livestock Guardian** (3sp)
 - **Prerequisite:** Animal Harmony
 - **Aspect Requirement:** Nature 30
-- **Effect:** Nearby passive animals slowly regenerate health by consuming food from your inventory
+- **Effect:** Nearby passive animals (16 blocks) slowly regenerate health by consuming food from your Hunger Bar
 - **Type:** Passive
 
-### **Herd Communion** (2sp, max 3) 🔒 *COMMUNION*
+### **Herd Communion** (4sp) 🔒 *COMMUNION*
 - **Prerequisite:** Livestock Guardian
 - **Aspect Requirement:** Nature 40
-- **Effect:** Harvest Sweep also loots passive animals (15% non-lethal chance per level)
-- **Max Benefit:** 45% chance for non-lethal harvest
+- **Effect:** Harvest Sweep also loots passive animals (20% loot chance per level)
+- **Max Benefit:** 60% chance for harvest
 - **Type:** Passive (modifies Harvest Sweep)
 
-### **Mass Breeding** (4sp)
+### **Cupidon's Arrow** (4sp)
 - **Prerequisite:** Herd Communion
 - **Aspect Requirement:** Nature 50
-- **Effect:** All animals in 10-block radius breed simultaneously (10min cooldown)
+- **Effect:** All animals in 16-block radius breed simultaneously (10min cooldown)
 - **Type:** Active
 
 ### **Breeding Area** (1sp, max 2)
-- **Prerequisite:** Mass Breeding
-- **Effect:** Increase Mass Breeding radius by 5 blocks per level (10 → 15 → 20 blocks)
+- **Prerequisite:** Cupidon's Arrow
+- **Effect:** Increase Cupidon's Arrow radius by 5 blocks per level (10 → 15 → 20 blocks)
 - **Type:** Passive
 
 ---
 
 ## **Forestry Branch**
 
-### **Lumberjack's Touch** (1sp, max 5)
+### **Timber** (2sp, 2 levels)
 - **Prerequisite:** Nature's Call
 - **Aspect Requirement:** Nature 10
-- **Effect:** +X% wood drops from Harvest Sweep per level
-- **Type:** Passive
-
-### **Sapling Nurturing** (2sp)
-- **Prerequisite:** Lumberjack's Touch
-- **Aspect Requirement:** Nature 20
-- **Effect:** Green Touch also works on tree saplings
-- **Type:** Passive
-
-### **Tree Calling** (3sp)
-- **Prerequisite:** Sapling Nurturing
-- **Aspect Requirement:** Nature 30
-- **Effect:** Spawn a tree at target location (2min cooldown, costs XP)
+- **Effect:** Cut down a single tree you are looking at completely with a 30 sec cooldown (-15sec at level 2)
 - **Type:** Active
 
-### **Forest Communion** (4sp) 🔒 *COMMUNION*
+### **Tree Calling** (2sp)
+- **Prerequisite:** Timber
+- **Aspect Requirement:** Nature 20
+- **Effect:** Spawn a grown tree at target location based on in hand sappling without consuming it (cooldown 10sec)
+- **Type:** Active
+
+### **Sapling Nurturing** (3sp)
 - **Prerequisite:** Tree Calling
+- **Aspect Requirement:** Nature 30
+- **Effect:** Green Touch and Fast planting also works on tree saplings
+- **Type:** Passive
+
+### **Forest Communion** (4sp) 🔒 *COMMUNION*
+- **Prerequisite:** Sapling Nurturing
 - **Aspect Requirement:** Nature 40
 - **Effect:** Harvest Sweep also harvests trees
 - **Type:** Passive (modifies Harvest Sweep)
 
-### **Forest Renewal** (5sp)
+### **Nature Renewal** (3sp, 3 levels)
 - **Prerequisite:** Forest Communion
 - **Aspect Requirement:** Nature 50
-- **Effect:** Harvest Sweep automatically replants saplings for harvested trees
-- **Type:** Passive
-
-### **Orchard Keeper** (2sp)
-- **Prerequisite:** Forest Communion
-- **Effect:** Harvest Sweep has 30% chance to drop apples per tree (any tree type)
-- **Type:** Passive
-
-### **Tree Spawning** (3sp)
-- **Prerequisite:** Orchard Keeper
-- **Effect:** Fast Planting also works with saplings to create trees
+- **Effect:** Harvest Sweep and Timber automatically replants saplings and seeds (HS only) for harvested trees (1/3 chance per level). HS also has a 1/3 chance not to kill animal if herd communion is on.
 - **Type:** Passive
 
 ---
@@ -169,9 +159,8 @@
 ### **Living Sanctuary** (5sp) 🔒
 - **Prerequisites:** Harvest Sweep + Herd Communion + Forest Communion
 - **Aspect Requirement:** Nature 75
-- **Effect:** Animals and crops in 30-block radius are protected from hostile mob damage, including fire, explosions (creepers), and environmental hazards
+- **Effect:** I dont know yet!!!
 - **Type:** Passive
-- **Purpose:** Ultimate agricultural protection zone
 
 ---
 
@@ -179,11 +168,11 @@
 
 | Nature Aspect | Crops | Animals | Forestry |
 |---------------|-------|---------|----------|
-| **10** | Harvest's Blessing | Breeding Mastery | Lumberjack's Touch |
-| **20** | Seedsong Ritual | Animal Harmony | Sapling Nurturing |
-| **30** | Nature's Domain | Livestock Guardian | Tree Calling |
+| **10** | Harvest's Blessing | Breeding Mastery | Timber |
+| **20** | Green Touch | Animal Harmony | Tree Calling |
+| **30** | Nature's Domain | Livestock Guardian | Sapling Nurturing |
 | **40** | **Harvest Sweep** | **Herd Communion** | **Forest Communion** |
-| **50** | Fast Planting | Mass Breeding | Forest Renewal |
+| **50** | Fast Planting | Cupidon's Arrow | Nature Renewal |
 | **75** | | **Living Sanctuary** | |
 
 ---
@@ -195,9 +184,9 @@ The Farmer's core ability evolves as you invest across branches:
 1. **Base Harvest Sweep:** Harvest crops in 5x5 area
 2. **+ Harvest Area:** Expand to 9x9 area
 3. **+ Forest Communion:** Also harvests trees
-4. **+ Lumberjack's Touch:** Bonus wood drops
-5. **+ Orchard Keeper:** 30% apple drops from trees
-6. **+ Forest Renewal:** Auto-replants saplings
+4. **+ Sapling Nurturing:** Green Touch works on saplings
+5. **+ Nature Renewal:** Auto-replants saplings and seeds, reduces animal kills
+6. **+ Seed Master:** Seed retention for Fast Planting
 7. **+ Herd Communion:** Also loots passive animals (non-lethal chance)
 8. **+ Forager's Appetite:** Grants seed-eating buff
 
@@ -205,8 +194,60 @@ The Farmer's core ability evolves as you invest across branches:
 
 ## **Total Investment**
 
-- **Minimum for Living Sanctuary:** ~25 SP (core path through all three communions)
-- **Full Crop Mastery:** ~20 SP
-- **Full Animal Husbandry:** ~12 SP
-- **Full Forestry:** ~18 SP
-- **Complete Tree:** ~50 SP
+### **Minimum for Living Sanctuary: 39 SP**
+
+*Crops (11 SP):*
+- Nature's Call (2 levels): 2 SP
+- Harvest's Blessing (1 level): 1 SP
+- Green Touch: 3 SP
+- Nature's Domain (1 level): 2 SP
+- Harvest Sweep: 3 SP
+
+*Animals (12 SP):*
+- Animal Whisperer (1 level): 1 SP
+- Breeding Mastery: 2 SP
+- Animal Harmony: 2 SP
+- Livestock Guardian: 3 SP
+- Herd Communion: 4 SP
+
+*Forestry (11 SP):*
+- Timber (1 level): 2 SP
+- Tree Calling: 2 SP
+- Sapling Nurturing: 3 SP
+- Forest Communion: 4 SP
+
+*Capstone (5 SP):*
+- Living Sanctuary: 5 SP
+
+### **Full Tree Investment: 97 SP**
+
+*Full Crop Mastery (43 SP):*
+- Nature's Call (5): 5 SP
+- Harvest's Blessing (5): 5 SP
+- Green Touch: 3 SP
+- Nature's Domain (3): 6 SP
+- Harvest Sweep: 3 SP
+- Forager's Appetite: 2 SP
+- Harvest Area (5): 10 SP
+- Fast Planting: 4 SP
+- Planting Area (5): 5 SP
+
+*Full Animal Husbandry (22 SP):*
+- Animal Whisperer (5): 5 SP
+- Breeding Mastery: 2 SP
+- Animal Harmony: 2 SP
+- Livestock Guardian: 3 SP
+- Herd Communion: 4 SP
+- Cupidon's Arrow: 4 SP
+- Breeding Area (2): 2 SP
+
+*Full Forestry (27 SP):*
+- Timber (2): 4 SP
+- Tree Calling: 2 SP
+- Sapling Nurturing: 3 SP
+- Forest Communion: 4 SP
+- Nature Renewal (3): 9 SP
+- Seed Master (5): 5 SP
+
+*Capstone (5 SP):*
+- Living Sanctuary: 5 SP

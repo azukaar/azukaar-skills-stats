@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:animal_harmony",
+  "display_name": "Animal Harmony",
+  "description": "Passive mobs won't aggro you",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:lead"
+  },
+  "position": {
+    "x": 90.0,
+    "y": 90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

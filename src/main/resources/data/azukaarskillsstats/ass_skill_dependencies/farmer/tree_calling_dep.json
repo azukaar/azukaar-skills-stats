@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:tree_calling",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:timber",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 20
+    }
+  ]
+}

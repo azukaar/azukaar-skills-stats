@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:living_sanctuary",
+  "display_name": "Living Sanctuary",
+  "description": "I dont know yet!!!",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 295.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

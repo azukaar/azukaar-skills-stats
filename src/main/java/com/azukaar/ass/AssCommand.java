@@ -162,6 +162,16 @@ public class AssCommand {
                             Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
                             return resetCooldownsForTargets(context, targets);
                         }))))
+
+            // Respec command
+            .then(Commands.literal("respec")
+                // /ass respec [player]
+                .executes(context -> respec(context, context.getSource().getPlayerOrException()))
+                .then(Commands.argument("targets", EntityArgument.players())
+                    .executes(context -> {
+                        Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                        return respecForTargets(context, targets);
+                    })))
         );
     }
 
@@ -376,6 +386,46 @@ public class AssCommand {
             resetCooldowns(context, target);
         }
         context.getSource().sendSuccess(() -> Component.literal("Reset all cooldowns for " + targets.size() + " players"), true);
+        return targets.size();
+    }
+
+    // Respec command implementations
+    private static int respec(CommandContext<CommandSourceStack> context, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        // Count total skill points spent
+        int pointsSpent = 0;
+        for (int level : skills.getAllSkills().values()) {
+            pointsSpent += level;
+        }
+
+        if (pointsSpent == 0) {
+            context.getSource().sendFailure(Component.literal("No skill points to refund for " + player.getName().getString()));
+            return 0;
+        }
+
+        final int totalPointsSpent = pointsSpent;
+
+        // Clear all skills
+        skills.setAllSkills(new java.util.HashMap<>());
+
+        // Refund the skill points
+        skills.addSkillPoints(totalPointsSpent);
+
+        syncToClient(player);
+        context.getSource().sendSuccess(() -> Component.literal("Respec complete! Refunded " + totalPointsSpent + " skill points for " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int respecForTargets(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            respec(context, target);
+        }
+        context.getSource().sendSuccess(() -> Component.literal("Respec complete for " + targets.size() + " players"), true);
         return targets.size();
     }
 

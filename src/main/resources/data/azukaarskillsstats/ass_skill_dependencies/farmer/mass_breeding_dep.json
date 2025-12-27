@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:mass_breeding",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:herd_communion",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 50
+    }
+  ]
+}

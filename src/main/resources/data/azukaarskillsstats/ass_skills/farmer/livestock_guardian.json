@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:livestock_guardian",
+  "display_name": "Livestock Guardian",
+  "description": "Nearby animals regenerate health from your hunger",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "position": {
+    "x": 90.0,
+    "y": 135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:farmer"
+}

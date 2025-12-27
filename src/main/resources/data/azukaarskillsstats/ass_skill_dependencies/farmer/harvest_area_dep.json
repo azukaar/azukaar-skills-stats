@@ -2,7 +2,7 @@
   "skill": "azukaarskillsstats:harvest_area",
   "prerequisites": [
     {
-      "skill": "azukaarskillsstats:harvest_sweep",
+      "skill": "azukaarskillsstats:foragers_appetite",
       "level": 1
     }
   ]

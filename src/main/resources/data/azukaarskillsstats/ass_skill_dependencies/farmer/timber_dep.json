@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:timber",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:natures_call",
+      "level": 1
+    }
+  ]
+}

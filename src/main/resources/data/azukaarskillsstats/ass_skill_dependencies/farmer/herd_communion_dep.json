@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:herd_communion",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:livestock_guardian",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 40
+    }
+  ]
+}

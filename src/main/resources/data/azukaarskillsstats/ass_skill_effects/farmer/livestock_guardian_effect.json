@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:livestock_guardian",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:livestock_guardian",
+      "description": "Heal nearby animals using your hunger"
+    }
+  ]
+}

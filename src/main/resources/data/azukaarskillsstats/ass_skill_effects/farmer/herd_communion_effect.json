@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:herd_communion",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:herd_communion",
+      "description": "Harvest animals",
+      "data": {
+        "loot_chance": {
+          "base": 20,
+          "type": "per_level",
+          "multiplier": 20
+        }
+      }
+    }
+  ]
+}

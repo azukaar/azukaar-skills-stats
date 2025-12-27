@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:sapling_nurturing",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:tree_calling",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 30
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:breeding_area",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:mass_breeding",
+      "level": 1
+    }
+  ]
+}

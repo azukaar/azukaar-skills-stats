@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:forest_communion",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:sapling_nurturing",
+      "level": 1
+    },
+    {
+      "aspect": "nature",
+      "level": 40
+    }
+  ]
+}

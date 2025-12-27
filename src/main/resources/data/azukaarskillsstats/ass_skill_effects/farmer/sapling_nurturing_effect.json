@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:sapling_nurturing",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:sapling_nurturing",
+      "description": "Enables sapling support for Green Touch and Fast Planting"
+    }
+  ]
+}

@@ -20,7 +20,15 @@ public class CustomEffects {
                  "azukaarskillsstats:foragers_appetite",
                  "azukaarskillsstats:planting_area",
                  "azukaarskillsstats:seed_master",
-                 "azukaarskillsstats:breeding_mastery" -> true;
+                 "azukaarskillsstats:breeding_mastery",
+                 "azukaarskillsstats:animal_harmony",
+                 "azukaarskillsstats:livestock_guardian",
+                 "azukaarskillsstats:herd_communion",
+                 "azukaarskillsstats:breeding_area",
+                 "azukaarskillsstats:sapling_nurturing",
+                 "azukaarskillsstats:forest_communion",
+                 "azukaarskillsstats:nature_renewal",
+                 "azukaarskillsstats:living_sanctuary" -> true;
             default -> false;
         };
     }

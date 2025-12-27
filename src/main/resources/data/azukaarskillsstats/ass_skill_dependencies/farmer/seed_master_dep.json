@@ -2,7 +2,7 @@
   "skill": "azukaarskillsstats:seed_master",
   "prerequisites": [
     {
-      "skill": "azukaarskillsstats:planting_area",
+      "skill": "azukaarskillsstats:nature_renewal",
       "level": 1
     }
   ]

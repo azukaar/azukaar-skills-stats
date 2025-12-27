@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:breeding_area",
+  "display_name": "Breeding Area",
+  "description": "Increase Mass Breeding radius by 8 blocks per level",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:hay_block"
+  },
+  "position": {
+    "x": 120.0,
+    "y": 270.0
+  },
+  "max_level": 2,
+  "skill_tree": "azukaarskillsstats:farmer"
+}
