@@ -203,7 +203,7 @@ public class ModEvents {
         Player player = event.getEntity();
         if (player.level().isClientSide()) return;
 
-        double multiplier = CustomEffectHandler.getMinecraftXpBonusMultiplier(player);
+        double multiplier = com.azukaar.ass.trees.stats.CustomEffects.getMinecraftXpBonusMultiplier(player);
         if (multiplier > 1.0) {
             // Add bonus XP directly to the player
             int originalXp = event.getOrb().getValue();
@@ -225,7 +225,7 @@ public class ModEvents {
         if (instinctEffect == null) return;
 
         // Get crit chance based on amplifier
-        double critChance = ModMobEffects.InstinctEffect.getCritChance(instinctEffect.getAmplifier());
+        double critChance = com.azukaar.ass.trees.stats.MobEffects.InstinctEffect.getCritChance(instinctEffect.getAmplifier());
 
         // Roll for crit
         if (attacker.getRandom().nextDouble() < critChance) {

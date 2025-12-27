@@ -138,7 +138,7 @@ public class AzukaarSkillsStats
         modEventBus.addListener(this::registerCapabilities);
         
         ModAttributes.ATTRIBUTES.register(modEventBus);
-        ModMobEffects.MOB_EFFECTS.register(modEventBus);
+        ModMobEffects.registerAll(modEventBus);
 
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);

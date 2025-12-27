@@ -1,0 +1,9 @@
+{
+  "id": "azukaarskillsstats:farmer",
+  "display_name": "Farmer",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:wheat"
+  },
+  "background": "azukaarskillsstats:textures/gui/farmer_tree_bg.png"
+}
