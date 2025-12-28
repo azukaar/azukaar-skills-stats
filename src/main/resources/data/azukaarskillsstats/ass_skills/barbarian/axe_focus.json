@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:axe_focus",
+  "display_name": "Axe Focus",
+  "description": "Increased damages with axes",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:iron_axe"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 45.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

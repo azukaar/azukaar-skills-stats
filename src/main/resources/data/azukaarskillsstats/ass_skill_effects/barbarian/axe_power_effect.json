@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:axe_power",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:axe_power",
+      "description": "+1 damage per level with axes",
+      "data": {
+        "damage": {
+          "base": 1,
+          "type": "per_level",
+          "multiplier": 1
+        }
+      }
+    }
+  ]
+}

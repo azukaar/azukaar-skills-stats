@@ -1,0 +1,18 @@
+{
+  "skill": "azukaarskillsstats:powerful_strike",
+  "effects": [
+    {
+      "type": "potion",
+      "potion": "azukaarskillsstats:powerful_strike",
+      "amplifier": {
+        "base": 0,
+        "type": "per_level",
+        "multiplier": 1
+      },
+      "duration": {
+        "base": 600,
+        "type": "fixed"
+      }
+    }
+  ]
+}

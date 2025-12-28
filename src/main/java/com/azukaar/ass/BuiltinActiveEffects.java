@@ -10,5 +10,6 @@ public class BuiltinActiveEffects {
         // Register effects from each skill tree
         com.azukaar.ass.trees.stats.ActiveEffects.registerAll();
         com.azukaar.ass.trees.farmer.ActiveEffects.registerAll();
+        com.azukaar.ass.trees.barbarian.ActiveEffects.registerAll();
     }
 }

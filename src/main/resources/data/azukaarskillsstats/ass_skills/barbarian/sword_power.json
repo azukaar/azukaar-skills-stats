@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:sword_power",
+  "display_name": "Sword Power",
+  "description": "Increased damage with swords",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:diamond_sword"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 90.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

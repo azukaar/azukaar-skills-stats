@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:powerful_strike",
+  "display_name": "Powerful Strike",
+  "description": "Your next attack deals multiplied damage",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:iron_sword"
+  },
+  "cooldown": {
+    "base": 600
+  },
+  "position": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

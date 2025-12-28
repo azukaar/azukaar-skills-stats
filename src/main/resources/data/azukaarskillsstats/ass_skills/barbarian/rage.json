@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:rage",
+  "display_name": "Rage",
+  "description": "Enter a rage, increasing damage for 10 seconds",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:blaze_powder"
+  },
+  "cooldown": {
+    "base": 600
+  },
+  "position": {
+    "x": -45.0,
+    "y": 0.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

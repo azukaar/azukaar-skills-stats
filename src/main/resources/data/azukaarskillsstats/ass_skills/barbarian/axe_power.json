@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:axe_power",
+  "display_name": "Axe Power",
+  "description": "Increased damage with axes",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:diamond_axe"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 90.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

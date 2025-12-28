@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:iron_stomach",
+  "display_name": "Iron Stomach",
+  "description": "Eat raw meat safely without hunger or poison effects",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:rotten_flesh"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 0.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

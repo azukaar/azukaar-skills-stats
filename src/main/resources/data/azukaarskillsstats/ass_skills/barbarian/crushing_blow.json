@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:crushing_blow",
+  "display_name": "Crushing Blow",
+  "description": "Increased knockback and damage with axes",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:netherite_axe"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 135.0
+  },
+  "max_level": 2,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

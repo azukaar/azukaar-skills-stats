@@ -5,11 +5,11 @@
     {
       "type": "attribute_modifier",
       "attribute": "minecraft:generic.attack_damage",
-      "value": 0.5,
+      "value": 0.2,
       "operation": "add_value",
       "scaling": {
         "type": "per_level",
-        "multiplier": 0.5
+        "multiplier": 0.2
       }
     }
   ]

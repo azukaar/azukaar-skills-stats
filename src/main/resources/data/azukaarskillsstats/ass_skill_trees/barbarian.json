@@ -1,0 +1,9 @@
+{
+  "id": "azukaarskillsstats:barbarian",
+  "display_name": "Barbarian",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:netherite_axe"
+  },
+  "background": "azukaarskillsstats:textures/gui/barbarian_tree_bg.png"
+}

@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:crushing_blow",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:axe_power",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 30
+    }
+  ]
+}

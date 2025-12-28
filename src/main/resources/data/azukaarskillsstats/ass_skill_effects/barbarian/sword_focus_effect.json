@@ -1,0 +1,16 @@
+{
+  "skill": "azukaarskillsstats:sword_focus",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:sword_focus",
+      "description": "+3 damage with swords",
+      "data": {
+        "damage": {
+          "base": 3,
+          "type": "fixed"
+        }
+      }
+    }
+  ]
+}

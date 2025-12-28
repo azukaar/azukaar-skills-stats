@@ -4,6 +4,9 @@
 - Should +50% skills from farmer/barbarian
 - Should have a spawn animals
 - Should have a Harvest can harvest hsotiles skills
+- Make max hunger have as many point as max health?
+- Make all food regen health?
+- debuff in counterparts?
 
 ## **Core Philosophy:**
 **Beast Master** - Ultimate animal control and pack coordination  

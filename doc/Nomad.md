@@ -1,5 +1,8 @@
 # NOMAD *(Explorer → Movement & Traversal)*
 
+## TOdo
+ - a large leap (name?) skill that leaps (actually a tp) 1000 block in a direction
+
 ## **Overview**
 The Nomad tree focuses on enhanced mobility, teleportation abilities, portable utility, and exploration enhancement. It features five main progression paths with strategic Explorer Aspect gates and meaningful vulnerability windows that create dependency on defensive classes.
 

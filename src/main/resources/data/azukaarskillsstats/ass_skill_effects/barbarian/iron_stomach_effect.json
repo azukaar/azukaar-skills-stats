@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:iron_stomach",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:iron_stomach",
+      "description": "Eat raw meat safely"
+    }
+  ]
+}

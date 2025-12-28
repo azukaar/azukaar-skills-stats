@@ -166,6 +166,7 @@ public class AzukaarSkillsStats
         NeoForge.EVENT_BUS.register(ModEvents.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.farmer.TreeEvents.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.farmer.TreeCutter.class);
+        NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.barbarian.TreeEvents.class);
 
         BuiltinActiveEffects.registerAll();
 

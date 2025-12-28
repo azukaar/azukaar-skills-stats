@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:axe_focus",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:powerful_strike",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 10
+    }
+  ]
+}

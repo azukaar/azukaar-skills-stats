@@ -7,3 +7,4 @@
 - add requirements to trees
 - allow togglable passive type
 - zoom
+- level cost??

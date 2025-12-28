@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:sword_focus",
+  "display_name": "Sword Focus",
+  "description": "Increased damages with swords",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:iron_sword"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 45.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

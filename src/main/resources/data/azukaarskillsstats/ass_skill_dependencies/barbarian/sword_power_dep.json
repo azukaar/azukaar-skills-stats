@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:sword_power",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:sword_focus",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 20
+    }
+  ]
+}

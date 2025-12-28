@@ -1,0 +1,16 @@
+{
+  "skill": "azukaarskillsstats:axe_focus",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:axe_focus",
+      "description": "+3 damage with axes",
+      "data": {
+        "damage": {
+          "base": 3,
+          "type": "fixed"
+        }
+      }
+    }
+  ]
+}
