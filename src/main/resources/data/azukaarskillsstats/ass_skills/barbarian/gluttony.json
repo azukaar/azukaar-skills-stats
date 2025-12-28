@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:gluttony",
+  "display_name": "Gluttony",
+  "description": "Gain stacking Gluttony effect that drains hunger for power",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 45.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

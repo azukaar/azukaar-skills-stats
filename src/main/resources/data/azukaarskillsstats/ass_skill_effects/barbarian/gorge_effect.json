@@ -1,0 +1,11 @@
+{
+  "skill": "azukaarskillsstats:gorge",
+  "name": "Gorge",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:gorge",
+      "description": "Instantly fill hunger bar from inventory"
+    }
+  ]
+}

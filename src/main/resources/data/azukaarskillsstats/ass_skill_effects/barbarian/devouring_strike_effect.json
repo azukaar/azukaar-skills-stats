@@ -1,16 +1,15 @@
 {
-  "skill": "azukaarskillsstats:rage",
+  "skill": "azukaarskillsstats:devouring_strike",
   "effects": [
     {
       "type": "potion",
-      "potion": "azukaarskillsstats:rage",
+      "potion": "azukaarskillsstats:devouring_strike",
       "amplifier": {
         "base": 0,
-        "type": "per_level",
-        "multiplier": 1
+        "type": "fixed"
       },
       "duration": {
-        "base": 200,
+        "base": 600,
         "type": "fixed"
       }
     }

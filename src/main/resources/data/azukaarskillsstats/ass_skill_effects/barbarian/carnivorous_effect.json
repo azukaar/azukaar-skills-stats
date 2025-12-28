@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:carnivorous",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:carnivorous",
+      "description": "Meat grants Carnivorous effect"
+    }
+  ]
+}

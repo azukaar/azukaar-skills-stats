@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:quick_eating",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:quick_eating",
+      "description": "Instant food consumption"
+    }
+  ]
+}

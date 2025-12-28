@@ -4,7 +4,7 @@
     {
       "type": "custom_attribute_modifier",
       "attribute": "azukaarskillsstats:crushing_blow",
-      "description": "+1 knockback and +1 damage per level with axes",
+      "description": "+1 knockback and +1 damage per level with axes, -1 damage with swords",
       "data": {
         "damage": {
           "base": 1,
@@ -12,6 +12,11 @@
           "multiplier": 1
         },
         "knockback": {
+          "base": 1,
+          "type": "per_level",
+          "multiplier": 1
+        },
+        "sword_penalty": {
           "base": 1,
           "type": "per_level",
           "multiplier": 1

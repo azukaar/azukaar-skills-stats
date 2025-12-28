@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:devouring_strike",
+  "display_name": "Devouring Strike",
+  "description": "Consume all Gluttony stacks to deal massive damage",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:netherite_axe"
+  },
+  "cooldown": {
+    "base": 1200
+  },
+  "position": {
+    "x": 135.0,
+    "y": 45.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

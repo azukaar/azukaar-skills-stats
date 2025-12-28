@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:meat_lover",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:meat_lover",
+      "description": "Meat restores 50% more hunger"
+    }
+  ]
+}

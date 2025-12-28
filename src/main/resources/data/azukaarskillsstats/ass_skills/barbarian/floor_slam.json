@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:floor_slam",
+  "display_name": "Floor Slam",
+  "description": "Slam the ground with your axe, damaging all nearby enemies",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:netherite_axe"
+  },
+  "cooldown": {
+    "base": 200
+  },
+  "position": {
+    "x": -60.0,
+    "y": -225.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

@@ -172,6 +172,17 @@ public class AssCommand {
                         Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
                         return respecForTargets(context, targets);
                     })))
+
+            // Effects commands
+            .then(Commands.literal("effects")
+                // /ass effects clear [player]
+                .then(Commands.literal("clear")
+                    .executes(context -> clearEffects(context, context.getSource().getPlayerOrException()))
+                    .then(Commands.argument("targets", EntityArgument.players())
+                        .executes(context -> {
+                            Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                            return clearEffectsForTargets(context, targets);
+                        }))))
         );
     }
 
@@ -435,5 +446,20 @@ public class AssCommand {
         if (provider != null) {
             provider.syncToClient(player);
         }
+    }
+
+    // Effects command implementations
+    private static int clearEffects(CommandContext<CommandSourceStack> context, ServerPlayer player) {
+        ModEvents.clearAllModEffects(player);
+        context.getSource().sendSuccess(() -> Component.literal("Cleared all mod effects from " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int clearEffectsForTargets(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            ModEvents.clearAllModEffects(target);
+        }
+        context.getSource().sendSuccess(() -> Component.literal("Cleared mod effects from " + targets.size() + " players"), true);
+        return targets.size();
     }
 }

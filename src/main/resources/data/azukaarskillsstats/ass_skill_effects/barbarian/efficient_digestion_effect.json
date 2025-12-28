@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:efficient_digestion",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:efficient_digestion",
+      "description": "Reduces Gluttony hunger drain",
+      "data": {
+        "reduction": {
+          "base": 0,
+          "type": "per_level",
+          "multiplier": 0.10
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:parry",
+  "display_name": "Parry",
+  "description": "10% chance per level to block attacks when holding a sword, +1 damage with swords",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:shield"
+  },
+  "position": {
+    "x": 60.0,
+    "y": -180.0
+  },
+  "max_level": 2,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

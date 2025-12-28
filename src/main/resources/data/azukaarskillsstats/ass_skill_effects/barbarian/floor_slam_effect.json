@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:floor_slam",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:floor_slam",
+      "description": "Slam the ground with your axe, damaging all nearby enemies"
+    }
+  ]
+}

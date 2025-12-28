@@ -7,8 +7,8 @@
     "item": "minecraft:diamond_axe"
   },
   "position": {
-    "x": -45.0,
-    "y": 90.0
+    "x": -60.0,
+    "y": -135.0
   },
   "max_level": 3,
   "skill_tree": "azukaarskillsstats:barbarian"

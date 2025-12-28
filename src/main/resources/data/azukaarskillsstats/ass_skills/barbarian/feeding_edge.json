@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:feeding_edge",
+  "display_name": "Feeding Edge",
+  "description": "Sharpness/Power enchantment levels multiplied by Gluttony level while Carnivorous",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:enchanted_book"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 45.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

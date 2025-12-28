@@ -19,10 +19,16 @@ public class ModMobEffects {
         com.azukaar.ass.trees.farmer.MobEffects.ANIMAL_WHISPERER;
 
     // Re-export from barbarian tree
-    public static final DeferredHolder<MobEffect, MobEffect> RAGE =
-        com.azukaar.ass.trees.barbarian.MobEffects.RAGE;
     public static final DeferredHolder<MobEffect, MobEffect> POWERFUL_STRIKE =
         com.azukaar.ass.trees.barbarian.MobEffects.POWERFUL_STRIKE;
+    public static final DeferredHolder<MobEffect, MobEffect> DEVOURING_STRIKE =
+        com.azukaar.ass.trees.barbarian.MobEffects.DEVOURING_STRIKE;
+    public static final DeferredHolder<MobEffect, MobEffect> GLUTTONY =
+        com.azukaar.ass.trees.barbarian.MobEffects.GLUTTONY;
+    public static final DeferredHolder<MobEffect, MobEffect> EXHAUSTED =
+        com.azukaar.ass.trees.barbarian.MobEffects.EXHAUSTED;
+    public static final DeferredHolder<MobEffect, MobEffect> CARNIVOROUS =
+        com.azukaar.ass.trees.barbarian.MobEffects.CARNIVOROUS;
 
     /**
      * Register all mob effects from all trees

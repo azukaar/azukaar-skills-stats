@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:carnivorous",
+  "display_name": "Carnivorous",
+  "description": "Meat from Gorge/Auto-Feed grants Carnivorous effect, reducing Gluttony drain by 50%",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:cooked_beef"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 180.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

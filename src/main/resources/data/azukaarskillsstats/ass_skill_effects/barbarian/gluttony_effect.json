@@ -1,0 +1,11 @@
+{
+  "skill": "azukaarskillsstats:gluttony",
+  "name": "Gluttony",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:gluttony",
+      "description": "Gain a stack of Gluttony, consuming hunger for power"
+    }
+  ]
+}

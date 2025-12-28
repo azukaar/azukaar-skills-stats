@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:efficient_digestion",
+  "display_name": "Efficient Digestion",
+  "description": "Reduces Gluttony hunger drain by 10% per level",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:bowl"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 90.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

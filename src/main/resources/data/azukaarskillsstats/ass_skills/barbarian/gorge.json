@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:gorge",
+  "display_name": "Gorge",
+  "description": "Instantly fill your hunger bar from inventory food",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:cake"
+  },
+  "cooldown": {
+    "base": 600
+  },
+  "position": {
+    "x": -45.0,
+    "y": 135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

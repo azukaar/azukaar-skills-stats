@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:floor_slam",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:crushing_blow",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 40
+    }
+  ]
+}

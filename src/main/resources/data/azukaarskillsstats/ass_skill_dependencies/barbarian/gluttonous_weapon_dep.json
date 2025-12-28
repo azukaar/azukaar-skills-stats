@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:gluttonous_weapon",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:feeding_edge",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 30
+    }
+  ]
+}

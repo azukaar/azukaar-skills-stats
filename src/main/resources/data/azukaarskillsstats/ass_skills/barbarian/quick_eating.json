@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:quick_eating",
+  "display_name": "Quick Eating",
+  "description": "Eat food instantly with no animation delay",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:cooked_beef"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

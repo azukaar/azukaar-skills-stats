@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:giant_sweep",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:parry",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 40
+    }
+  ]
+}

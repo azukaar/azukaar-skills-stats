@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:meat_lover",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:efficient_digestion",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 30
+    }
+  ]
+}

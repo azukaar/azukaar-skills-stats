@@ -19,6 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -27,6 +28,12 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class ModEvents {
     private static final int XP_REWARD = 10;
+
+    // Track effects we're intentionally removing (to bypass milk protection)
+    private static final java.util.Set<String> pendingRemovals = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
+    // Flag to temporarily allow ALL effect removals (for /ass effects clear command)
+    private static boolean allowAllRemovals = false;
     
     // Initialize event handlers
     public static void init() {
@@ -234,5 +241,53 @@ public class ModEvents {
             event.setAmount(newDamage);
             AzukaarSkillsStats.LOGGER.debug("Instinct crit! Damage increased to {}", newDamage);
         }
+    }
+
+    /**
+     * Prevent milk from removing mod effects.
+     * All effects from this mod are protected from milk bucket removal.
+     */
+    @SubscribeEvent
+    public static void onEffectRemove(MobEffectEvent.Remove event) {
+        var effectKey = event.getEffect().getRegisteredName();
+
+        // Protect all effects from our mod (unless we're intentionally removing them)
+        if (effectKey != null && effectKey.startsWith(AzukaarSkillsStats.MODID + ":")) {
+            // Allow if global clear flag is set
+            if (allowAllRemovals) {
+                return;
+            }
+
+            // Allow if this specific effect was marked for removal
+            String removalKey = event.getEntity().getUUID() + ":" + effectKey;
+            if (pendingRemovals.remove(removalKey)) {
+                return;
+            }
+
+            event.setCanceled(true);
+        }
+    }
+
+    /**
+     * Safely remove a mod effect, bypassing milk protection.
+     * Use this instead of player.removeEffect() for mod effects.
+     */
+    public static void removeModEffect(Player player, net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.effect.MobEffect, net.minecraft.world.effect.MobEffect> effect) {
+        String effectKey = effect.getId().toString();
+        String removalKey = player.getUUID() + ":" + effectKey;
+        pendingRemovals.add(removalKey);
+        player.removeEffect(effect);
+    }
+
+    /**
+     * Clear all mod effects from a player, bypassing milk protection.
+     */
+    public static void clearAllModEffects(Player player) {
+        allowAllRemovals = true;
+        player.removeAllEffects();
+        // Reset flag on next tick after events have processed
+        player.level().getServer().execute(() -> {
+            allowAllRemovals = false;
+        });
     }
 }

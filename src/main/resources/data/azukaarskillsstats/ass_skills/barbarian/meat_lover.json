@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:meat_lover",
+  "display_name": "Meat Lover",
+  "description": "Meat restores 50% more hunger",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:cooked_porkchop"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

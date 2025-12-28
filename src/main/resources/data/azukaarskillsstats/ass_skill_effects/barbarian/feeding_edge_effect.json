@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:feeding_edge",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:feeding_edge",
+      "description": "Sharpness/Power levels multiplied by Gluttony level while Carnivorous"
+    }
+  ]
+}

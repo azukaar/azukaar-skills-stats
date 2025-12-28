@@ -18,7 +18,17 @@ public class CustomEffects {
                  "azukaarskillsstats:sword_focus",
                  "azukaarskillsstats:axe_power",
                  "azukaarskillsstats:sword_power",
-                 "azukaarskillsstats:crushing_blow" -> true;
+                 "azukaarskillsstats:crushing_blow",
+                 "azukaarskillsstats:parry",
+                 "azukaarskillsstats:quick_eating",
+                 "azukaarskillsstats:efficient_digestion",
+                 "azukaarskillsstats:meat_lover",
+                 "azukaarskillsstats:carnivorous",
+                 "azukaarskillsstats:gorge",
+                 "azukaarskillsstats:feeding_edge",
+                 "azukaarskillsstats:gluttonous_weapon",
+                 "azukaarskillsstats:floor_slam",
+                 "azukaarskillsstats:giant_sweep" -> true;
             default -> false;
         };
     }

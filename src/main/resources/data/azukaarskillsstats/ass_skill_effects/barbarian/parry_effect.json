@@ -1,11 +1,16 @@
 {
-  "skill": "azukaarskillsstats:sword_power",
+  "skill": "azukaarskillsstats:parry",
   "effects": [
     {
       "type": "custom_attribute_modifier",
-      "attribute": "azukaarskillsstats:sword_power",
-      "description": "+1 damage per level with swords, -1 damage with axes",
+      "attribute": "azukaarskillsstats:parry",
+      "description": "10% block chance per level with swords, +1 damage, -1 axe damage",
       "data": {
+        "block_chance": {
+          "base": 0.1,
+          "type": "per_level",
+          "multiplier": 0.1
+        },
         "damage": {
           "base": 1,
           "type": "per_level",

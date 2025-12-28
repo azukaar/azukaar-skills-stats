@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:giant_sweep",
+  "display_name": "Giant Sweep",
+  "description": "Sweep your sword in a wide arc, hitting all enemies in front of you",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:netherite_sword"
+  },
+  "cooldown": {
+    "base": 200
+  },
+  "position": {
+    "x": 60.0,
+    "y": -225.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

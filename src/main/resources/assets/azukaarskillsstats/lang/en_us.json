@@ -7,5 +7,17 @@
   "effect.azukaarskillsstats.animal_whisperer": "Animal Whisperer",
   "effect.azukaarskillsstats.animal_whisperer.description": "Attracts nearby passive animals",
   "effect.azukaarskillsstats.foragers_appetite": "Forager's Appetite",
-  "effect.azukaarskillsstats.foragers_appetite.description": "Seeds become edible"
+  "effect.azukaarskillsstats.foragers_appetite.description": "Seeds become edible",
+  "effect.azukaarskillsstats.rage": "Rage",
+  "effect.azukaarskillsstats.rage.description": "Increased attack damage",
+  "effect.azukaarskillsstats.powerful_strike": "Powerful Strike",
+  "effect.azukaarskillsstats.powerful_strike.description": "Next attack deals bonus damage",
+  "effect.azukaarskillsstats.gluttony": "Gluttony",
+  "effect.azukaarskillsstats.gluttony.description": "Drains hunger for power bonuses",
+  "effect.azukaarskillsstats.exhausted": "Exhausted",
+  "effect.azukaarskillsstats.exhausted.description": "Cannot use Gluttony abilities",
+  "effect.azukaarskillsstats.carnivorous": "Carnivorous",
+  "effect.azukaarskillsstats.carnivorous.description": "Gluttony consumes 50% less hunger",
+  "effect.azukaarskillsstats.devouring_strike": "Devouring Strike",
+  "effect.azukaarskillsstats.devouring_strike.description": "Next attack consumes Gluttony for massive damage"
 }

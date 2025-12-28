@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:parry",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:sword_power",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 30
+    }
+  ]
+}

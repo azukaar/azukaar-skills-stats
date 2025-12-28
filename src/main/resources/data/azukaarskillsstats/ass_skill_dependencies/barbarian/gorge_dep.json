@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:gorge",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:quick_eating",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 30
+    }
+  ]
+}

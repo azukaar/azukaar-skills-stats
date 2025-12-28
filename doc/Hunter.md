@@ -7,6 +7,7 @@
 - Make max hunger have as many point as max health?
 - Make all food regen health?
 - debuff in counterparts?
+- Gluttony X ?
 
 ## **Core Philosophy:**
 **Beast Master** - Ultimate animal control and pack coordination  

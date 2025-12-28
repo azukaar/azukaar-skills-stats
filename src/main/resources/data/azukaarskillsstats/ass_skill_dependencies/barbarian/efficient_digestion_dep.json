@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:efficient_digestion",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:gluttony",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 20
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:giant_sweep",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:giant_sweep",
+      "description": "Sweep your sword in a wide arc, hitting all enemies in front of you"
+    }
+  ]
+}

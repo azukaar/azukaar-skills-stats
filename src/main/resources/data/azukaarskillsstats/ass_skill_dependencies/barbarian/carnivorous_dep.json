@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:carnivorous",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:meat_lover",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 40
+    }
+  ]
+}

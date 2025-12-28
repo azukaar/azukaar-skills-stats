@@ -9,15 +9,9 @@
 
 ## **Entry Skills** *(No Aspect Requirements)*
 
-### **Rage** 1sp, max 3)
-- **Effect:** +100% damage for 10 seconds (3min cooldown)
-- **Max Benefit:** +300% damage at level 3
-- **Purpose:** Foundation burst damage ability
-- **Type:** Active
-
 ### **Powerful Strike** (1sp, max 3)
-- **Effect:** Next attack's damage multiplied by (level+1) (30sec cooldown)
-- **Max Benefit:** ×4 damage at level 3
+- **Effect:** Next attack's damage multiplied by +50% per level (30sec cooldown)
+- **Max Benefit:** ×2 damage at level 3
 - **Purpose:** Single-hit burst damage
 - **Type:** Active
 
@@ -33,7 +27,7 @@
 ### **Gluttony** (2sp, max 5)
 - **Prerequisite:** Iron Stomach
 - **Aspect Requirement:** Warrior 10
-- **Effect:** Active — Gain a stack of Glutony (potion effect, infinite time). Glutony consumes your hunger (1 food per 5 sec at level I, 1 food per sec at level 5). Activate once for level I, and more for subsequent levels until max stack number (which depends on level).
+- **Effect:** Active — Gain a stack of Glutony (potion effect, infinite time). Glutony consumes your hunger (1 food per 5 sec at level I, 1 food per sec at level 5). Activate once for level I, and more for subsequent levels until max stack number (which depends on level). +10% damage per level
 - **Max Benefit:** Gluttony V
 - **Type:** Active
 - **Purpose:** Core resource mechanic for the entire tree
@@ -60,44 +54,42 @@
 ### **Efficient Digestion** (2sp, max 3)
 - **Prerequisite:** Gluttony
 - **Aspect Requirement:** Warrior 20
-- **Effect:** Reduces gluttony passive hunger usage (20% per level)
-- **Max Benefit:** 60% reduced hunger cost
+- **Effect:** Reduces gluttony passive hunger usage (10% per level)
+- **Max Benefit:** 30% reduced hunger cost
 - **Type:** Passive
 
-### **Meat Lover** (1sp, max 3)
+### **Meat Lover** (2sp)
 - **Prerequisite:** Efficient Digestion
 - **Aspect Requirement:** Warrior 30
-- **Effect:** Meat restores +50% more hunger per level
-- **Max Benefit:** +150% hunger from meat
+- **Effect:** Meat restores +50% more hunger
 - **Type:** Passive
 
 ### **Carnivorous** (3sp)
 - **Prerequisite:** Meat Lover
 - **Aspect Requirement:** Warrior 40
-- **Effect:** Meat consumed by Gorge or Auto-Feed grants Carnivorous buff — 2× Gluttony efficiency
+- **Effect:** Meat consumed by Gorge or Auto-Feed grants Carnivorous  (30 sec potion effect) — Gluttony consume another 50% less food
 - **Type:** Passive
 - **Purpose:** Synergy with Hunter's meat production
 
 ### **Feeding Edge** (2sp)
 - **Prerequisite:** Gluttony
 - **Aspect Requirement:** Warrior 20
-- **Effect:** Sharpness/Power enchantment levels multiplied by Gluttony level
+- **Effect:** Sharpness/Power enchantment levels multiplied by Gluttony level while Carnivorous
 - **Type:** Passive
 - **Purpose:** Direct damage scaling from Gluttony
 
 ### **Gluttonous Weapon** (2sp, max 3)
 - **Prerequisite:** Feeding Edge
 - **Aspect Requirement:** Warrior 30
-- **Effect:** Restore hunger on kill
-- **Max Benefit:** Significant hunger restored per kill
+- **Effect:** Restore hunger on kill while Carnivorous
+- **Max Benefit:**: 2 hunger points restored per kill
 - **Type:** Passive
-- **Purpose:** Sustain loop — killing feeds Gluttony
 
 ### **Devouring Strike** (4sp)
 - **Prerequisite:** Gluttonous Weapon
 - **Aspect Requirement:** Warrior 50
-- **Effect:** Consume ALL Gluttony stacks — deal ×5 damage per stack consumed. Causes Exhausted for 5 minutes. Cannot use while Exhausted.
-- **Max Damage:** ×25 at Gluttony V
+- **Effect:** Consume ALL Gluttony stacks — deal +2 mult damage per stack consumed (when Gluttony is consummed, apply all the debufs as if it normally expired).
+- **Max Damage:** x10 at Gluttony V
 - **Type:** Active
 - **Purpose:** Ultimate burst finisher
 
@@ -114,18 +106,18 @@
 ### **Axe Power** (1sp, max 3)
 - **Prerequisite:** Axe Focus
 - **Aspect Requirement:** Warrior 20
-- **Effect:** +1 damage per level with axes
+- **Effect:** +1 damage per level with axes, -1 damage with swords
 - **Max Benefit:** +3 additional damage
 - **Type:** Passive
 
 ### **Crushing Blow** (2sp, max 2)
 - **Prerequisite:** Axe Power
 - **Aspect Requirement:** Warrior 30
-- **Effect:** +1 knockback and +1 damage per level with axes
+- **Effect:** +1 knockback and +1 damage per level with axes, -1 damage with swords
 - **Max Benefit:** +2 knockback
 - **Type:** Passive
 
-### **Floor Slam** (4sp)
+### **Floor Slam** (4sp, 3 levels)
 - **Prerequisite:** Crushing Blow
 - **Aspect Requirement:** Warrior 40
 - **Effect:** AoE ground pound attack — damages all enemies in radius
@@ -145,18 +137,18 @@
 ### **Sword Power** (1sp, max 3)
 - **Prerequisite:** Sword Focus
 - **Aspect Requirement:** Warrior 20
-- **Effect:** +1 damage per level with swords
+- **Effect:** +1 damage per level with swords, -1 damage with axes
 - **Max Benefit:** +3 additional damage
 - **Type:** Passive
 
 ### **Parry** (2sp, max 2)
 - **Prerequisite:** Sword Power
 - **Aspect Requirement:** Warrior 30
-- **Effect:** 10% Chance to block incoming attacks per level when holdin a sword and +1 damage with sword
+- **Effect:** 10% Chance to block incoming attacks per level when holdin a sword and +1 damage with sword, -1 damage with axes
 - **Max Benefit:** 20% block chance
 - **Type:** Passive
 
-### **Giant Sweep** (4sp)
+### **Giant Sweep** (4sp, 3 levels)
 - **Prerequisite:** Parry
 - **Aspect Requirement:** Warrior 40
 - **Effect:** Wide arc attack — hits all enemies in front of you
@@ -168,7 +160,7 @@
 ## **Dominance Branch**
 
 ### **Intimidating Presence** (2sp)
-- **Prerequisite:** Rage
+- **Prerequisite:** Powerful Strike
 - **Aspect Requirement:** Warrior 10
 - **Effect:** Kills apply Fear effect to nearby mobs (30sec cooldown)
 - **Type:** Passive
@@ -194,7 +186,7 @@
 ### **Berserker** (2sp, max 5)
 - **Prerequisite:** Intimidating Presence
 - **Aspect Requirement:** Warrior 30
-- **Effect:** When Gluttony ends (food depleted), gain +200% damage per level for 10 seconds, then become Exhausted
+- **Effect:** When Gluttony ends (food depleted), gain +200% damage per level for 10 seconds before becoming exhausted
 - **Max Benefit:** +1000% damage
 - **Type:** Passive (triggers automatically)
 - **Purpose:** Emergency fallback when food runs out
@@ -291,7 +283,7 @@ The Barbarian + Farmer pairing feeds into Hunter paragon:
 - Devouring Strike: 4 SP
 
 *Dominance (15 SP):*
-- Rage (1 level): 2 SP
+- Powerful Strike (1 level): 2 SP
 - Intimidating Presence: 2 SP
 - Berserker (1 level): 2 SP
 - Second Wind: 3 SP
@@ -302,8 +294,7 @@ The Barbarian + Farmer pairing feeds into Hunter paragon:
 
 ### **Full Tree Investment: ~85 SP**
 
-*Entry (6 SP):*
-- Rage (3): 6 SP
+*Entry (10 SP):*
 - Powerful Strike (3): 3 SP
 - Iron Stomach: 1 SP
 

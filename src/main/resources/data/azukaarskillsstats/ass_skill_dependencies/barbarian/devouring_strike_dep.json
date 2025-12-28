@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:devouring_strike",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:gluttonous_weapon",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 50
+    }
+  ]
+}

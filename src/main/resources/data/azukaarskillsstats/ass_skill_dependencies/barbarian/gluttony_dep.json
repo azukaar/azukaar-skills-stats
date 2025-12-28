@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:gluttony",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:iron_stomach",
+      "level": 1
+    },
+    {
+      "aspect": "warrior",
+      "level": 10
+    }
+  ]
+}
