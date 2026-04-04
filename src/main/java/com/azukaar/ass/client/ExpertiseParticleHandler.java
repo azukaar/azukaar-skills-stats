@@ -1,5 +1,7 @@
 package com.azukaar.ass.client;
 
+import com.azukaar.ass.SkillDataManager;
+import com.azukaar.ass.api.AspectDefinition;
 import com.azukaar.ass.api.events.ExperienceGainedEvent;
 import com.azukaar.ass.capabilities.IPlayerSkills;
 import com.azukaar.ass.client.particles.OrbParticle;
@@ -48,7 +50,7 @@ public class ExpertiseParticleHandler {
     
     @SubscribeEvent
     public static void onExpertiseGain(ExperienceGainedEvent.Post event) {
-        if (event.getAmount() <= 0 || event.getExpertisePath() == IPlayerSkills.MAIN) {
+        if (event.getAmount() <= 0 || IPlayerSkills.MAIN.equals(event.getExpertisePath())) {
             return; // No XP gained
         }
         
@@ -176,12 +178,11 @@ public class ExpertiseParticleHandler {
     
     // Helper method to get base color based on expertise path
     private static int getColorForPath(String path) {
-        return switch(path) {
-            case IPlayerSkills.WARRIOR_PATH -> 0xFF5555; // Red
-            case IPlayerSkills.MINER_PATH -> 0x55FF55;  // Green
-            case IPlayerSkills.EXPLORER_PATH -> 0x55FFFF; // Cyan
-            default -> 0xFFFF55; // Yellow (default XP color)
-        };
+        AspectDefinition aspect = SkillDataManager.INSTANCE.getAspect(path);
+        if (aspect != null) {
+            return aspect.getColor();
+        }
+        return 0xFFFF55; // Yellow (default XP color)
     }
     
     // Data class to hold orb properties

@@ -164,28 +164,40 @@ public class AzukaarSkillsStats
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         
         NeoForge.EVENT_BUS.register(ModEvents.class);
+        NeoForge.EVENT_BUS.register(com.azukaar.ass.aspect.CombatAspect.class);
+        NeoForge.EVENT_BUS.register(com.azukaar.ass.aspect.ExplorationAspect.class);
+        NeoForge.EVENT_BUS.register(com.azukaar.ass.aspect.MiningAspect.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.farmer.TreeEvents.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.farmer.TreeCutter.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.barbarian.TreeEvents.class);
 
+        com.azukaar.ass.api.AspectTypeRegistry.register(new com.azukaar.ass.aspect.CombatAspect());
+        com.azukaar.ass.api.AspectTypeRegistry.register(new com.azukaar.ass.aspect.MiningAspect());
+        com.azukaar.ass.api.AspectTypeRegistry.register(new com.azukaar.ass.aspect.ExplorationAspect());
+
         BuiltinActiveEffects.registerAll();
 
         // // Debug values
-        // System.out.println("Level from 150 XP: " + PlayerPath.getLevelFromXp(150));
-        // System.out.println("Level from 300 XP: " + PlayerPath.getLevelFromXp(300));
-        // System.out.println("Level from 500 XP: " + PlayerPath.getLevelFromXp(500));
-        // System.out.println("Level from 1000 XP: " + PlayerPath.getLevelFromXp(1000));
+        // System.out.println("Level from 150 XP: " + IPlayerSkills.getLevelFromXp(150));
+        // System.out.println("Level from 300 XP: " + IPlayerSkills.getLevelFromXp(300));
+        // System.out.println("Level from 500 XP: " + IPlayerSkills.getLevelFromXp(500));
+        // System.out.println("Level from 1000 XP: " + IPlayerSkills.getLevelFromXp(1000));
 
-        // System.out.println("XP for lvl1: " + PlayerPath.getTotalXpForLevel(1));
-        // System.out.println("XP for lvl2: " + PlayerPath.getTotalXpForLevel(2));
-        // System.out.println("XP for lvl5: " + PlayerPath.getTotalXpForLevel(5));
-        // System.out.println("XP for lvl10: " + PlayerPath.getTotalXpForLevel(10));
-        // System.out.println("XP for lvl20: " + PlayerPath.getTotalXpForLevel(20));
+        System.out.println("XP for lvl1: " + IPlayerSkills.getTotalXpForLevel(1));
+        System.out.println("XP for lvl2: " + IPlayerSkills.getTotalXpForLevel(2));
+        System.out.println("XP for lvl5: " + IPlayerSkills.getTotalXpForLevel(5));
+        System.out.println("XP for lvl7: " + IPlayerSkills.getTotalXpForLevel(7));
+        System.out.println("XP for lvl10: " + IPlayerSkills.getTotalXpForLevel(10));
+        System.out.println("XP for lvl15: " + IPlayerSkills.getTotalXpForLevel(15));
+        System.out.println("XP for lvl20: " + IPlayerSkills.getTotalXpForLevel(20));
+        System.out.println("XP for lvl30: " + IPlayerSkills.getTotalXpForLevel(30));
+        System.out.println("XP for lvl50: " + IPlayerSkills.getTotalXpForLevel(50));
+
         /*
 
         int i = 0;
         while(i < 150) {
-            System.out.println(i + "," + PlayerPath.getTotalXpForLevel(i) + 
+            System.out.println(i + "," + IPlayerSkills.getTotalXpForLevel(i) + 
                "," + PlayerManager.getPlayerMainLevel(i) +
                "," + PlayerManager.getPlayerMainLevel(i* 2) +
                "," + PlayerManager.getPlayerMainLevel(i * 3) +

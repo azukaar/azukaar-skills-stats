@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.azukaar.ass.api.PlayerData;
-import com.azukaar.ass.capabilities.IPlayerSkills;
 import com.azukaar.ass.capabilities.PlayerSkillsProvider;
 
 import net.minecraft.nbt.CompoundTag;
@@ -14,21 +12,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class ModEvents {
-    private static final int XP_REWARD = 10;
-
     // Track effects we're intentionally removing (to bypass milk protection)
     private static final java.util.Set<String> pendingRemovals = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
@@ -97,41 +90,6 @@ public class ModEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        Player player = event.getPlayer();
-        BlockState block = event.getState();
-        double durability = block.getDestroySpeed(player.level(), event.getPos());
-        double rew = (int)(durability * 4);
-
-        // check if right tool for the block's loot
-        boolean isCorrectTool = block.canHarvestBlock(event.getLevel(), event.getPos(), player);
-
-        if (player != null && !player.level().isClientSide() && isCorrectTool) {
-            // Award mining XP when breaking any block
-            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-            if (server != null) {
-                PlayerData.addExperience(IPlayerSkills.MINER_PATH, rew, player, event.getPos().getCenter());
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onEntityDamage(LivingDamageEvent.Post event) {
-        // Check if damage source is a player
-        if (event.getSource().getEntity() instanceof Player attacker && 
-            !attacker.level().isClientSide()) {
-            
-            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-            if (server != null) {
-                // PlayerManager playerManager = PlayerManager.load(server);
-
-                // Award warrior XP for direct melee hits
-                // playerManager.addPlayerExperience(IPlayerSkills., XP_REWARD, attacker, event.getEntity().getPosition(1));
-            }
-        }
-    }
-    
     @SubscribeEvent
     public static void onBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();

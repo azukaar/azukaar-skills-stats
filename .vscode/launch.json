@@ -12,11 +12,11 @@
       "projectName": "azukaar-skills-stats",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\clientRunProgramArgs.txt"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\clientRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\clientRunVmArgs.txt",
-        "-Dfml.modFolders\u003dazukaarskillsstats%%D:\\work\\azukaar-skills-stats\\bin\\main"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dazukaarskillsstats%%E:\\work\\azukaar-skills-stats\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -34,11 +34,11 @@
       "projectName": "azukaar-skills-stats",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\dataRunProgramArgs.txt"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\dataRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\dataRunVmArgs.txt",
-        "-Dfml.modFolders\u003dazukaarskillsstats%%D:\\work\\azukaar-skills-stats\\bin\\main"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dazukaarskillsstats%%E:\\work\\azukaar-skills-stats\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -56,11 +56,11 @@
       "projectName": "azukaar-skills-stats",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\gameTestServerRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\gameTestServerRunVmArgs.txt",
-        "-Dfml.modFolders\u003dazukaarskillsstats%%D:\\work\\azukaar-skills-stats\\bin\\main"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dazukaarskillsstats%%E:\\work\\azukaar-skills-stats\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -78,11 +78,11 @@
       "projectName": "azukaar-skills-stats",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\serverRunProgramArgs.txt"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\serverRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\work\\azukaar-skills-stats\\build\\moddev\\serverRunVmArgs.txt",
-        "-Dfml.modFolders\u003dazukaarskillsstats%%D:\\work\\azukaar-skills-stats\\bin\\main"
+        "@E:\\work\\azukaar-skills-stats\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dazukaarskillsstats%%E:\\work\\azukaar-skills-stats\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},

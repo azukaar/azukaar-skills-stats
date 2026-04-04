@@ -8,6 +8,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
+import com.azukaar.ass.api.AspectDefinition;
+import com.azukaar.ass.api.AspectType;
+import com.azukaar.ass.api.AspectTypeRegistry;
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.types.DependencyData;
 import com.azukaar.ass.types.Prerequisite;
@@ -36,6 +39,7 @@ public class SkillDataManager implements PreparableReloadListener {
     private final Map<ResourceLocation, Skill> skills = new HashMap<>();
     private final Map<String, SkillTree> skillTrees = new HashMap<>();
     private final Map<String, SkillEffect> skillEffects = new HashMap<>();
+    private final Map<String, AspectDefinition> aspects = new HashMap<>();
     
     @Override
     public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager resourceManager,
@@ -47,21 +51,24 @@ public class SkillDataManager implements PreparableReloadListener {
             skills.clear();
             skillTrees.clear();
             skillEffects.clear();
-            
+            aspects.clear();
+
             // Load all data
             loadSkillTrees(resourceManager);
             loadSkills(resourceManager);
             loadDependencies(resourceManager);
             loadSkillEffects(resourceManager);
-            
+            loadAspects(resourceManager);
+
             return null;
         }, backgroundExecutor).thenCompose(barrier::wait).thenRunAsync(() -> {
             // Build final skill trees on main thread
             buildSkillTrees();
-            
+            initializeAspects();
+
             // Log completion
-            AzukaarSkillsStats.LOGGER.info("Loaded {} skills across {} skill trees", 
-                       skills.size(), skillTrees.size());
+            AzukaarSkillsStats.LOGGER.info("Loaded {} skills across {} skill trees, {} aspects",
+                       skills.size(), skillTrees.size(), aspects.size());
         }, gameExecutor);
     }
     
@@ -291,6 +298,57 @@ public class SkillDataManager implements PreparableReloadListener {
         return skillEffect != null && skillEffect.getEffects() != null && !skillEffect.getEffects().isEmpty();
     }
     
+    // --- Aspect loading and management ---
+
+    private void loadAspects(ResourceManager resourceManager) {
+        Map<ResourceLocation, List<Resource>> aspectResources =
+            resourceManager.listResourceStacks("ass_aspects", path -> path.getPath().endsWith(".json"));
+
+        for (Map.Entry<ResourceLocation, List<Resource>> entry : aspectResources.entrySet()) {
+            ResourceLocation resourceLocation = entry.getKey();
+            List<Resource> resources = entry.getValue();
+
+            if (!resources.isEmpty()) {
+                Resource resource = resources.get(resources.size() - 1);
+
+                try (Reader reader = resource.openAsReader()) {
+                    AspectDefinition aspect = GSON.fromJson(reader, AspectDefinition.class);
+                    aspect.postDeserialize();
+                    aspects.put(aspect.getId(), aspect);
+                    AzukaarSkillsStats.LOGGER.debug("Loaded aspect: {}", aspect.getId());
+                } catch (Exception e) {
+                    AzukaarSkillsStats.LOGGER.error("Failed to load aspect from {}: {}", resourceLocation, e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void initializeAspects() {
+        // Unload all aspect types first
+        for (AspectType type : AspectTypeRegistry.getAll().values()) {
+            type.onUnload();
+        }
+        // Load definitions into their matching types
+        for (AspectDefinition definition : aspects.values()) {
+            AspectType type = AspectTypeRegistry.get(definition.getId());
+            if (type != null) {
+                type.onLoad(definition);
+            }
+        }
+    }
+
+    public AspectDefinition getAspect(String id) {
+        return aspects.get(id);
+    }
+
+    public Collection<AspectDefinition> getAllAspects() {
+        return aspects.values();
+    }
+
+    public Collection<String> getAspectIds() {
+        return aspects.keySet();
+    }
+
     public Collection<String> getActivatableSkills() {
         return skillEffects.entrySet().stream()
             .filter(entry -> {

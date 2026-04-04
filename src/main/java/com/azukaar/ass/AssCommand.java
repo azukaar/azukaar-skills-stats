@@ -1,6 +1,7 @@
 package com.azukaar.ass;
 
 import com.azukaar.ass.AzukaarSkillsStats;
+import com.azukaar.ass.SkillDataManager;
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.capabilities.IPlayerSkills;
 import com.mojang.brigadier.CommandDispatcher;
@@ -27,10 +28,10 @@ import java.util.concurrent.CompletableFuture;
 public class AssCommand {
     
     // Suggestion provider for path names
-    private static final SuggestionProvider<CommandSourceStack> PATH_SUGGESTIONS = 
+    private static final SuggestionProvider<CommandSourceStack> PATH_SUGGESTIONS =
         (context, builder) -> {
-            for (String pathName : IPlayerSkills.PATH_NAMES) {
-                builder.suggest(pathName);
+            for (String aspectId : SkillDataManager.INSTANCE.getAspectIds()) {
+                builder.suggest(aspectId);
             }
             return builder.buildFuture();
         };
@@ -195,10 +196,10 @@ public class AssCommand {
         }
 
         // Distribute XP evenly across all paths
-        int pathCount = IPlayerSkills.PATH_NAMES.length;
+        int pathCount = SkillDataManager.INSTANCE.getAspectIds().size();
         double xpPerPath = amount / pathCount;
         
-        for (String pathName : IPlayerSkills.PATH_NAMES) {
+        for (String pathName : SkillDataManager.INSTANCE.getAspectIds()) {
             skills.setExperience(pathName, xpPerPath);
         }
         
@@ -238,10 +239,10 @@ public class AssCommand {
 
     private static int addTotalXP(CommandContext<CommandSourceStack> context, double amount, ServerPlayer player) {
         // Distribute XP evenly across all paths
-        int pathCount = IPlayerSkills.PATH_NAMES.length;
+        int pathCount = SkillDataManager.INSTANCE.getAspectIds().size();
         double xpPerPath = amount / pathCount;
         
-        for (String pathName : IPlayerSkills.PATH_NAMES) {
+        for (String pathName : SkillDataManager.INSTANCE.getAspectIds()) {
             PlayerData.addExperienceServerSide(pathName, xpPerPath, player, player.position());
         }
         
@@ -283,7 +284,7 @@ public class AssCommand {
         
         double totalXP = 0;
         
-        for (String pathName : IPlayerSkills.PATH_NAMES) {
+        for (String pathName : SkillDataManager.INSTANCE.getAspectIds()) {
             double pathXP = skills.getExperience(pathName);
             int pathLevel = (int) skills.getLevel(pathName);
             totalXP += pathXP;
@@ -300,7 +301,7 @@ public class AssCommand {
         double requiredXP = IPlayerSkills.getTotalXpForLevel(level);
         
         // Distribute XP evenly across all paths to achieve the desired level
-        int pathCount = IPlayerSkills.PATH_NAMES.length;
+        int pathCount = SkillDataManager.INSTANCE.getAspectIds().size();
         double xpPerPath = requiredXP / pathCount;
         
         IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
@@ -309,7 +310,7 @@ public class AssCommand {
             return 0;
         }
         
-        for (String pathName : IPlayerSkills.PATH_NAMES) {
+        for (String pathName : SkillDataManager.INSTANCE.getAspectIds()) {
             skills.setExperience(pathName, xpPerPath);
         }
         

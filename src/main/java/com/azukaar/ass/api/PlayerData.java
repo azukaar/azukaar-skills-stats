@@ -2,6 +2,7 @@ package com.azukaar.ass.api;
 
 import com.azukaar.ass.AzukaarSkillsStats;
 import com.azukaar.ass.SkillDataManager;
+import com.azukaar.ass.api.AspectDefinition;
 import com.azukaar.ass.api.events.ExperienceGainedEvent;
 import com.azukaar.ass.api.events.LeveledUpEvent;
 import com.azukaar.ass.api.events.SkillPointGained;
@@ -23,10 +24,29 @@ public class PlayerData {
         if (skills == null) return 0;
 
         int totalLevel = 0;
-        for (String pathName : IPlayerSkills.PATH_NAMES) {
-            totalLevel += skills.getLevel(pathName);
+        for (String aspectId : SkillDataManager.INSTANCE.getAspectIds()) {
+            totalLevel += skills.getLevel(aspectId);
         }
         return getMainLevelFromPathsTotal(totalLevel);
+    }
+
+    public static double getPathExperience(Player player, String pathName) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return 0;
+        return skills.getExperience(pathName);
+    }
+
+    public static float getPathProgress(Player player, String pathName) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return 0f;
+
+        double totalXp = skills.getExperience(pathName);
+        int currentLevel = IPlayerSkills.getLevelFromXp((int) totalXp);
+        int xpForCurrent = IPlayerSkills.getTotalXpForLevel(currentLevel);
+        int xpForNext = IPlayerSkills.getTotalXpForLevel(currentLevel + 1);
+        int xpNeeded = xpForNext - xpForCurrent;
+        if (xpNeeded <= 0) return 1f;
+        return Math.min(1f, (float)(totalXp - xpForCurrent) / xpNeeded);
     }
 
     public static int getPathLevel(Player player, String pathName) {
@@ -40,12 +60,54 @@ public class PlayerData {
     }
 
     public static int getMainLevelFromPathsTotal(int totalLevel) {
+        int mainExperience = getMainExperienceFromPathsTotal(totalLevel);
+        return Math.min(IPlayerSkills.getLevelFromXp(mainExperience), totalLevel);
+    }
+
+    public static int getMainExperienceFromPathsTotal(int totalLevel) {
         int mainExperience = 0;
-        for (int i = 0; i < totalLevel; i++) {
+        for (int i = 1; i <= totalLevel; i++) {
             mainExperience += Math.pow(i, 0.75) * 150;
         }
-        if (totalLevel == 1) return 1;
-        return Math.min(IPlayerSkills.getLevelFromXp(mainExperience), totalLevel);
+        return mainExperience;
+    }
+
+    public static int getTotalAspectLevels(Player player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return 0;
+        int totalLevel = 0;
+        for (String aspectId : SkillDataManager.INSTANCE.getAspectIds()) {
+            totalLevel += skills.getLevel(aspectId);
+        }
+        return totalLevel;
+    }
+
+    public static int getAspectLevelsForNextMainLevel(Player player) {
+        int currentTotal = getTotalAspectLevels(player);
+        int currentMain = getMainLevel(player);
+        for (int t = currentTotal + 1; t < 10000; t++) {
+            if (getMainLevelFromPathsTotal(t) > currentMain) {
+                return t;
+            }
+        }
+        return currentTotal;
+    }
+
+    public static float getMainProgress(Player player) {
+        int currentTotal = getTotalAspectLevels(player);
+        int currentMain = getMainLevel(player);
+        int nextTotal = getAspectLevelsForNextMainLevel(player);
+        // Search backward to find where current main level started
+        int startTotal = 0;
+        for (int t = currentTotal - 1; t >= 0; t--) {
+            if (getMainLevelFromPathsTotal(t) < currentMain) {
+                startTotal = t + 1;
+                break;
+            }
+        }
+        int range = nextTotal - startTotal;
+        if (range <= 0) return 1f;
+        return Math.min(1f, (float)(currentTotal - startTotal) / range);
     }
 
     public static int getSkillPoints(Player player) {

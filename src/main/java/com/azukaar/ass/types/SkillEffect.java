@@ -192,7 +192,7 @@ public class SkillEffect {
                 removeAttributeModifier(player);
             } else if ("active".equals(type)) {
                 // Active effects don't need cleanup - they're just data
-                System.out.println("Unregistered active effect for skill: " + parentSkillId);
+                //System.out.println("Unregistered active effect for skill: " + parentSkillId);
             } else if ("custom_attribute_modifier".equals(type)) {
                 // Delegate to custom effect handler
                 CustomEffectHandler.removeCustomEffect(player, attribute, this);

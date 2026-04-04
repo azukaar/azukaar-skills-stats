@@ -4,6 +4,8 @@ package com.azukaar.ass.capabilities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.azukaar.ass.SkillDataManager;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
@@ -53,8 +55,8 @@ public class PlayerSkills implements IPlayerSkills {
         int mainExperience = 0;
         int totalLevel = 0; // Assuming totalLevel is calculated from all paths
 
-        for (String pathName : IPlayerSkills.PATH_NAMES) {
-            totalLevel += IPlayerSkills.getLevelFromXp(experience.getOrDefault(pathName, 0.0).intValue());
+        for (String aspectId : SkillDataManager.INSTANCE.getAspectIds()) {
+            totalLevel += IPlayerSkills.getLevelFromXp(experience.getOrDefault(aspectId, 0.0).intValue());
         }
 
         for (int i = 0; i < totalLevel; i++) {

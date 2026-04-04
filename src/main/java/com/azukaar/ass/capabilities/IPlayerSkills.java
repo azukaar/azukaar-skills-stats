@@ -5,21 +5,13 @@ import java.util.Map;
 import net.minecraft.world.entity.player.Player;
 
 public interface IPlayerSkills {
-    static final String MAIN = "azukaarskillsstats.main"; 
-    static final String WARRIOR_PATH = "azukaarskillsstats.warrior"; 
-    static final String MINER_PATH = "azukaarskillsstats.miner"; 
-    static final String EXPLORER_PATH = "azukaarskillsstats.explorer";
+    static final String MAIN = "azukaarskillsstats.main";
 
-    static final String[] PATH_NAMES = {
-        WARRIOR_PATH, MINER_PATH, EXPLORER_PATH
-    };
-    
-    // Keep your existing static methods...
-    static final int LINEAR_COMPONENT = 50;
+    static final int LINEAR_COMPONENT = 60;
     static final double POW_COMPONENT = 1.25;
 
     public static int getXpForSpecificLevel(int level) {
-        if (level <= 1) return 100;
+        if (level <= 3) return 250;
         return (int)(LINEAR_COMPONENT * Math.pow(level, POW_COMPONENT));
     }
 

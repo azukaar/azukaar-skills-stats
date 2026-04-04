@@ -1,18 +1,18 @@
 package com.azukaar.ass.client.gui;
 
-import java.util.UUID;
-
+import com.azukaar.ass.SkillDataManager;
+import com.azukaar.ass.api.AspectDefinition;
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.capabilities.IPlayerSkills;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 
 public class OverviewTab {
   static protected int renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, Player player) {
-        // Mock archetype levels
         int yOffset = 30;
 
         // Title
@@ -20,42 +20,62 @@ public class OverviewTab {
         guiGraphics.drawString(font, "Avail. Skill Points: " + PlayerData.getSkillPoints(player), contentX + 120, contentY + 10, 0xFFFF66);
 
         // Main Level
-        guiGraphics.drawString(font, "Level " + PlayerData.getMainLevel(player), contentX + 20, contentY + yOffset, 0xFFFFFF);
-        renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.75f, 0xFF6666);
-        yOffset += 12;
-        
-        guiGraphics.drawString(font, "Archetype Levels:", contentX + 10, contentY + yOffset, 0xAAAAFF);
-        yOffset += 15;
-        
-        // Warrior
-        guiGraphics.drawString(font, "Warrior: Level " + PlayerData.getPathLevel(player, IPlayerSkills.WARRIOR_PATH), contentX + 20, contentY + yOffset, 0xFFFFFF);
-        renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.75f, 0xFF6666);
-        yOffset += 12;
-        
-        // Miner  
-        guiGraphics.drawString(font, "Miner: Level " + PlayerData.getPathLevel(player, IPlayerSkills.MINER_PATH), contentX + 20, contentY + yOffset, 0xFFFFFF);
-        renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.4f, 0x66FF66);
-        yOffset += 12;
-        
-        // Explorer
-        guiGraphics.drawString(font, "Explorer: Level " + PlayerData.getPathLevel(player, IPlayerSkills.EXPLORER_PATH), contentX + 20, contentY + yOffset, 0xFFFFFF);
-        renderProgressBar(guiGraphics, contentX + 120, contentY + yOffset - 2, 100, 8, 0.9f, 0x6666FF);
-        // yOffset += 20;
-        
-        // Skill points
-        // guiGraphics.drawString(font, "Total Points Spent: 12", contentX + 10, contentY + yOffset, 0xCCCCCC);
+        int mainLevel = PlayerData.getMainLevel(player);
+        guiGraphics.drawString(font, "Level " + mainLevel, contentX + 20, contentY + yOffset, 0xFFFFFF);
+        float mainProgress = PlayerData.getMainProgress(player);
+        int mainBarX = contentX + 120;
+        int mainBarY = contentY + yOffset - 2;
+        int mainBarW = 100;
+        int mainBarH = 8;
+        renderProgressBar(guiGraphics, mainBarX, mainBarY, mainBarW, mainBarH, mainProgress, 0xEEEEEE);
 
-        return yOffset + 10; // Return the new Y position after rendering
+        if (mouseX >= mainBarX && mouseX <= mainBarX + mainBarW && mouseY >= mainBarY && mouseY <= mainBarY + mainBarH) {
+            int totalAspectLevels = PlayerData.getTotalAspectLevels(player);
+            int levelsForNext = PlayerData.getAspectLevelsForNextMainLevel(player);
+            guiGraphics.renderTooltip(font,
+                Component.literal(totalAspectLevels + " / " + levelsForNext + " aspect levels"),
+                mouseX, mouseY);
+        }
+
+        yOffset += 12;
+
+        guiGraphics.drawString(font, "Aspect Levels:", contentX + 10, contentY + yOffset, 0xAAAAFF);
+        yOffset += 15;
+
+        for (AspectDefinition aspect : SkillDataManager.INSTANCE.getAllAspects()) {
+            String name = aspect.getDisplayNameString() != null ? aspect.getDisplayNameString() : aspect.getId();
+            int level = PlayerData.getPathLevel(player, aspect.getId());
+            guiGraphics.drawString(font, name + ": lvl " + level, contentX + 20, contentY + yOffset, 0xFFFFFF);
+            float progress = PlayerData.getPathProgress(player, aspect.getId());
+            int barX = contentX + 120;
+            int barY = contentY + yOffset - 2;
+            int barW = 100;
+            int barH = 8;
+            renderProgressBar(guiGraphics, barX, barY, barW, barH, progress, aspect.getColor());
+
+            // Tooltip on hover
+            if (mouseX >= barX && mouseX <= barX + barW && mouseY >= barY && mouseY <= barY + barH) {
+                double currentXp = PlayerData.getPathExperience(player, aspect.getId());
+                int xpForNext = IPlayerSkills.getTotalXpForLevel(level + 1);
+                guiGraphics.renderTooltip(font,
+                    Component.literal((int) currentXp + " / " + xpForNext + " XP"),
+                    mouseX, mouseY);
+            }
+
+            yOffset += 12;
+        }
+
+        return yOffset + 10;
   }
-    
+
   static private void renderProgressBar(GuiGraphics guiGraphics, int x, int y, int width, int height, float progress, int color) {
       // Background
       guiGraphics.fill(x, y, x + width, y + height, 0xFF333333);
-      
-      // Progress fill
+
+      // Progress fill (add full alpha to RGB color)
       int fillWidth = (int)(width * progress);
-      guiGraphics.fill(x, y, x + fillWidth, y + height, color);
-      
+      guiGraphics.fill(x, y, x + fillWidth, y + height, 0xFF000000 | color);
+
       // Border
       guiGraphics.fill(x - 1, y - 1, x + width + 1, y, 0xFFAAAAAA); // Top
       guiGraphics.fill(x - 1, y + height, x + width + 1, y + height + 1, 0xFFAAAAAA); // Bottom

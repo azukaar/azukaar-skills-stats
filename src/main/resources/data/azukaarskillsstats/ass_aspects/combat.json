@@ -1,0 +1,13 @@
+{
+  "id": "azukaarskillsstats:combat",
+  "display_name": "Combat",
+  "icon": { "type": "item", "item": "minecraft:netherite_sword" },
+  "description": "Earn XP by fighting mobs. Damage is tracked and XP is split among contributors.",
+  "color": "#FF5555",
+  "xp_multiplier": 2.0,
+  "properties": {
+    "expiry_ticks": 72000,
+    "cleanup_interval_ticks": 1200,
+    "min_damage_threshold": 0.5
+  }
+}
