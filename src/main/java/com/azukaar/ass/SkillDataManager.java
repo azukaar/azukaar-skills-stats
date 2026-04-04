@@ -140,12 +140,17 @@ public class SkillDataManager implements PreparableReloadListener {
                     Skill skill = findSkillById(dep.getSkill());
                     if (skill != null) {
                         for (Prerequisite prereq : dep.getPrerequisites()) {
-                            Skill prereqSkill = findSkillById(prereq.getSkillId());
-                            if (prereqSkill != null) {
-                                prereq.setSkillRef(prereqSkill);
+                            if (prereq.isAspectPrerequisite()) {
+                                // Aspect prerequisites don't need a skill ref
                                 skill.addPrerequisite(prereq);
-                            } else {
-                                AzukaarSkillsStats.LOGGER.warn("Missing prerequisite skill: {} for {}", prereq.getSkillId(), dep.getSkill());
+                            } else if (prereq.isSkillPrerequisite()) {
+                                Skill prereqSkill = findSkillById(prereq.getSkillId());
+                                if (prereqSkill != null) {
+                                    prereq.setSkillRef(prereqSkill);
+                                    skill.addPrerequisite(prereq);
+                                } else {
+                                    AzukaarSkillsStats.LOGGER.warn("Missing prerequisite skill: {} for {}", prereq.getSkillId(), dep.getSkill());
+                                }
                             }
                         }
                     } else {

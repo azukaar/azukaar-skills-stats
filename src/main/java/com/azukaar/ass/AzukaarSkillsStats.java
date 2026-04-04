@@ -8,6 +8,7 @@ import com.azukaar.ass.capabilities.PlayerSkillsProvider;
 import com.azukaar.ass.client.ExpertiseParticleHandler;
 import com.azukaar.ass.client.GUIClientModEvents;
 import com.azukaar.ass.client.KeybindRegistry;
+import com.azukaar.ass.client.gui.SkillBarOverlay;
 import com.azukaar.ass.client.particles.OrbParticle;
 import com.azukaar.ass.client.particles.OrbParticleOptions;
 import com.mojang.logging.LogUtils;
@@ -47,6 +48,7 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -242,6 +244,14 @@ public class AzukaarSkillsStats
         @SubscribeEvent
         public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
             event.register(GUIClientModEvents.OPEN_SKILLS_KEY);
+        }
+
+        @SubscribeEvent
+        public static void onRegisterGuiLayers(RegisterGuiLayersEvent event) {
+            event.registerAboveAll(
+                ResourceLocation.fromNamespaceAndPath(MODID, "skill_bar_overlay"),
+                SkillBarOverlay::render
+            );
         }
 
         @SubscribeEvent

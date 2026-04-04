@@ -7,7 +7,6 @@ import com.azukaar.ass.capabilities.IPlayerSkills;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -16,7 +15,9 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -55,16 +56,16 @@ public class AssCommand {
                 
                 // /ass xp set <path> <amount> [player]
                 .then(Commands.literal("set")
-                    .then(Commands.argument("path", StringArgumentType.string())
+                    .then(Commands.argument("path", ResourceLocationArgument.id())
                         .suggests(PATH_SUGGESTIONS)
                         .then(Commands.argument("amount", DoubleArgumentType.doubleArg(0))
-                            .executes(context -> setPathXP(context, 
-                                StringArgumentType.getString(context, "path"),
+                            .executes(context -> setPathXP(context,
+                                ResourceLocationArgument.getId(context, "path").toString(),
                                 DoubleArgumentType.getDouble(context, "amount"),
                                 context.getSource().getPlayerOrException()))
                             .then(Commands.argument("targets", EntityArgument.players())
                                 .executes(context -> {
-                                    String path = StringArgumentType.getString(context, "path");
+                                    String path = ResourceLocationArgument.getId(context, "path").toString();
                                     double amount = DoubleArgumentType.getDouble(context, "amount");
                                     Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
                                     return setPathXPForTargets(context, path, amount, targets);
@@ -83,16 +84,16 @@ public class AssCommand {
                 
                 // /ass xp add <path> <amount> [player]
                 .then(Commands.literal("add")
-                    .then(Commands.argument("path", StringArgumentType.string())
+                    .then(Commands.argument("path", ResourceLocationArgument.id())
                         .suggests(PATH_SUGGESTIONS)
                         .then(Commands.argument("amount", DoubleArgumentType.doubleArg(0))
                             .executes(context -> addPathXP(context,
-                                StringArgumentType.getString(context, "path"),
+                                ResourceLocationArgument.getId(context, "path").toString(),
                                 DoubleArgumentType.getDouble(context, "amount"),
                                 context.getSource().getPlayerOrException()))
                             .then(Commands.argument("targets", EntityArgument.players())
                                 .executes(context -> {
-                                    String path = StringArgumentType.getString(context, "path");
+                                    String path = ResourceLocationArgument.getId(context, "path").toString();
                                     double amount = DoubleArgumentType.getDouble(context, "amount");
                                     Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
                                     return addPathXPForTargets(context, path, amount, targets);

@@ -19,5 +19,7 @@
   "effect.azukaarskillsstats.carnivorous": "Carnivorous",
   "effect.azukaarskillsstats.carnivorous.description": "Gluttony consumes 50% less hunger",
   "effect.azukaarskillsstats.devouring_strike": "Devouring Strike",
-  "effect.azukaarskillsstats.devouring_strike.description": "Next attack consumes Gluttony for massive damage"
+  "effect.azukaarskillsstats.devouring_strike.description": "Next attack consumes Gluttony for massive damage",
+  "skill_tree.azukaarskillsstats.barbarian.locked_hint": "You do not have the strength to bear this power",
+  "skill_tree.azukaarskillsstats.farmer.locked_hint": "You must first learn to survive on leftovers to thrive on excess"
 }

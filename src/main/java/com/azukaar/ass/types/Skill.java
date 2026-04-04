@@ -3,10 +3,12 @@ package com.azukaar.ass.types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.azukaar.ass.api.PlayerData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 
 public class Skill {
     @Expose @SerializedName("id")
@@ -80,19 +82,44 @@ public class Skill {
         }
     }
 
-    /**
-     * Check if all prerequisites are met for a player
-     * @param getSkillLevel A function that returns the player's level in a skill
-     * @return true if all prerequisites are met
-     */
-    public boolean arePrerequisitesMet(java.util.function.Function<String, Integer> getSkillLevel) {
+    public boolean arePrerequisitesMet(Player player) {
         for (Prerequisite prereq : prerequisites) {
-            int playerLevel = getSkillLevel.apply(prereq.getSkillId());
-            if (playerLevel < prereq.getRequiredLevel()) {
-                return false;
+            if (prereq.isAspectPrerequisite()) {
+                int level = PlayerData.getPathLevel(player, prereq.getAspectId());
+                if (level < prereq.getRequiredLevel()) return false;
+            } else if (prereq.isSkillPrerequisite()) {
+                int level = PlayerData.getSkillLevel(player, prereq.getSkillId());
+                if (level < prereq.getRequiredLevel()) return false;
             }
         }
         return true;
+    }
+
+    public List<String> getMissingPrerequisites(Player player) {
+        List<String> missing = new ArrayList<>();
+        for (Prerequisite prereq : prerequisites) {
+            if (prereq.isAspectPrerequisite()) {
+                int level = PlayerData.getPathLevel(player, prereq.getAspectId());
+                if (level < prereq.getRequiredLevel()) {
+                    String name = prereq.getAspectId();
+                    if (name.contains(":")) name = name.substring(name.indexOf(':') + 1);
+                    name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                    missing.add("Requires " + name + " level " + prereq.getRequiredLevel());
+                }
+            } else if (prereq.isSkillPrerequisite()) {
+                int level = PlayerData.getSkillLevel(player, prereq.getSkillId());
+                if (level < prereq.getRequiredLevel()) {
+                    Skill ref = prereq.getSkillRef();
+                    String name = ref != null ? ref.getDisplayName().getString() : prereq.getSkillId();
+                    if (prereq.getRequiredLevel() == 1) {
+                        missing.add("Requires " + name);
+                    } else {
+                        missing.add("Requires " + name + " level " + prereq.getRequiredLevel());
+                    }
+                }
+            }
+        }
+        return missing;
     }
     
     /**

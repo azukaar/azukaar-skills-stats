@@ -5,5 +5,9 @@
     "type": "item",
     "item": "minecraft:wheat"
   },
-  "background": "azukaarskillsstats:textures/gui/farmer_tree_bg.png"
+  "background": "azukaarskillsstats:textures/gui/farmer_tree_bg.png",
+  "requirements": [
+    { "skill": "azukaarskillsstats:feed", "level": 1 }
+  ],
+  "locked_hint": "skill_tree.azukaarskillsstats.farmer.locked_hint"
 }

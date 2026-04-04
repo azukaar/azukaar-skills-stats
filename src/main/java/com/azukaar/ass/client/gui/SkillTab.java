@@ -32,6 +32,8 @@ public class SkillTab {
 
     // Keybind input properties
     public int keybindInputX, keybindInputY, keybindInputWidth, keybindInputHeight;
+    public int keybindClearX, keybindClearY, keybindClearSize;
+    public boolean keybindClearVisible;
     public boolean keybindInputVisible;
     public boolean keybindInputFocused;
     public String currentKeybind = ""; // Stores the current keybind (empty if none)
@@ -195,10 +197,36 @@ public class SkillTab {
             this.keybindInputWidth = inputWidth;
             this.keybindInputHeight = inputHeight;
             this.keybindInputVisible = true;
-            
+
+            // Render clear button (X) next to input if a keybind is set
+            if (!currentKeybind.isEmpty() && !waitingForKeybind) {
+                int clearSize = inputHeight;
+                int clearX = inputX + inputWidth + 2;
+                int clearY = inputY;
+
+                guiGraphics.fill(clearX, clearY, clearX + clearSize, clearY + clearSize, 0xFF553333);
+                guiGraphics.fill(clearX, clearY, clearX + clearSize, clearY + 1, 0xFF884444);
+                guiGraphics.fill(clearX, clearY + clearSize - 1, clearX + clearSize, clearY + clearSize, 0xFF884444);
+                guiGraphics.fill(clearX, clearY, clearX + 1, clearY + clearSize, 0xFF884444);
+                guiGraphics.fill(clearX + clearSize - 1, clearY, clearX + clearSize, clearY + clearSize, 0xFF884444);
+
+                int xTextWidth = font.width("X");
+                guiGraphics.drawString(font, "X",
+                    clearX + (clearSize - xTextWidth) / 2,
+                    clearY + 4, 0xFF6666, false);
+
+                this.keybindClearX = clearX;
+                this.keybindClearY = clearY;
+                this.keybindClearSize = clearSize;
+                this.keybindClearVisible = true;
+            } else {
+                this.keybindClearVisible = false;
+            }
+
             currentY += inputHeight + 6;
         } else {
             this.keybindInputVisible = false;
+            this.keybindClearVisible = false;
         }
         
         // Render skill level information
@@ -337,9 +365,7 @@ public class SkillTab {
         
         // Check if skill can be upgraded
         boolean canUpgrade = currentLevel < maxLevel;
-        boolean prerequisitesMet = selectedSkill.arePrerequisitesMet(
-            skillId -> PlayerData.getSkillLevel(player, skillId)
-        );
+        boolean prerequisitesMet = selectedSkill.arePrerequisitesMet(player);
         int upgradeCost = 1;
         int availablePoints = PlayerData.getSkillPoints(player);
         boolean canAfford = availablePoints >= upgradeCost;
@@ -411,9 +437,7 @@ public class SkillTab {
 
         // Color based on dependency fulfillment
         // Gray = not fulfilled, Blue = fulfilled
-        boolean dependencyMet = to.arePrerequisitesMet(
-            skillId -> PlayerData.getSkillLevel(player, skillId)
-        );
+        boolean dependencyMet = to.arePrerequisitesMet(player);
         int color = dependencyMet ? 0xFF4488FF : 0xFF666666;
 
         // Draw line connection
@@ -462,9 +486,7 @@ public class SkillTab {
         int y = (int)skill.getY() + (topPos + SkillScreen.WINDOW_INSIDE_Y) + (SkillScreen.SCREEN_HEIGHT-SkillScreen.WINDOW_INSIDE_Y) / 2 - SkillScreen.SKILL_NODE_SIZE / 2;
 
         int currentLevel = PlayerData.getSkillLevel(player, skill.getId());
-        boolean prerequisitesMet = skill.arePrerequisitesMet(
-            skillId -> PlayerData.getSkillLevel(player, skillId)
-        );
+        boolean prerequisitesMet = skill.arePrerequisitesMet(player);
 
         // Background color based on skill state
         int backgroundColor = 0xFF333333;
@@ -490,9 +512,10 @@ public class SkillTab {
         guiGraphics.fill(x, y, x + 1, y + SkillScreen.SKILL_NODE_SIZE, borderColor); // Left
         guiGraphics.fill(x + SkillScreen.SKILL_NODE_SIZE - 1, y, x + SkillScreen.SKILL_NODE_SIZE, y + SkillScreen.SKILL_NODE_SIZE, borderColor); // Right
         
-        // Render skill icon
+        // Render skill icon (dimmed if locked)
         IconData iconData = skill.getIconData();
-        iconData.render(guiGraphics, x + 4, y + 4);
+        float iconAlpha = (currentLevel == 0 && !prerequisitesMet) ? 0.35f : 1.0f;
+        iconData.render(guiGraphics, x + 4, y + 4, iconAlpha);
         
         // Render level indicator if skill has levels
         if (currentLevel > 0 && skill.getMaxLevel() > 1) {
@@ -516,8 +539,20 @@ public class SkillTab {
     public boolean handleModalClick(double mouseX, double mouseY, Skill selectedSkill, Player player) {
         if (selectedSkill == null) return false;
         
+        // Handle keybind clear button click
+        if (keybindClearVisible &&
+            mouseX >= keybindClearX && mouseX <= keybindClearX + keybindClearSize &&
+            mouseY >= keybindClearY && mouseY <= keybindClearY + keybindClearSize) {
+
+            currentKeybind = "";
+            waitingForKeybind = false;
+            keybindInputFocused = false;
+            KeybindRegistry.getInstance().removeSkillKeybind(selectedSkill.getId());
+            return true;
+        }
+
         // Handle keybind input click
-        if (keybindInputVisible && 
+        if (keybindInputVisible &&
             mouseX >= keybindInputX && mouseX <= keybindInputX + keybindInputWidth &&
             mouseY >= keybindInputY && mouseY <= keybindInputY + keybindInputHeight) {
             
@@ -683,12 +718,16 @@ public class SkillTab {
             case 335: return "NumEnter";
             case 336: return "Num=";
             
-            // Mouse buttons (if you want to support them)
+            // Mouse buttons (passed as key codes from mouseClicked)
             case 0: return "LMB";
             case 1: return "RMB";
             case 2: return "MMB";
-            
+
             default:
+                // Mouse buttons 3+ (GLFW supports up to 7)
+                if (keyCode >= 3 && keyCode <= 7) {
+                    return "Mouse" + (keyCode + 1);
+                }
                 return "Key" + keyCode; // Fallback for unknown keys
         }
     }

@@ -1,7 +1,5 @@
-- sidebar UI with active shortcuts and their cooldown
-- display requierements on locked skills
-- button to unbind key skills
 - add aspect requierements to skills 
 - add requirements to trees
-- allow togglable passive type
+- display requierements on locked skills
 - zoom
+- allow togglable passive type

@@ -40,6 +40,35 @@ public class IconData {
         return new ItemStack(itemObj, 1);
     }
 
+    public void render(GuiGraphics graphic, int x, int y, float alpha) {
+        if(isItem()) {
+            graphic.pose().pushPose();
+            float currentZ = graphic.pose().last().pose().m23();
+            graphic.pose().translate(0, 0, -1);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+            RenderSystem.disableDepthTest();
+            graphic.renderItem(getItemStack(), x, y);
+            RenderSystem.enableDepthTest();
+            RenderSystem.disableBlend();
+            graphic.pose().popPose();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        } else {
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            ResourceLocation textureLocation = ResourceLocation.tryParse(texture);
+            if (textureLocation != null) {
+                graphic.blit(textureLocation, x, y, 0, 0, 16, 16);
+            } else {
+                graphic.blit(ResourceLocation.fromNamespaceAndPath("minecraft", "textures/missing.png"), x, y, 0, 0, 16, 16);
+            }
+            RenderSystem.disableBlend();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        }
+    }
+
     public void render(GuiGraphics graphic, int x, int y) {
         if(isItem()) {
             // Save the current pose and properly isolate item rendering

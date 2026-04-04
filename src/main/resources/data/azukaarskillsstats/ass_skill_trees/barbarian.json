@@ -5,5 +5,9 @@
     "type": "item",
     "item": "minecraft:netherite_axe"
   },
-  "background": "azukaarskillsstats:textures/gui/barbarian_tree_bg.png"
+  "background": "azukaarskillsstats:textures/gui/barbarian_tree_bg.png",
+  "requirements": [
+    { "skill": "azukaarskillsstats:power", "level": 1 }
+  ],
+  "locked_hint": "skill_tree.azukaarskillsstats.barbarian.locked_hint"
 }

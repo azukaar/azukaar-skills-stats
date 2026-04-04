@@ -11,8 +11,11 @@ public class Prerequisite {
     @Expose @SerializedName("skill")
     private String skillId;
 
+    @Expose @SerializedName("aspect")
+    private String aspectId;
+
     @Expose @SerializedName("level")
-    private int requiredLevel = 1; // Default to level 1 if not specified
+    private int requiredLevel = 1;
 
     // Reference to the actual skill (set after loading)
     private transient Skill skillRef;
@@ -26,8 +29,11 @@ public class Prerequisite {
 
     // Getters
     public String getSkillId() { return skillId; }
+    public String getAspectId() { return aspectId; }
     public int getRequiredLevel() { return requiredLevel; }
     public Skill getSkillRef() { return skillRef; }
+    public boolean isAspectPrerequisite() { return aspectId != null; }
+    public boolean isSkillPrerequisite() { return skillId != null; }
 
     // Setters
     public void setSkillRef(Skill skill) { this.skillRef = skill; }

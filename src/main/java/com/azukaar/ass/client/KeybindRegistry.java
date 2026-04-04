@@ -276,9 +276,7 @@ public class KeybindRegistry {
             case 0: return "LMB";
             case 1: return "RMB";
             case 2: return "MMB";
-            case 3: return "Mouse4";
-            case 4: return "Mouse5";
-            default: return "Mouse" + button;
+            default: return "Mouse" + (button + 1);
         }
     }
     

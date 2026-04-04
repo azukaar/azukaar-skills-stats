@@ -81,9 +81,9 @@ public class ActiveSkillHandler {
         if (skills.isSkillOnCooldown(skillId, currentTime)) {
             int remainingTicks = skills.getRemainingCooldown(skillId, currentTime);
             int remainingSeconds = remainingTicks / 20;
-            player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                "Can't use skill, cooldown: " + remainingSeconds + "s"
-            ));
+            // player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+            //     "Can't use skill, cooldown: " + remainingSeconds + "s"
+            // ));
             return false;
         }
         

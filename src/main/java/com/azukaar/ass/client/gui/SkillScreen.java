@@ -277,14 +277,22 @@ public class SkillScreen extends Screen {
             if (hoveredSkill != null) {
                 List<Component> tooltip = new ArrayList<>();
                 tooltip.add(hoveredSkill.getDisplayName());
-                if ( hoveredSkill.getMaxLevel() > 1) {
-                    tooltip.add(Component.literal("Level: " + PlayerData.getSkillLevel(player, hoveredSkill.getId()) + "/" + hoveredSkill.getMaxLevel()));
-                } else if(hoveredSkill.getMaxLevel() == 1 && PlayerData.getSkillLevel(player, hoveredSkill.getId()) > 0) {
+                int currentLevel = PlayerData.getSkillLevel(player, hoveredSkill.getId());
+                if (hoveredSkill.getMaxLevel() > 1) {
+                    tooltip.add(Component.literal("Level: " + currentLevel + "/" + hoveredSkill.getMaxLevel()));
+                } else if(hoveredSkill.getMaxLevel() == 1 && currentLevel > 0) {
                     tooltip.add(Component.literal("Unlocked").withStyle(ChatFormatting.GREEN));
-                } else if (PlayerData.getSkillLevel(player, hoveredSkill.getId()) == 0) {
+                } else if (currentLevel == 0) {
                     tooltip.add(Component.literal("Locked").withStyle(ChatFormatting.RED));
                 }
-                
+
+                // Show missing prerequisites for locked skills
+                if (currentLevel == 0 && !hoveredSkill.arePrerequisitesMet(player)) {
+                    for (String missing : hoveredSkill.getMissingPrerequisites(player)) {
+                        tooltip.add(Component.literal(missing).withStyle(ChatFormatting.YELLOW));
+                    }
+                }
+
                 guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
             }
         }
@@ -294,7 +302,17 @@ public class SkillScreen extends Screen {
         for (int i = 0; i < tabs.length; i++) {
             SkillTab tab = tabs[i];
             if (this.isHoveringTab(tab, i, mouseX, mouseY)) {
-                guiGraphics.renderTooltip(this.font, tab.getDisplayName(), mouseX, mouseY);
+                SkillTree tree = tab.getSkillTree();
+                if (tree != null && !tree.areRequirementsMet(player)) {
+                    List<Component> tooltip = new ArrayList<>();
+                    tooltip.add(Component.literal("Locked").withStyle(ChatFormatting.RED));
+                    if (tree.getLockedHint() != null && !tree.getLockedHint().isEmpty()) {
+                        tooltip.add(Component.translatable(tree.getLockedHint()).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+                    }
+                    guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
+                } else {
+                    guiGraphics.renderTooltip(this.font, tab.getDisplayName(), mouseX, mouseY);
+                }
                 break;
             }
         }
@@ -360,6 +378,11 @@ public class SkillScreen extends Screen {
             for (int i = 0; i < tabs.length; i++) {
                 SkillTab tab = tabs[i];
                 if (this.isHoveringTab(tab, i, (int)mouseX, (int)mouseY)) {
+                    // Don't allow selecting locked trees
+                    SkillTree tree = tab.getSkillTree();
+                    if (tree != null && !tree.areRequirementsMet(player)) {
+                        return true; // Consume click but don't switch
+                    }
                     this.selectTab(tab);
                     return true;
                 }
