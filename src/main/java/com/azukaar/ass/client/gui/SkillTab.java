@@ -271,7 +271,7 @@ public class SkillTab {
 
             // Description
             if (selectedSkill.getDescription() != null && !"".equals(selectedSkill.getDescription())) {
-                List<String> descLines = Utils.wrapText(selectedSkill.getDescription(), 30);
+                List<String> descLines = Utils.wrapText(selectedSkill.getDescription(), 35);
                 for (String line : descLines) {
                     g.drawString(font, line, fContentStartX, cy, 0xCCCCCC, false);
                     cy += lineHeight;
@@ -298,20 +298,27 @@ public class SkillTab {
                         int effectColor = 0xAAAAAA;
 
                         if ("attribute_modifier".equals(effect.getType())) {
-                            double value = effect.getScaling().calculateValue(effect.getValue(), Math.max(1, fCurrentLevel));
+                            double perLevelValue = effect.getValue();
+                            double currentValue = effect.getScaling().calculateValue(perLevelValue, Math.max(1, fCurrentLevel));
                             String operation = effect.getOperation();
                             String displayAttribute = Utils.toDisplayString(effect.getAttribute());
                             if (effect.getDescription() != null && !"".equals(effect.getDescription()))
                                 displayAttribute = effect.getDescription();
 
+                            boolean isPercent = "add_multiplied_base".equals(operation) || "multiply_base".equals(operation)
+                                || "add_multiplied_total".equals(operation) || "multiply_total".equals(operation);
+                            String suffix = isPercent ? "%" : "";
+                            double displayPerLevel = isPercent ? perLevelValue * 100 : perLevelValue;
+                            double displayCurrent = isPercent ? currentValue * 100 : currentValue;
+
                             if ("add_value".equals(operation) || "add".equals(operation)) {
-                                effectText = "+" + value + " " + displayAttribute;
+                                effectText = "+" + perLevelValue + " " + displayAttribute + " per lvl";
                             } else if ("add_multiplied_base".equals(operation) || "multiply_base".equals(operation)) {
-                                effectText = "+" + (value * 100) + "% " + displayAttribute;
+                                effectText = "+" + displayPerLevel + "% " + displayAttribute + " per lvl";
                             } else if ("add_multiplied_total".equals(operation) || "multiply_total".equals(operation)) {
-                                effectText = "+" + (value * 100) + "% to total " + displayAttribute;
+                                effectText = "+" + displayPerLevel + "% total " + displayAttribute + " per lvl";
                             } else {
-                                effectText = value + displayAttribute;
+                                effectText = displayPerLevel + suffix + " " + displayAttribute;
                             }
                             effectColor = 0x00FF88;
                         } else if ("active".equals(effect.getType())) {
@@ -332,9 +339,33 @@ public class SkillTab {
                         }
 
                         if (!effectText.isEmpty()) {
-                            List<String> wrappedEffectText = Utils.wrapText(effectText, 28);
+                            List<String> wrappedEffectText = Utils.wrapText(effectText, 32);
+                            boolean firstLine = true;
                             for (String line : wrappedEffectText) {
-                                g.drawString(font, "  " + line, fContentStartX, cy, effectColor, false);
+                                g.drawString(font, (firstLine ? " \u2022 " : "   ") + line, fContentStartX, cy, effectColor, false);
+                                firstLine = false;
+                                cy += lineHeight;
+                            }
+
+                            // Show current/next totals for multi-level attribute modifiers
+                            if ("attribute_modifier".equals(effect.getType()) && fMaxLevel > 1 && fCurrentLevel > 0) {
+                                double perLvl = effect.getValue();
+                                boolean isPct = "add_multiplied_base".equals(effect.getOperation())
+                                    || "multiply_base".equals(effect.getOperation())
+                                    || "add_multiplied_total".equals(effect.getOperation())
+                                    || "multiply_total".equals(effect.getOperation());
+                                double cur = effect.getScaling().calculateValue(perLvl, fCurrentLevel);
+                                if (isPct) cur *= 100;
+                                String sfx = isPct ? "%" : "";
+                                String currentNextText;
+                                if (fCurrentLevel < fMaxLevel) {
+                                    double nxt = effect.getScaling().calculateValue(perLvl, fCurrentLevel + 1);
+                                    if (isPct) nxt *= 100;
+                                    currentNextText = "  (Current: +" + cur + sfx + ", next: +" + nxt + sfx + ")";
+                                } else {
+                                    currentNextText = "  (Current: +" + cur + sfx + ", max)";
+                                }
+                                g.drawString(font, Component.literal(currentNextText).withStyle(net.minecraft.ChatFormatting.ITALIC), fContentStartX + 10, cy, 0x888888, false);
                                 cy += lineHeight;
                             }
 

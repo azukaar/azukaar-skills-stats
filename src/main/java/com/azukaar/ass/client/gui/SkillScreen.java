@@ -53,8 +53,8 @@ public class SkillScreen extends Screen {
 
     // Zoom functionality
     private float zoomScale = 1.0f;
-    private static final float MIN_ZOOM = 0.5f;
-    private static final float MAX_ZOOM = 2.0f;
+    private static final float MIN_ZOOM = 0.3f;
+    private static final float MAX_ZOOM = 1.5f;
     private static final float ZOOM_STEP = 0.1f;
 
     // Scrolling state
@@ -241,11 +241,17 @@ public class SkillScreen extends Screen {
                 guiGraphics.disableScissor();
                 System.out.println("No skill tree found for tab: " + selectedTab.getRawName());
                 return;
-            }            // Save current pose
+            }
+            // Save current pose
             guiGraphics.pose().pushPose();
-            
-            // guiGraphics.pose().scale(zoomScale, zoomScale, 1.0f);
-            
+
+            // Zoom around the center of the content area
+            float centerX = this.leftPos + WINDOW_INSIDE_X + (SCREEN_WIDTH - WINDOW_INSIDE_X) / 2.0f;
+            float centerYPos = this.topPos + WINDOW_INSIDE_Y + (SCREEN_HEIGHT - WINDOW_INSIDE_Y) / 2.0f;
+            guiGraphics.pose().translate(centerX, centerYPos, 0);
+            guiGraphics.pose().scale(zoomScale, zoomScale, 1.0f);
+            guiGraphics.pose().translate(-centerX, -centerYPos, 0);
+
             // Apply scroll translation
             guiGraphics.pose().translate(scrollX, scrollY, 0);
             
@@ -416,8 +422,8 @@ public class SkillScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (button == 0 && isDragging) {
-            scrollX += mouseX - lastMouseX;
-            scrollY += mouseY - lastMouseY;
+            scrollX += (mouseX - lastMouseX) / zoomScale;
+            scrollY += (mouseY - lastMouseY) / zoomScale;
             
             // Clamp scrolling to reasonable bounds
             clampScrolling();
@@ -469,10 +475,12 @@ public class SkillScreen extends Screen {
     private Skill getSkillAtPosition(double mouseX, double mouseY) {
         SkillTree currentTree = selectedTab.getSkillTree();
         if (currentTree == null) return null;
-        
-        // Convert screen coordinates to world coordinates
-        double worldX = mouseX - (this.leftPos + WINDOW_INSIDE_X) - scrollX - (SCREEN_WIDTH - WINDOW_INSIDE_X) / 2 + SKILL_NODE_SIZE / 2;
-        double worldY = mouseY - (this.topPos + WINDOW_INSIDE_Y) - scrollY - (SCREEN_HEIGHT - WINDOW_INSIDE_Y) / 2 + SKILL_NODE_SIZE / 2;
+
+        // Convert screen coordinates to world coordinates, accounting for zoom
+        double centerX = this.leftPos + WINDOW_INSIDE_X + (SCREEN_WIDTH - WINDOW_INSIDE_X) / 2.0;
+        double centerY = this.topPos + WINDOW_INSIDE_Y + (SCREEN_HEIGHT - WINDOW_INSIDE_Y) / 2.0;
+        double worldX = (mouseX - centerX) / zoomScale + centerX - (this.leftPos + WINDOW_INSIDE_X) - scrollX - (SCREEN_WIDTH - WINDOW_INSIDE_X) / 2 + SKILL_NODE_SIZE / 2;
+        double worldY = (mouseY - centerY) / zoomScale + centerY - (this.topPos + WINDOW_INSIDE_Y) - scrollY - (SCREEN_HEIGHT - WINDOW_INSIDE_Y) / 2 + SKILL_NODE_SIZE / 2;
         
         for (Skill skill : currentTree.getAllSkills()) {
             double skillX = skill.getX();

@@ -1,2 +1,5 @@
 - zoom
 - allow togglable passive type
+
+- dispaly per level and total passive boost on skills 
+- add passives to overveiw
