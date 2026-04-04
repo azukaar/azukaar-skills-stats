@@ -70,6 +70,10 @@ public class ScrollablePane {
         scrollOffset = 0;
     }
 
+    public double getScrollOffset() {
+        return scrollOffset;
+    }
+
     private boolean isInside(double mouseX, double mouseY) {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }

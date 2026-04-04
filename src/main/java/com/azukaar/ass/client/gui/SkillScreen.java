@@ -234,6 +234,10 @@ public class SkillScreen extends Screen {
             overviewPane.render(guiGraphics, (g, px, py) ->
                 OverviewTab.renderContent(g, mouseX, mouseY, partialTick, px, py, this.font, player)
             );
+            // Render tooltips outside scissor so they aren't clipped
+            OverviewTab.renderTooltips(guiGraphics, mouseX, mouseY,
+                this.leftPos + WINDOW_INSIDE_X, this.topPos + WINDOW_INSIDE_Y,
+                this.font, player, overviewPane.getScrollOffset());
         } else {
             // render tree
             SkillTree currentTree = selectedTab.getSkillTree();

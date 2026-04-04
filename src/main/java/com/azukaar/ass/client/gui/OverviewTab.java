@@ -16,15 +16,20 @@ public class OverviewTab {
   private static final int DEBUG_REPEAT_COUNT = 3;
 
   static protected int renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, Player player) {
-        int yOffset = 30;
+        int yOffset = 28;
 
-        // Title
-        guiGraphics.drawString(font, "Overview", contentX + 10, contentY + 10, 0xFFFFFF);
-        guiGraphics.drawString(font, "Avail. Skill Points: " + PlayerData.getSkillPoints(player), contentX + 120, contentY + 10, 0xFFFF66);
+        // Header
+        guiGraphics.drawString(font, "Overview", contentX + 10, contentY + 10, 0xFFDDDDDD, true);
+        int sp = PlayerData.getSkillPoints(player);
+        int spColor = sp > 0 ? 0xFF88DD88 : 0xFF888888;
+        guiGraphics.drawString(font, sp + " Skill Points", contentX + 120, contentY + 10, spColor, false);
+
+        // Separator
+        guiGraphics.fill(contentX + 6, contentY + 22, contentX + 220, contentY + 23, 0xFF3A3A3E);
 
         // Main Level
         int mainLevel = PlayerData.getMainLevel(player);
-        guiGraphics.drawString(font, "Level " + mainLevel, contentX + 20, contentY + yOffset, 0xFFFFFF);
+        guiGraphics.drawString(font, "Level " + mainLevel, contentX + 20, contentY + yOffset, 0xFFEEEEEE, true);
         float mainProgress = PlayerData.getMainProgress(player);
         int mainBarX = contentX + 120;
         int mainBarY = contentY + yOffset - 2;
@@ -32,18 +37,15 @@ public class OverviewTab {
         int mainBarH = 8;
         renderProgressBar(guiGraphics, mainBarX, mainBarY, mainBarW, mainBarH, mainProgress, 0xEEEEEE);
 
-        if (mouseX >= mainBarX && mouseX <= mainBarX + mainBarW && mouseY >= mainBarY && mouseY <= mainBarY + mainBarH) {
-            double mainXp = PlayerData.getPathExperience(player, IPlayerSkills.MAIN);
-            int xpForNext = PlayerData.getXpForMainLevel(mainLevel + 1);
-            guiGraphics.renderTooltip(font,
-                Component.literal((int) mainXp + " / " + xpForNext + " aspect level-ups"),
-                mouseX, mouseY);
-        }
+        // Tooltip rendered separately via renderTooltips()
 
-        yOffset += 12;
+        yOffset += 16;
 
-        guiGraphics.drawString(font, "Aspect Levels:", contentX + 10, contentY + yOffset, 0xAAAAFF);
-        yOffset += 15;
+        // Separator
+        guiGraphics.fill(contentX + 6, contentY + yOffset - 2, contentX + 220, contentY + yOffset - 1, 0xFF3A3A3E);
+
+        guiGraphics.drawString(font, "Aspects", contentX + 10, contentY + yOffset, 0xFF9999AA, false);
+        yOffset += 14;
 
         java.util.List<AspectDefinition> aspects = new java.util.ArrayList<>(SkillDataManager.INSTANCE.getAllAspects());
         if (DEBUG_REPEAT) {
@@ -64,14 +66,7 @@ public class OverviewTab {
             int barH = 8;
             renderProgressBar(guiGraphics, barX, barY, barW, barH, progress, aspect.getColor());
 
-            // Tooltip on hover
-            if (mouseX >= barX && mouseX <= barX + barW && mouseY >= barY && mouseY <= barY + barH) {
-                double currentXp = PlayerData.getPathExperience(player, aspect.getId());
-                int xpForNext = PlayerData.getScaledXpForLevel(player, level + 1);
-                guiGraphics.renderTooltip(font,
-                    Component.literal((int) currentXp + " / " + xpForNext + " XP"),
-                    mouseX, mouseY);
-            }
+            // Tooltip rendered separately via renderTooltips()
 
             yOffset += 12;
         }
@@ -79,18 +74,59 @@ public class OverviewTab {
         return yOffset + 10;
   }
 
+  static protected void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int contentX, int contentY, Font font, Player player, double scrollOffset) {
+        int yOffset = 28;
+
+        // Main level bar tooltip
+        int mainBarX = contentX + 120;
+        int mainBarY = (int)(contentY + yOffset - 2 - scrollOffset);
+        int mainBarW = 100;
+        int mainBarH = 8;
+        if (mouseX >= mainBarX && mouseX <= mainBarX + mainBarW && mouseY >= mainBarY && mouseY <= mainBarY + mainBarH) {
+            int mainLevel = PlayerData.getMainLevel(player);
+            double mainXp = PlayerData.getPathExperience(player, IPlayerSkills.MAIN);
+            int xpForNext = PlayerData.getXpForMainLevel(mainLevel + 1);
+            guiGraphics.renderTooltip(font,
+                Component.literal((int) mainXp + " / " + xpForNext + " aspect level-ups"),
+                mouseX, mouseY);
+        }
+
+        yOffset += 16 + 14; // separator + "Aspects" header
+
+        for (AspectDefinition aspect : SkillDataManager.INSTANCE.getAllAspects()) {
+            int barX = contentX + 120;
+            int barY = (int)(contentY + yOffset - 2 - scrollOffset);
+            int barW = 100;
+            int barH = 8;
+            if (mouseX >= barX && mouseX <= barX + barW && mouseY >= barY && mouseY <= barY + barH) {
+                int level = PlayerData.getPathLevel(player, aspect.getId());
+                double currentXp = PlayerData.getPathExperience(player, aspect.getId());
+                int xpForNext = PlayerData.getScaledXpForLevel(player, level + 1);
+                guiGraphics.renderTooltip(font,
+                    Component.literal((int) currentXp + " / " + xpForNext + " XP"),
+                    mouseX, mouseY);
+            }
+            yOffset += 12;
+        }
+  }
+
   static private void renderProgressBar(GuiGraphics guiGraphics, int x, int y, int width, int height, float progress, int color) {
-      // Background
-      guiGraphics.fill(x, y, x + width, y + height, 0xFF333333);
+      // Background — dark inset
+      guiGraphics.fill(x, y, x + width, y + height, 0xFF1A1A1E);
 
-      // Progress fill (add full alpha to RGB color)
+      // Progress fill
       int fillWidth = (int)(width * progress);
-      guiGraphics.fill(x, y, x + fillWidth, y + height, 0xFF000000 | color);
+      if (fillWidth > 0) {
+          int baseColor = 0xFF000000 | color;
+          guiGraphics.fill(x, y, x + fillWidth, y + height, baseColor);
+          // Highlight on top edge of fill
+          guiGraphics.fill(x, y, x + fillWidth, y + 1, 0x33FFFFFF);
+      }
 
-      // Border
-      guiGraphics.fill(x - 1, y - 1, x + width + 1, y, 0xFFAAAAAA); // Top
-      guiGraphics.fill(x - 1, y + height, x + width + 1, y + height + 1, 0xFFAAAAAA); // Bottom
-      guiGraphics.fill(x - 1, y, x, y + height, 0xFFAAAAAA); // Left
-      guiGraphics.fill(x + width, y, x + width + 1, y + height, 0xFFAAAAAA); // Right
+      // Border — subtle bevel
+      guiGraphics.fill(x - 1, y - 1, x + width + 1, y, 0xFF2A2A2E); // Top
+      guiGraphics.fill(x - 1, y + height, x + width + 1, y + height + 1, 0xFF444448); // Bottom
+      guiGraphics.fill(x - 1, y, x, y + height, 0xFF2A2A2E); // Left
+      guiGraphics.fill(x + width, y, x + width + 1, y + height, 0xFF444448); // Right
   }
 }

@@ -510,12 +510,18 @@ public class SkillTab {
         int toX = (int)to.getX() + (leftPos + SkillScreen.WINDOW_INSIDE_X) + (SkillScreen.SCREEN_WIDTH-SkillScreen.WINDOW_INSIDE_X) / 2;
         int toY = (int)to.getY() + (topPos + SkillScreen.WINDOW_INSIDE_Y) + (SkillScreen.SCREEN_HEIGHT-SkillScreen.WINDOW_INSIDE_Y) / 2;
 
-        // Color based on dependency fulfillment
-        // Gray = not fulfilled, Blue = fulfilled
         boolean dependencyMet = to.arePrerequisitesMet(player);
-        int color = dependencyMet ? 0xFF4488FF : 0xFF666666;
+        int toLevel = PlayerData.getSkillLevel(player, to.getId());
 
-        // Draw line connection
+        int color;
+        if (toLevel > 0) {
+            color = 0xFF44AA88; // Teal — completed path
+        } else if (dependencyMet) {
+            color = 0xFF4477AA; // Blue — available
+        } else {
+            color = 0xFF3A3A3E; // Dark gray — locked
+        }
+
         drawLine(guiGraphics, fromX, fromY, toX, toY, color);
     }
 
@@ -563,43 +569,57 @@ public class SkillTab {
         int currentLevel = PlayerData.getSkillLevel(player, skill.getId());
         boolean prerequisitesMet = skill.arePrerequisitesMet(player);
 
-        // Background color based on skill state
-        int backgroundColor = 0xFF333333;
-        if (currentLevel > 0) {
-            backgroundColor = currentLevel == skill.getMaxLevel() ? 0xFF00AA00 : 0xFF0066AA;
-        }
+        int s = SkillScreen.SKILL_NODE_SIZE;
 
-        // Draw skill background
-        guiGraphics.fill(x, y, x + SkillScreen.SKILL_NODE_SIZE, y + SkillScreen.SKILL_NODE_SIZE, backgroundColor);
-
-        // Draw border
-        // White = has points, Blue = prerequisites met (unlockable), Gray = locked
-        int borderColor;
-        if (currentLevel > 0) {
-            borderColor = 0xFFFFFFFF; // White - skill has points
+        // Background + border colors based on state
+        int bgColor, borderTop, borderBottom;
+        if (currentLevel > 0 && currentLevel == skill.getMaxLevel()) {
+            bgColor = 0xFF1A3A1A;       // Dark green — maxed
+            borderTop = 0xFF44AA44;
+            borderBottom = 0xFF1A551A;
+        } else if (currentLevel > 0) {
+            bgColor = 0xFF1A2A3A;       // Dark blue — in progress
+            borderTop = 0xFF4488CC;
+            borderBottom = 0xFF1A3355;
         } else if (prerequisitesMet) {
-            borderColor = 0xFF4488FF; // Blue - can be unlocked
+            bgColor = 0xFF2A2A2E;       // Dark — available
+            borderTop = 0xFF5577BB;
+            borderBottom = 0xFF2A3355;
         } else {
-            borderColor = 0xFF666666; // Gray - locked
+            bgColor = 0xFF1E1E22;       // Darkest — locked
+            borderTop = 0xFF444448;
+            borderBottom = 0xFF2A2A2E;
         }
-        guiGraphics.fill(x, y, x + SkillScreen.SKILL_NODE_SIZE, y + 1, borderColor); // Top
-        guiGraphics.fill(x, y + SkillScreen.SKILL_NODE_SIZE - 1, x + SkillScreen.SKILL_NODE_SIZE, y + SkillScreen.SKILL_NODE_SIZE, borderColor); // Bottom
-        guiGraphics.fill(x, y, x + 1, y + SkillScreen.SKILL_NODE_SIZE, borderColor); // Left
-        guiGraphics.fill(x + SkillScreen.SKILL_NODE_SIZE - 1, y, x + SkillScreen.SKILL_NODE_SIZE, y + SkillScreen.SKILL_NODE_SIZE, borderColor); // Right
+
+        // Background fill
+        guiGraphics.fill(x, y, x + s, y + s, bgColor);
+
+        // Beveled border
+        guiGraphics.fill(x, y, x + s, y + 1, borderTop);           // Top
+        guiGraphics.fill(x, y + s - 1, x + s, y + s, borderBottom); // Bottom
+        guiGraphics.fill(x, y, x + 1, y + s, borderTop);           // Left
+        guiGraphics.fill(x + s - 1, y, x + s, y + s, borderBottom); // Right
+
+        // Inner highlight (subtle)
+        guiGraphics.fill(x + 1, y + 1, x + s - 1, y + 2, 0x15FFFFFF);
+        guiGraphics.fill(x + 1, y + 1, x + 2, y + s - 1, 0x15FFFFFF);
         
         // Render skill icon (dimmed if locked)
         IconData iconData = skill.getIconData();
         float iconAlpha = (currentLevel == 0 && !prerequisitesMet) ? 0.35f : 1.0f;
         iconData.render(guiGraphics, x + 4, y + 4, iconAlpha);
         
-        // Render level indicator if skill has levels
+        // Render level indicator if skill has levels (above item icon z)
         if (currentLevel > 0 && skill.getMaxLevel() > 1) {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(0, 0, 160);
             String levelText = String.valueOf(currentLevel);
             int textWidth = font.width(levelText);
-            guiGraphics.drawString(font, levelText,
-                x + SkillScreen.SKILL_NODE_SIZE - textWidth - 2,
-                y + SkillScreen.SKILL_NODE_SIZE - 8,
-                0xFFFFFF, true);
+            int lx = x + s - textWidth - 3;
+            int ly = y + s - 9;
+            guiGraphics.fill(lx - 1, ly - 1, lx + textWidth + 1, ly + 8, 0xAA000000);
+            guiGraphics.drawString(font, levelText, lx, ly, 0xFFDDDDDD, false);
+            guiGraphics.pose().popPose();
         }
     }
 

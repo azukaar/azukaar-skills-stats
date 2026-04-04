@@ -126,7 +126,10 @@ public class SkillBarOverlay {
         slot.skill.getIconData().render(guiGraphics, (int)(x / iconScale), (int)(y / iconScale), iconAlpha);
         guiGraphics.pose().popPose();
 
-        // Cooldown sweep overlay
+        // Cooldown overlay + keybind label rendered above item icon z
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0, 0, 160);
+
         if (onCooldown && cooldownProgress > 0) {
             renderCooldownOverlay(guiGraphics, x, y, cooldownProgress);
         }
@@ -140,6 +143,8 @@ public class SkillBarOverlay {
             (int) (x / scale),
             (int) (y / scale),
             KEYBIND_TEXT_COLOR, true);
+        guiGraphics.pose().popPose();
+
         guiGraphics.pose().popPose();
     }
 
