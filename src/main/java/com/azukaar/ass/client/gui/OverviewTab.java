@@ -12,6 +12,9 @@ import net.minecraft.world.entity.player.Player;
 
 
 public class OverviewTab {
+  private static final boolean DEBUG_REPEAT = false;
+  private static final int DEBUG_REPEAT_COUNT = 3;
+
   static protected int renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, Player player) {
         int yOffset = 30;
 
@@ -42,7 +45,15 @@ public class OverviewTab {
         guiGraphics.drawString(font, "Aspect Levels:", contentX + 10, contentY + yOffset, 0xAAAAFF);
         yOffset += 15;
 
-        for (AspectDefinition aspect : SkillDataManager.INSTANCE.getAllAspects()) {
+        java.util.List<AspectDefinition> aspects = new java.util.ArrayList<>(SkillDataManager.INSTANCE.getAllAspects());
+        if (DEBUG_REPEAT) {
+            java.util.List<AspectDefinition> repeated = new java.util.ArrayList<>();
+            for (int r = 0; r < DEBUG_REPEAT_COUNT; r++) {
+                repeated.addAll(aspects);
+            }
+            aspects = repeated;
+        }
+        for (AspectDefinition aspect : aspects) {
             String name = aspect.getDisplayNameString() != null ? aspect.getDisplayNameString() : aspect.getId();
             int level = PlayerData.getPathLevel(player, aspect.getId());
             guiGraphics.drawString(font, name + ": lvl " + level, contentX + 20, contentY + yOffset, 0xFFFFFF);

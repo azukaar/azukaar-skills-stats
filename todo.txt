@@ -1,5 +1,2 @@
-- add aspect requierements to skills 
-- add requirements to trees
-- display requierements on locked skills
 - zoom
 - allow togglable passive type

@@ -79,7 +79,8 @@ public class SkillScreen extends Screen {
     private SkillTab selectedTab;
     private Skill selectedSkill;
     private int leftPos;
-    private int topPos; 
+    private int topPos;
+    private ScrollablePane overviewPane;
 
     SkillTab[] tabs;
 
@@ -117,6 +118,12 @@ public class SkillScreen extends Screen {
         super.init();
         this.leftPos = (this.width - SCREEN_WIDTH) / 2;
         this.topPos = (this.height - SCREEN_HEIGHT) / 2;
+
+        int contentX = this.leftPos + WINDOW_INSIDE_X;
+        int contentY = this.topPos + WINDOW_INSIDE_Y;
+        int contentWidth = SCREEN_WIDTH - 18;
+        int contentHeight = SCREEN_HEIGHT - 27;
+        this.overviewPane = new ScrollablePane(contentX, contentY, contentWidth, contentHeight);
     }
 
     @Override
@@ -221,22 +228,12 @@ public class SkillScreen extends Screen {
         guiGraphics.enableScissor(contentX, contentY, contentX + contentWidth, contentY + contentHeight);
 
         if(selectedTab.getRawName().equals("Overview")) {
-            // Save current pose
-            guiGraphics.pose().pushPose();
-            
-            // guiGraphics.pose().scale(zoomScale, zoomScale, 1.0f);
-            
-            // Apply scroll translation
-            guiGraphics.pose().translate(scrollX, scrollY, 0);
-            
-            // Render overview content
-            currentTabOffsetY = OverviewTab.renderContent(guiGraphics, mouseX, mouseY, partialTick, this.leftPos + WINDOW_INSIDE_X, this.topPos + WINDOW_INSIDE_Y, this.font, player);
-            
-            // disable scissor 
+            // Disable the outer scissor — the pane manages its own
             guiGraphics.disableScissor();
-                
-            // Restore pose
-            guiGraphics.pose().popPose();
+
+            overviewPane.render(guiGraphics, (g, px, py) ->
+                OverviewTab.renderContent(g, mouseX, mouseY, partialTick, px, py, this.font, player)
+            );
         } else {
             // render tree
             SkillTree currentTree = selectedTab.getSkillTree();
@@ -329,10 +326,10 @@ public class SkillScreen extends Screen {
     protected void selectTab(SkillTab tab) {
         if (this.selectedTab != tab) {
             this.selectedTab = tab;
-            currentTabOffsetY = 0; // Reset offset when switching tabs
-            scrollX = 0.0; // Reset scroll position
-            scrollY = 0.0; // Reset scroll position
-            // Add any additional logic needed when switching tabs
+            currentTabOffsetY = 0;
+            scrollX = 0.0;
+            scrollY = 0.0;
+            overviewPane.resetScroll();
         }
     }
 
@@ -491,12 +488,20 @@ public class SkillScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double mouseScrollX, double mouseScrollY) {
+        // Overview tab uses the scrollable pane
+        if (selectedTab.getRawName().equals("Overview")) {
+            return overviewPane.mouseScrolled(mouseX, mouseY, mouseScrollY);
+        }
+
+        // Skill modal scroll
+        if (this.selectedSkill != null) {
+            return selectedTab.mouseScrolledModal(mouseX, mouseY, mouseScrollY);
+        }
+
         // Handle zooming with mouse wheel
         if (isInContentArea(mouseX, mouseY)) {
             SkillTree currentTree = selectedTab.getSkillTree();
             if (currentTree == null) {
-                scrollY += mouseScrollY * 10; // Allow normal scrolling if no tree
-                clampScrolling();
                 return true;
             } else {
                 float oldZoom = zoomScale;

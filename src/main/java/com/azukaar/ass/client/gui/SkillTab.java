@@ -39,6 +39,10 @@ public class SkillTab {
     public String currentKeybind = ""; // Stores the current keybind (empty if none)
     public boolean waitingForKeybind = false; // True when waiting for user to press a key
 
+    // Modal scroll pane
+    private ScrollablePane modalPane;
+    private String lastModalSkillId;
+
     SkillTab(String displayName, IconData icon, String skillTree) {
         this.displayName = displayName;
         this.icon = icon;
@@ -229,132 +233,130 @@ public class SkillTab {
             this.keybindClearVisible = false;
         }
         
-        // Render skill level information
-        int currentLevel = PlayerData.getSkillLevel(player, selectedSkill.getId());
-        int maxLevel = selectedSkill.getMaxLevel();
+        // Scrollable content area for level/description/cooldown/effects
+        int scrollAreaY = currentY;
+        int scrollAreaHeight = modalY + modalHeight - scrollAreaY - 2;
+        int scrollAreaWidth = modalWidth - 20;
 
-        String levelText;
-        int levelColor;
-        if (maxLevel == 1) {
-            levelText = currentLevel > 0 ? "Unlocked" : "Locked";
-            levelColor = currentLevel > 0 ? 0x00FF00 : 0xFF4444;
+        // Reset modal pane when skill changes
+        if (!selectedSkill.getId().equals(lastModalSkillId)) {
+            lastModalSkillId = selectedSkill.getId();
+            modalPane = null;
+        }
+        if (modalPane == null) {
+            modalPane = new ScrollablePane(contentStartX, scrollAreaY, scrollAreaWidth, scrollAreaHeight);
         } else {
-            levelText = "Level: " + currentLevel + "/" + maxLevel;
-            levelColor = currentLevel > 0 ? 0x00AAFF : 0xFF4444;
+            modalPane.setPosition(contentStartX, scrollAreaY, scrollAreaWidth, scrollAreaHeight);
         }
-        
-        guiGraphics.drawString(font, levelText, contentStartX, currentY, levelColor, false);
-        currentY += lineHeight + 4;
-        
-        // Show description if available (with text wrapping)
-        if(selectedSkill.getDescription() != null && !"".equals(selectedSkill.getDescription())) {
-            List<String> descLines = Utils.wrapText(selectedSkill.getDescription(), 30);
-            for (String line : descLines) {
-                guiGraphics.drawString(font, line, contentStartX, currentY, 0xCCCCCC, false);
-                currentY += lineHeight;
+
+        final int fContentStartX = contentStartX;
+        final int fCurrentLevel = PlayerData.getSkillLevel(player, selectedSkill.getId());
+        final int fMaxLevel = selectedSkill.getMaxLevel();
+
+        modalPane.render(guiGraphics, (g, px, py) -> {
+            int cy = py;
+
+            // Level info
+            String levelText;
+            int levelColor;
+            if (fMaxLevel == 1) {
+                levelText = fCurrentLevel > 0 ? "Unlocked" : "Locked";
+                levelColor = fCurrentLevel > 0 ? 0x00FF00 : 0xFF4444;
+            } else {
+                levelText = "Level: " + fCurrentLevel + "/" + fMaxLevel;
+                levelColor = fCurrentLevel > 0 ? 0x00AAFF : 0xFF4444;
             }
-            currentY += 4;
-        }
-        
-        // Render cooldown information if applicable
-        if (selectedSkill.hasCooldown()) {
-            int cooldown = selectedSkill.getEffectiveCooldown(Math.max(1, currentLevel));
-            String cooldownText = "Cooldown: " + cooldown + " seconds";
-            guiGraphics.drawString(font, cooldownText, contentStartX, currentY, 0xFFFF88, false);
-            currentY += lineHeight + 4;
-        }
-        
-        // Render skill effects information
-        try {
-            SkillDataManager skillDataManager = SkillDataManager.INSTANCE;
-            SkillEffect skillEffect = skillDataManager.getSkillEffects(selectedSkill.getId());
+            g.drawString(font, levelText, fContentStartX, cy, levelColor, false);
+            cy += lineHeight + 4;
 
-            if (skillEffect != null && skillEffect.getEffects() != null && !skillEffect.getEffects().isEmpty()) {
-                guiGraphics.drawString(font, "Effects:", contentStartX, currentY, 0xCCCCCC, false);
-                currentY += lineHeight;
-                
-                for (SkillEffect.Effect effect : skillEffect.getEffects()) {
-                    String effectText = "";
-                    int effectColor = 0xAAAAAAA;
-                    
-                    if ("attribute_modifier".equals(effect.getType())) {
-                        // Calculate effect value at current level
-                        double value = effect.getScaling().calculateValue(effect.getValue(), Math.max(1, currentLevel));
-                        String operation = effect.getOperation();
-                        String attribute = effect.getAttribute();
+            // Description
+            if (selectedSkill.getDescription() != null && !"".equals(selectedSkill.getDescription())) {
+                List<String> descLines = Utils.wrapText(selectedSkill.getDescription(), 30);
+                for (String line : descLines) {
+                    g.drawString(font, line, fContentStartX, cy, 0xCCCCCC, false);
+                    cy += lineHeight;
+                }
+                cy += 4;
+            }
 
-                        // Simplify attribute name for display
-                        String displayAttribute = Utils.toDisplayString(attribute);
+            // Cooldown
+            if (selectedSkill.hasCooldown()) {
+                int cd = selectedSkill.getEffectiveCooldown(Math.max(1, fCurrentLevel));
+                g.drawString(font, "Cooldown: " + cd + " seconds", fContentStartX, cy, 0xFFFF88, false);
+                cy += lineHeight + 4;
+            }
 
-                        if(effect.getDescription() != null && !"".equals(effect.getDescription()))
-                            displayAttribute = effect.getDescription();
-                        
-                        if ("add_value".equals(operation) || "add".equals(operation)) {
-                            effectText = "+" + String.valueOf(value) + " " + displayAttribute;
-                        } else if ("add_multiplied_base".equals(operation) || "multiply_base".equals(operation)) {
-                            effectText = "+" + String.valueOf(value * 100) + "% " + displayAttribute;
-                        } else if ("add_multiplied_total".equals(operation) || "multiply_total".equals(operation)) {
-                            effectText = "+" + String.valueOf(value * 100) + "% to total " + displayAttribute;
-                        } else {
-                            effectText = String.valueOf(value) + displayAttribute;
+            // Effects
+            try {
+                SkillEffect skillEffect = SkillDataManager.INSTANCE.getSkillEffects(selectedSkill.getId());
+                if (skillEffect != null && skillEffect.getEffects() != null && !skillEffect.getEffects().isEmpty()) {
+                    g.drawString(font, "Effects:", fContentStartX, cy, 0xCCCCCC, false);
+                    cy += lineHeight;
+
+                    for (SkillEffect.Effect effect : skillEffect.getEffects()) {
+                        String effectText = "";
+                        int effectColor = 0xAAAAAA;
+
+                        if ("attribute_modifier".equals(effect.getType())) {
+                            double value = effect.getScaling().calculateValue(effect.getValue(), Math.max(1, fCurrentLevel));
+                            String operation = effect.getOperation();
+                            String displayAttribute = Utils.toDisplayString(effect.getAttribute());
+                            if (effect.getDescription() != null && !"".equals(effect.getDescription()))
+                                displayAttribute = effect.getDescription();
+
+                            if ("add_value".equals(operation) || "add".equals(operation)) {
+                                effectText = "+" + value + " " + displayAttribute;
+                            } else if ("add_multiplied_base".equals(operation) || "multiply_base".equals(operation)) {
+                                effectText = "+" + (value * 100) + "% " + displayAttribute;
+                            } else if ("add_multiplied_total".equals(operation) || "multiply_total".equals(operation)) {
+                                effectText = "+" + (value * 100) + "% to total " + displayAttribute;
+                            } else {
+                                effectText = value + displayAttribute;
+                            }
+                            effectColor = 0x00FF88;
+                        } else if ("active".equals(effect.getType())) {
+                            effectText = Utils.toDisplayString(effect.getActiveEffectId());
+                            if (effect.getDescription() != null && !"".equals(effect.getDescription()))
+                                effectText = effect.getDescription();
+                            effectColor = 0xFF8800;
+                        } else if ("custom_attribute_modifier".equals(effect.getType())) {
+                            effectText = (effect.getDescription() != null && !"".equals(effect.getDescription()))
+                                ? effect.getDescription() : Utils.toDisplayString(effect.getAttribute());
+                            effectColor = 0x8800FF;
+                        } else if ("potion".equals(effect.getType())) {
+                            String potionName = Utils.toDisplayString(effect.getPotion());
+                            int durationSecs = effect.getDuration(Math.max(1, fCurrentLevel)) / 20;
+                            int lvl = effect.getAmplifier(Math.max(1, fCurrentLevel)) + 1;
+                            effectText = potionName + " " + toRomanNumeral(lvl) + " (" + durationSecs + "s)";
+                            effectColor = 0xFF88FF;
                         }
 
-                        effectColor = 0x00FF88;
-                    } else if ("active".equals(effect.getType())) {
-                        effectText = Utils.toDisplayString(effect.getActiveEffectId());
-                        if(effect.getDescription() != null && !"".equals(effect.getDescription()))
-                            effectText = effect.getDescription();
-                        
-                        effectColor = 0xFF8800;
-                    } else if ("custom_attribute_modifier".equals(effect.getType())) {
-                        if (effect.getDescription() != null && !"".equals(effect.getDescription())) {
-                            effectText = effect.getDescription();
-                        } else {
-                            effectText = Utils.toDisplayString(effect.getAttribute());
-                        }
-                        effectColor = 0x8800FF;
-                    } else if ("potion".equals(effect.getType())) {
-                        // Auto-generate description from potion data
-                        String potionName = Utils.toDisplayString(effect.getPotion());
-                        int durationSecs = effect.getDuration(Math.max(1, currentLevel)) / 20;
-                        int level = effect.getAmplifier(Math.max(1, currentLevel)) + 1;
-                        String levelStr = toRomanNumeral(level);
-                        effectText = potionName + " " + levelStr + " (" + durationSecs + "s)";
-                        effectColor = 0xFF88FF;
-                    }
+                        if (!effectText.isEmpty()) {
+                            List<String> wrappedEffectText = Utils.wrapText(effectText, 28);
+                            for (String line : wrappedEffectText) {
+                                g.drawString(font, "  " + line, fContentStartX, cy, effectColor, false);
+                                cy += lineHeight;
+                            }
 
-                    if (!effectText.isEmpty() /*&& currentY + lineHeight < modalY + modalHeight - 10*/) {
-                        // Wrap effect text
-                        List<String> wrappedEffectText = Utils.wrapText(effectText, 28);
-                        for (String line : wrappedEffectText) {
-                            guiGraphics.drawString(font, "  " + line, contentStartX, currentY, effectColor, false);
-                            currentY += lineHeight;
-                        }
-
-                        // Display data lines for active and custom effects
-                        // if ("active".equals(effect.getType()) || "custom_attribute_modifier".equals(effect.getType())) {
                             Map<String, ScalingData> data = effect.getData();
-
                             if (data != null && !data.isEmpty()) {
-                                int skillLevel = com.azukaar.ass.api.PlayerData.getSkillLevel(player, selectedSkill.getId());
-                                for (Map.Entry<String, ScalingData> entry : data.entrySet()) {
-                                    String dataKey = entry.getKey();
-                                    double value = entry.getValue().getValue(skillLevel);
-
-                                    String dataText = "  " + Utils.toDisplayString(dataKey) + ": " + value;
-                                    guiGraphics.drawString(font, dataText, contentStartX + 20, currentY, 0xAAAAAA, false);
-                                    currentY += lineHeight;
+                                int skillLevel = PlayerData.getSkillLevel(player, selectedSkill.getId());
+                                for (Map.Entry<String, ScalingData> dataEntry : data.entrySet()) {
+                                    double val = dataEntry.getValue().getValue(skillLevel);
+                                    String dataText = "  " + Utils.toDisplayString(dataEntry.getKey()) + ": " + val;
+                                    g.drawString(font, dataText, fContentStartX + 20, cy, 0xAAAAAA, false);
+                                    cy += lineHeight;
                                 }
                             }
-                        // }
+                        }
                     }
-
                 }
+            } catch (Exception e) {
+                g.drawString(font, "No effect data available", fContentStartX, cy, 0x888888, false);
             }
-        } catch (Exception e) {
-            // Fallback if skill effects can't be retrieved
-            guiGraphics.drawString(font, "No effect data available", contentStartX, currentY, 0x888888, false);
-        }
+
+            return cy - py;
+        });
         
         // Upgrade button section
         currentY += 4;
@@ -364,6 +366,8 @@ public class SkillTab {
         int buttonY = contentStartY;
         
         // Check if skill can be upgraded
+        int currentLevel = fCurrentLevel;
+        int maxLevel = fMaxLevel;
         boolean canUpgrade = currentLevel < maxLevel;
         boolean prerequisitesMet = selectedSkill.arePrerequisitesMet(player);
         int upgradeCost = 1;
@@ -754,6 +758,13 @@ public class SkillTab {
      */
     public boolean isWaitingForKeybind() {
         return waitingForKeybind;
+    }
+
+    public boolean mouseScrolledModal(double mouseX, double mouseY, double delta) {
+        if (modalPane != null) {
+            return modalPane.mouseScrolled(mouseX, mouseY, delta);
+        }
+        return false;
     }
 
     public Component getDisplayName() {
