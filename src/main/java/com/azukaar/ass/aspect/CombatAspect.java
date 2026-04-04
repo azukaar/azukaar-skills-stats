@@ -12,6 +12,7 @@ import com.azukaar.ass.api.AspectType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -21,9 +22,11 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 public class CombatAspect implements AspectType {
     private static AspectDefinition definition;
 
-    private static long expiryTicks = 72000L;
-    private static long cleanupIntervalTicks = 1200L;
-    private static double minDamageThreshold = 0.5;
+    private static long expiryTicks;
+    private static long cleanupIntervalTicks;
+    private static double minDamageThreshold;
+    private static double hostileMultiplier;
+    private static double passiveMultiplier;
 
     private static final Map<UUID, MobDamageRecord> damageRecords = new HashMap<>();
     private static long tickCounter = 0;
@@ -36,9 +39,11 @@ public class CombatAspect implements AspectType {
     @Override
     public void onLoad(AspectDefinition def) {
         definition = def;
-        expiryTicks = def.getLong("expiry_ticks", 72000L);
-        cleanupIntervalTicks = def.getLong("cleanup_interval_ticks", 1200L);
-        minDamageThreshold = def.getDouble("min_damage_threshold", 0.5);
+        expiryTicks = def.getLong("expiry_ticks", 0);
+        cleanupIntervalTicks = def.getLong("cleanup_interval_ticks", 0);
+        minDamageThreshold = def.getDouble("min_damage_threshold", 0);
+        hostileMultiplier = def.getDouble("hostile_multiplier", 0);
+        passiveMultiplier = def.getDouble("passive_multiplier", 0);
     }
 
     @Override
@@ -93,7 +98,8 @@ public class CombatAspect implements AspectType {
         MobDamageRecord record = damageRecords.remove(mob.getUUID());
         if (record == null) return;
 
-        double baseXp = mob.getMaxHealth();
+        double mobMultiplier = (mob instanceof Monster) ? hostileMultiplier : passiveMultiplier;
+        double baseXp = mob.getMaxHealth() * mobMultiplier;
         ServerLevel level = (ServerLevel) mob.level();
 
         for (Map.Entry<UUID, Double> entry : record.playerDamage.entrySet()) {
@@ -107,10 +113,9 @@ public class CombatAspect implements AspectType {
             double share = entry.getValue() / totalTrackedDamage;
             double xp = baseXp * share;
 
+            double awarded = AspectHelper.awardXp(definition, player, xp, mob.position().add(0, 1, 0));
             System.out.println("[CombatAspect] Player " + player.getName().getString()
-                + " dealt " + entry.getValue().intValue() + " damage to mob, earning " + (int) xp + " XP");
-
-            AspectHelper.awardXp(definition, player, xp, mob.position().add(0, 1, 0));
+                + " dealt " + entry.getValue().intValue() + " damage to mob, earning " + (int) awarded + " XP");
         }
     }
 

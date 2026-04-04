@@ -5,8 +5,7 @@ import java.util.Map;
 import com.azukaar.ass.api.AspectDefinition;
 import com.azukaar.ass.api.AspectHelper;
 import com.azukaar.ass.api.AspectType;
-import com.azukaar.ass.capabilities.IPlayerSkills;
-
+import com.azukaar.ass.api.PlayerData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -24,17 +23,17 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 public class ExplorationAspect implements AspectType {
     private static AspectDefinition definition;
 
-    // Configurable from datapack properties
-    private static int targetMaxLevel = 100;
-    private static double biomeRatio = 0.3;
-    private static double structureRatio = 0.3;
-    private static double chunkBonusXp = 5.0;
-    private static long chunkCheckInterval = 20;
-    private static long biomeStructureCheckInterval = 100;
-    private static int biomeRampStart = 3;
-    private static double biomeRampRate = 0.05;
-    private static double structureRampRate = 0.1;
-    private static double maxDiscoveryXp = 2000;
+    // Loaded from datapack properties via onLoad()
+    private static int targetMaxLevel;
+    private static double biomeRatio;
+    private static double structureRatio;
+    private static double chunkBonusXp;
+    private static long chunkCheckInterval;
+    private static long biomeStructureCheckInterval;
+    private static int biomeRampStart;
+    private static double biomeRampRate;
+    private static double structureRampRate;
+    private static double maxDiscoveryXp;
 
     // Cached XP values (computed once from registries)
     private static boolean initialized = false;
@@ -53,16 +52,16 @@ public class ExplorationAspect implements AspectType {
     @Override
     public void onLoad(AspectDefinition def) {
         definition = def;
-        targetMaxLevel = def.getInt("target_max_level", 100);
-        biomeRatio = def.getDouble("biome_ratio", 0.3);
-        structureRatio = def.getDouble("structure_ratio", 0.3);
-        chunkBonusXp = def.getDouble("chunk_bonus_xp", 5.0);
-        chunkCheckInterval = def.getLong("chunk_check_interval", 20);
-        biomeStructureCheckInterval = def.getLong("biome_structure_check_interval", 100);
-        biomeRampStart = def.getInt("biome_ramp_start", 3);
-        biomeRampRate = def.getDouble("biome_ramp_rate", 0.05);
-        structureRampRate = def.getDouble("structure_ramp_rate", 0.1);
-        maxDiscoveryXp = def.getDouble("max_discovery_xp", 2000);
+        targetMaxLevel = def.getInt("target_max_level", 0);
+        biomeRatio = def.getDouble("biome_ratio", 0);
+        structureRatio = def.getDouble("structure_ratio", 0);
+        chunkBonusXp = def.getDouble("chunk_bonus_xp", 0);
+        chunkCheckInterval = def.getLong("chunk_check_interval", 0);
+        biomeStructureCheckInterval = def.getLong("biome_structure_check_interval", 0);
+        biomeRampStart = def.getInt("biome_ramp_start", 0);
+        biomeRampRate = def.getDouble("biome_ramp_rate", 0);
+        structureRampRate = def.getDouble("structure_ramp_rate", 0);
+        maxDiscoveryXp = def.getDouble("max_discovery_xp", 0);
         initialized = false;
     }
 
@@ -74,7 +73,7 @@ public class ExplorationAspect implements AspectType {
     }
 
     private static void initialize(MinecraftServer server) {
-        int totalXpBudget = IPlayerSkills.getTotalXpForLevel(targetMaxLevel);
+        int totalXpBudget = PlayerData.getTotalXpForLevel(targetMaxLevel);
 
         Registry<?> biomeRegistry = server.registryAccess().registryOrThrow(Registries.BIOME);
         Registry<Structure> structureRegistry = server.registryAccess().registryOrThrow(Registries.STRUCTURE);

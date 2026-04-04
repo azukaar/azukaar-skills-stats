@@ -73,7 +73,9 @@ public class NetworkHandler {
                             var skills = skillsProvider.getSkills();
 
                             // Sync existing data
-                            skills.setAllExperience(payload.experienceData());
+                            skills.setAllLevels(payload.aspectLevels());
+                            skills.setAllExperience(payload.xpInLevel());
+                            skills.setLevelCap(payload.levelCap());
                             skills.setSkillPoints(payload.skillPoints());
                             skills.setAllSkills(payload.skillsData());
 

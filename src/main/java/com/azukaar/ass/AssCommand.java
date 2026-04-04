@@ -279,41 +279,34 @@ public class AssCommand {
             return 0;
         }
 
-        context.getSource().sendSuccess(() -> Component.literal("=== XP for " + player.getName().getString() + " ==="), false);
-        context.getSource().sendSuccess(() -> Component.literal("Main Level: " + PlayerData.getMainLevel(player)), false);
-        
-        double totalXP = 0;
-        
+        context.getSource().sendSuccess(() -> Component.literal("=== Stats for " + player.getName().getString() + " ==="), false);
+
+        int mainLevel = skills.getMainLevel();
+        double mainXp = skills.getExperience(IPlayerSkills.MAIN);
+        int mainXpForNext = IPlayerSkills.getXpForMainLevel(mainLevel + 1);
+        context.getSource().sendSuccess(() -> Component.literal("Main Level: " + mainLevel + " (" + (int)mainXp + "/" + mainXpForNext + " level-ups)"), false);
+
         for (String pathName : SkillDataManager.INSTANCE.getAspectIds()) {
-            double pathXP = skills.getExperience(pathName);
-            int pathLevel = (int) skills.getLevel(pathName);
-            totalXP += pathXP;
-            context.getSource().sendSuccess(() -> Component.literal(pathName + ": " + pathXP + " XP (Level " + pathLevel + ")"), false);
+            double xpInLevel = skills.getExperience(pathName);
+            int pathLevel = skills.getLevel(pathName);
+            int xpForNext = IPlayerSkills.getScaledXpForLevel(pathLevel + 1, skills.getLevelCap());
+            context.getSource().sendSuccess(() -> Component.literal(pathName + ": Level " + pathLevel + " (" + (int)xpInLevel + "/" + xpForNext + " XP)"), false);
         }
-        
-        final double totalXPFinal = totalXP;
-        context.getSource().sendSuccess(() -> Component.literal("Total XP: " + totalXPFinal), false);
         return 1;
     }
 
     // Level command implementations
     private static int setLevel(CommandContext<CommandSourceStack> context, int level, ServerPlayer player) {
-        double requiredXP = IPlayerSkills.getTotalXpForLevel(level);
-        
-        // Distribute XP evenly across all paths to achieve the desired level
-        int pathCount = SkillDataManager.INSTANCE.getAspectIds().size();
-        double xpPerPath = requiredXP / pathCount;
-        
         IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
         if (skills == null) {
             context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
             return 0;
         }
-        
+
         for (String pathName : SkillDataManager.INSTANCE.getAspectIds()) {
-            skills.setExperience(pathName, xpPerPath);
+            skills.setLevel(pathName, level);
         }
-        
+
         syncToClient(player);
         context.getSource().sendSuccess(() -> Component.literal("Set level to " + level + " for " + player.getName().getString()), true);
         return 1;

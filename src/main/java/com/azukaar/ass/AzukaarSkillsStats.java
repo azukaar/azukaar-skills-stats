@@ -177,37 +177,7 @@ public class AzukaarSkillsStats
 
         BuiltinActiveEffects.registerAll();
 
-        // // Debug values
-        // System.out.println("Level from 150 XP: " + IPlayerSkills.getLevelFromXp(150));
-        // System.out.println("Level from 300 XP: " + IPlayerSkills.getLevelFromXp(300));
-        // System.out.println("Level from 500 XP: " + IPlayerSkills.getLevelFromXp(500));
-        // System.out.println("Level from 1000 XP: " + IPlayerSkills.getLevelFromXp(1000));
-
-        System.out.println("XP for lvl1: " + IPlayerSkills.getTotalXpForLevel(1));
-        System.out.println("XP for lvl2: " + IPlayerSkills.getTotalXpForLevel(2));
-        System.out.println("XP for lvl5: " + IPlayerSkills.getTotalXpForLevel(5));
-        System.out.println("XP for lvl7: " + IPlayerSkills.getTotalXpForLevel(7));
-        System.out.println("XP for lvl10: " + IPlayerSkills.getTotalXpForLevel(10));
-        System.out.println("XP for lvl15: " + IPlayerSkills.getTotalXpForLevel(15));
-        System.out.println("XP for lvl20: " + IPlayerSkills.getTotalXpForLevel(20));
-        System.out.println("XP for lvl30: " + IPlayerSkills.getTotalXpForLevel(30));
-        System.out.println("XP for lvl50: " + IPlayerSkills.getTotalXpForLevel(50));
-
-        /*
-
-        int i = 0;
-        while(i < 150) {
-            System.out.println(i + "," + IPlayerSkills.getTotalXpForLevel(i) + 
-               "," + PlayerManager.getPlayerMainLevel(i) +
-               "," + PlayerManager.getPlayerMainLevel(i* 2) +
-               "," + PlayerManager.getPlayerMainLevel(i * 3) +
-               "," + PlayerManager.getPlayerMainLevel(i * 4)
-            );
-            i++;
-        }
-
-        // exit program
-        System.exit(0);*/
+        BalanceDebug.generateCsv("balance_debug.csv");
     } 
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -234,8 +204,8 @@ public class AzukaarSkillsStats
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-        // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+        AspectBalanceDebug.generateCsv("aspect_balance_debug.csv", event.getServer());
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {

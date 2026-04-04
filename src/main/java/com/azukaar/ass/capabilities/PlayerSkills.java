@@ -4,68 +4,135 @@ package com.azukaar.ass.capabilities;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.azukaar.ass.SkillDataManager;
-
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-
 public class PlayerSkills implements IPlayerSkills {
-    private Map<String, Double> experience = new HashMap<>();
+    private Map<String, Integer> aspectLevels = new HashMap<>();
+    private Map<String, Double> xpInLevel = new HashMap<>();
+    private int levelCap = IPlayerSkills.BASE_CAP;
     private int skillPoints = 0;
     private Map<String, Integer> skills = new HashMap<>();
-    
+
     private Map<Integer, String> activeSkillSlots = new HashMap<>();
     private Map<String, Long> skillCooldowns = new HashMap<>();
+    private Map<String, Integer> rateLimitCounters = new HashMap<>();
+
+    @Override
+    public int getLevelCap() { return levelCap; }
+
+    @Override
+    public void setLevelCap(int cap) { this.levelCap = cap; }
+
+    @Override
+    public int getRateLimitCounter(String aspectId) {
+        return rateLimitCounters.getOrDefault(aspectId, 0);
+    }
+
+    @Override
+    public void incrementRateLimitCounter(String aspectId) {
+        int val = Math.min(100, getRateLimitCounter(aspectId) + 1);
+        rateLimitCounters.put(aspectId, val);
+    }
+
+    @Override
+    public void decrementOtherCounters(String aspectId, java.util.Collection<String> allAspectIds) {
+        for (String id : allAspectIds) {
+            if (!id.equals(aspectId)) {
+                int val = Math.max(0, getRateLimitCounter(id) - 1);
+                rateLimitCounters.put(id, val);
+            }
+        }
+    }
+
+    @Override
+    public void decayAllCounters() {
+        rateLimitCounters.replaceAll((k, v) -> Math.max(0, v - 1));
+    }
 
     @Override
     public double getExperience(String pathName) {
-        return experience.getOrDefault(pathName, 0.0);
+        return xpInLevel.getOrDefault(pathName, 0.0);
     }
 
     @Override
     public void setExperience(String pathName, double exp) {
-        experience.put(pathName, exp);
+        xpInLevel.put(pathName, exp);
     }
 
     @Override
     public void addExperience(String pathName, double exp) {
         double current = getExperience(pathName);
-        setExperience(pathName, current + exp);
-        System.out.println("Added " + exp + " to " + current);
+        double total = current + exp;
+        int level = getLevel(pathName);
+
+        // Level up with overflow, respecting cap
+        int xpNeeded = IPlayerSkills.getScaledXpForLevel(level + 1, levelCap);
+        while (total >= xpNeeded && level < levelCap) {
+            total -= xpNeeded;
+            level++;
+            xpNeeded = IPlayerSkills.getScaledXpForLevel(level + 1, levelCap);
+        }
+
+        // At cap, discard overflow
+        if (level >= levelCap) {
+            total = 0;
+        }
+
+        aspectLevels.put(pathName, level);
+        xpInLevel.put(pathName, total);
     }
 
     @Override
-    public double getLevel(String pathName) {
-        double exp = getExperience(pathName);
-        return IPlayerSkills.getLevelFromXp((int) exp);
+    public int getLevel(String pathName) {
+        return aspectLevels.getOrDefault(pathName, 0);
+    }
+
+    @Override
+    public void setLevel(String pathName, int level) {
+        aspectLevels.put(pathName, level);
+        xpInLevel.put(pathName, 0.0);
     }
 
     @Override
     public Map<String, Double> getAllExperience() {
-        return new HashMap<>(experience);
+        return new HashMap<>(xpInLevel);
     }
 
     @Override
     public void setAllExperience(Map<String, Double> experience) {
-        this.experience = new HashMap<>(experience);
+        this.xpInLevel = new HashMap<>(experience);
+    }
+
+    @Override
+    public Map<String, Integer> getAllLevels() {
+        return new HashMap<>(aspectLevels);
+    }
+
+    @Override
+    public void setAllLevels(Map<String, Integer> levels) {
+        this.aspectLevels = new HashMap<>(levels);
     }
 
     @Override
     public int getMainLevel() {
-        int mainExperience = 0;
-        int totalLevel = 0; // Assuming totalLevel is calculated from all paths
-
-        for (String aspectId : SkillDataManager.INSTANCE.getAspectIds()) {
-            totalLevel += IPlayerSkills.getLevelFromXp(experience.getOrDefault(aspectId, 0.0).intValue());
-        }
-
-        for (int i = 0; i < totalLevel; i++) {
-            mainExperience += Math.pow(i, 0.75) * 150;
-        }
-        if (totalLevel == 1) return 1;
-        return Math.min(IPlayerSkills.getLevelFromXp(mainExperience), totalLevel);
+        return getLevel(IPlayerSkills.MAIN);
     }
-    
+
+    @Override
+    public void addMainExperience(double xp) {
+        double current = xpInLevel.getOrDefault(IPlayerSkills.MAIN, 0.0);
+        double total = current + xp;
+        int level = aspectLevels.getOrDefault(IPlayerSkills.MAIN, 0);
+
+        int xpNeeded = IPlayerSkills.getXpForMainLevel(level + 1);
+        while (total >= xpNeeded) {
+            total -= xpNeeded;
+            level++;
+            xpNeeded = IPlayerSkills.getXpForMainLevel(level + 1);
+        }
+
+        aspectLevels.put(IPlayerSkills.MAIN, level);
+        xpInLevel.put(IPlayerSkills.MAIN, total);
+    }
+
     // Skill points implementation
     @Override
     public int getSkillPoints() {
@@ -81,7 +148,7 @@ public class PlayerSkills implements IPlayerSkills {
     public void addSkillPoints(int skillPoints) {
         this.skillPoints += skillPoints;
     }
-    
+
     @Override
     public void spendSkillPoints(int skillPoints, String skill) {
         this.skillPoints -= skillPoints;
@@ -114,12 +181,12 @@ public class PlayerSkills implements IPlayerSkills {
     public void setAllSkills(Map<String, Integer> skills) {
         this.skills = new HashMap<>(skills);
     }
-    
+
     @Override
     public String getActiveSkillInSlot(int slotIndex) {
         return activeSkillSlots.get(slotIndex);
     }
-    
+
     @Override
     public void setActiveSkillSlot(int slotIndex, String skillId) {
         if (skillId == null) {
@@ -128,34 +195,33 @@ public class PlayerSkills implements IPlayerSkills {
             activeSkillSlots.put(slotIndex, skillId);
         }
     }
-    
+
     @Override
     public Map<Integer, String> getAllActiveSkillSlots() {
         return new HashMap<>(activeSkillSlots);
     }
-    
+
     @Override
     public Long getSkillCooldown(String skillId) {
         return skillCooldowns.get(skillId);
     }
-    
+
     @Override
     public void setSkillCooldown(String skillId, long cooldownEndTime) {
         skillCooldowns.put(skillId, cooldownEndTime);
     }
-    
+
     @Override
     public Map<String, Long> getAllSkillCooldowns() {
         return new HashMap<>(skillCooldowns);
     }
-    
+
     @Override
     public boolean isSkillOnCooldown(String skillId, long currentTime) {
         Long cooldownEnd = skillCooldowns.get(skillId);
-        System.out.println("Checking cooldown for skill: " + skillId + ", current time: " + currentTime + ", cooldown end: " + cooldownEnd);
         return cooldownEnd != null && currentTime < cooldownEnd;
     }
-    
+
     @Override
     public int getRemainingCooldown(String skillId, long currentTime) {
         Long cooldownEnd = skillCooldowns.get(skillId);

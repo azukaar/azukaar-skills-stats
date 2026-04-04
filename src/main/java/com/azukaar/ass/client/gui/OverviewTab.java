@@ -30,10 +30,10 @@ public class OverviewTab {
         renderProgressBar(guiGraphics, mainBarX, mainBarY, mainBarW, mainBarH, mainProgress, 0xEEEEEE);
 
         if (mouseX >= mainBarX && mouseX <= mainBarX + mainBarW && mouseY >= mainBarY && mouseY <= mainBarY + mainBarH) {
-            int totalAspectLevels = PlayerData.getTotalAspectLevels(player);
-            int levelsForNext = PlayerData.getAspectLevelsForNextMainLevel(player);
+            double mainXp = PlayerData.getPathExperience(player, IPlayerSkills.MAIN);
+            int xpForNext = PlayerData.getXpForMainLevel(mainLevel + 1);
             guiGraphics.renderTooltip(font,
-                Component.literal(totalAspectLevels + " / " + levelsForNext + " aspect levels"),
+                Component.literal((int) mainXp + " / " + xpForNext + " aspect level-ups"),
                 mouseX, mouseY);
         }
 
@@ -56,7 +56,7 @@ public class OverviewTab {
             // Tooltip on hover
             if (mouseX >= barX && mouseX <= barX + barW && mouseY >= barY && mouseY <= barY + barH) {
                 double currentXp = PlayerData.getPathExperience(player, aspect.getId());
-                int xpForNext = IPlayerSkills.getTotalXpForLevel(level + 1);
+                int xpForNext = PlayerData.getScaledXpForLevel(player, level + 1);
                 guiGraphics.renderTooltip(font,
                     Component.literal((int) currentXp + " / " + xpForNext + " XP"),
                     mouseX, mouseY);

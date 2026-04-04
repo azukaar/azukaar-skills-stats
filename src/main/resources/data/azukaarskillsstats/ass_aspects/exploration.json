@@ -6,14 +6,14 @@
   "color": "#55FFFF",
   "properties": {
     "target_max_level": 100,
-    "biome_ratio": 0.3,
-    "structure_ratio": 0.3,
-    "chunk_bonus_xp": 5.0,
+    "biome_ratio": 0.35,
+    "structure_ratio": 0.35,
+    "chunk_bonus_xp": 20.0,
     "chunk_check_interval": 20,
     "biome_structure_check_interval": 100,
     "biome_ramp_start": 3,
     "biome_ramp_rate": 0.05,
     "structure_ramp_rate": 0.1,
-    "max_discovery_xp": 2000
+    "max_discovery_xp": 2500
   }
 }

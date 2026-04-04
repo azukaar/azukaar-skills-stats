@@ -33,6 +33,19 @@ public class ModEvents {
         NeoForge.EVENT_BUS.register(ModEvents.class);
     }
 
+    private static long tickCounter = 0;
+
+    @SubscribeEvent
+    public static void onServerTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
+        tickCounter++;
+        if (tickCounter % 20 != 0) return; // Every second
+
+        for (ServerPlayer player : event.getServer().getPlayerList().getPlayers()) {
+            var provider = player.getData(AzukaarSkillsStats.PLAYER_SKILLS_ATTACHMENT.get());
+            provider.getSkills().decayAllCounters();
+        }
+    }
+
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         // Initialize player data if needed
@@ -42,8 +55,13 @@ public class ModEvents {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server != null) {
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-                // Sync skills when player logs in
+                // Set level cap from world difficulty
                 var provider = serverPlayer.getData(AzukaarSkillsStats.PLAYER_SKILLS_ATTACHMENT.get());
+                var skills = provider.getSkills();
+                int cap = com.azukaar.ass.capabilities.IPlayerSkills.getLevelCap(serverPlayer.level().getDifficulty());
+                skills.setLevelCap(cap);
+
+                // Sync skills when player logs in
                 provider.syncToClient(serverPlayer);
 
                 // Apply all effects for the player

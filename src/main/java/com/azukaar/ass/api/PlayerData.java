@@ -2,7 +2,6 @@ package com.azukaar.ass.api;
 
 import com.azukaar.ass.AzukaarSkillsStats;
 import com.azukaar.ass.SkillDataManager;
-import com.azukaar.ass.api.AspectDefinition;
 import com.azukaar.ass.api.events.ExperienceGainedEvent;
 import com.azukaar.ass.api.events.LeveledUpEvent;
 import com.azukaar.ass.api.events.SkillPointGained;
@@ -19,15 +18,37 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class PlayerData {
+    // --- XP formula API (delegates to IPlayerSkills) ---
+
+    public static int getXpForSpecificLevel(int level) {
+        return IPlayerSkills.getXpForSpecificLevel(level);
+    }
+
+    public static int getXpForMainLevel(int level) {
+        return IPlayerSkills.getXpForMainLevel(level);
+    }
+
+    public static int getTotalXpForLevel(int level) {
+        return IPlayerSkills.getTotalXpForLevel(level);
+    }
+
+    // --- Level and XP reads ---
+
     public static int getMainLevel(Player player) {
         IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
         if (skills == null) return 0;
+        return skills.getMainLevel();
+    }
 
-        int totalLevel = 0;
-        for (String aspectId : SkillDataManager.INSTANCE.getAspectIds()) {
-            totalLevel += skills.getLevel(aspectId);
-        }
-        return getMainLevelFromPathsTotal(totalLevel);
+    public static float getMainProgress(Player player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return 0f;
+
+        double xp = skills.getExperience(IPlayerSkills.MAIN);
+        int level = skills.getMainLevel();
+        int xpNeeded = IPlayerSkills.getXpForMainLevel(level + 1);
+        if (xpNeeded <= 0) return 1f;
+        return Math.min(1f, (float)(xp / xpNeeded));
     }
 
     public static double getPathExperience(Player player, String pathName) {
@@ -40,74 +61,31 @@ public class PlayerData {
         IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
         if (skills == null) return 0f;
 
-        double totalXp = skills.getExperience(pathName);
-        int currentLevel = IPlayerSkills.getLevelFromXp((int) totalXp);
-        int xpForCurrent = IPlayerSkills.getTotalXpForLevel(currentLevel);
-        int xpForNext = IPlayerSkills.getTotalXpForLevel(currentLevel + 1);
-        int xpNeeded = xpForNext - xpForCurrent;
+        double xp = skills.getExperience(pathName);
+        int level = skills.getLevel(pathName);
+        int cap = skills.getLevelCap();
+        if (level >= cap) return 1f;
+        int xpNeeded = IPlayerSkills.getScaledXpForLevel(level + 1, cap);
         if (xpNeeded <= 0) return 1f;
-        return Math.min(1f, (float)(totalXp - xpForCurrent) / xpNeeded);
+        return Math.min(1f, (float)(xp / xpNeeded));
+    }
+
+    public static int getScaledXpForLevel(Player player, int level) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return IPlayerSkills.getXpForSpecificLevel(level);
+        return IPlayerSkills.getScaledXpForLevel(level, skills.getLevelCap());
+    }
+
+    public static int getLevelCap(Player player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return IPlayerSkills.BASE_CAP;
+        return skills.getLevelCap();
     }
 
     public static int getPathLevel(Player player, String pathName) {
         IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
-        if (skills == null) {
-            System.out.println("CAP NOT FOUND");
-            return 0;
-        }
-
-        return (int)skills.getLevel(pathName);
-    }
-
-    public static int getMainLevelFromPathsTotal(int totalLevel) {
-        int mainExperience = getMainExperienceFromPathsTotal(totalLevel);
-        return Math.min(IPlayerSkills.getLevelFromXp(mainExperience), totalLevel);
-    }
-
-    public static int getMainExperienceFromPathsTotal(int totalLevel) {
-        int mainExperience = 0;
-        for (int i = 1; i <= totalLevel; i++) {
-            mainExperience += Math.pow(i, 0.75) * 150;
-        }
-        return mainExperience;
-    }
-
-    public static int getTotalAspectLevels(Player player) {
-        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
         if (skills == null) return 0;
-        int totalLevel = 0;
-        for (String aspectId : SkillDataManager.INSTANCE.getAspectIds()) {
-            totalLevel += skills.getLevel(aspectId);
-        }
-        return totalLevel;
-    }
-
-    public static int getAspectLevelsForNextMainLevel(Player player) {
-        int currentTotal = getTotalAspectLevels(player);
-        int currentMain = getMainLevel(player);
-        for (int t = currentTotal + 1; t < 10000; t++) {
-            if (getMainLevelFromPathsTotal(t) > currentMain) {
-                return t;
-            }
-        }
-        return currentTotal;
-    }
-
-    public static float getMainProgress(Player player) {
-        int currentTotal = getTotalAspectLevels(player);
-        int currentMain = getMainLevel(player);
-        int nextTotal = getAspectLevelsForNextMainLevel(player);
-        // Search backward to find where current main level started
-        int startTotal = 0;
-        for (int t = currentTotal - 1; t >= 0; t--) {
-            if (getMainLevelFromPathsTotal(t) < currentMain) {
-                startTotal = t + 1;
-                break;
-            }
-        }
-        int range = nextTotal - startTotal;
-        if (range <= 0) return 1f;
-        return Math.min(1f, (float)(currentTotal - startTotal) / range);
+        return skills.getLevel(pathName);
     }
 
     public static int getSkillPoints(Player player) {
@@ -170,9 +148,14 @@ public class PlayerData {
             return 0;
         }
 
-        double oldLevel = skills.getLevel(pathName);
-        double oldMainLevel = getMainLevel(player);
-        
+        // Update level cap from current difficulty
+        if (!player.level().isClientSide()) {
+            skills.setLevelCap(IPlayerSkills.getLevelCap(player.level().getDifficulty()));
+        }
+
+        int oldLevel = skills.getLevel(pathName);
+        int oldMainLevel = skills.getMainLevel();
+
         // Fire Pre event
         ExperienceGainedEvent.Pre preEvent = new ExperienceGainedEvent.Pre(
             player, pathName, experience, experience, position);
@@ -183,23 +166,39 @@ public class PlayerData {
 
         experience = preEvent.getAmount();
 
+        // Rate limiting (skip for main level)
+        if (!IPlayerSkills.MAIN.equals(pathName)) {
+            int counter = skills.getRateLimitCounter(pathName);
+            experience *= (100 - counter) / 100.0;
+            skills.incrementRateLimitCounter(pathName);
+            skills.decrementOtherCounters(pathName, SkillDataManager.INSTANCE.getAspectIds());
+        }
+
         skills.addExperience(pathName, experience);
-        
+
+        int newLevel = skills.getLevel(pathName);
+        int levelsGained = newLevel - oldLevel;
+
+        // Award main XP for each aspect level gained
+        if (levelsGained > 0) {
+            skills.addMainExperience(levelsGained);
+        }
+
+        int newMainLevel = skills.getMainLevel();
+
         // Fire Post event
-        double newLevel = skills.getLevel(pathName);
-        double newMainLevel = getMainLevel(player);
-        
         ExperienceGainedEvent.Post postEvent = new ExperienceGainedEvent.Post(
             player, pathName, experience, experience, position, oldLevel, newLevel);
         NeoForge.EVENT_BUS.post(postEvent);
 
-        if(oldMainLevel < newMainLevel) {
-            var leveledUpEvent = new LeveledUpEvent(player, newMainLevel-oldMainLevel, player.level());
+        if (oldMainLevel < newMainLevel) {
+            int mainLevelsGained = newMainLevel - oldMainLevel;
+            var leveledUpEvent = new LeveledUpEvent(player, mainLevelsGained, player.level());
             NeoForge.EVENT_BUS.post(leveledUpEvent);
 
-            skills.addSkillPoints((int)(newMainLevel - oldMainLevel));
-            
-            var skillPointGainedEvent = new SkillPointGained(player, newMainLevel-oldMainLevel, player.level());
+            skills.addSkillPoints(mainLevelsGained);
+
+            var skillPointGainedEvent = new SkillPointGained(player, mainLevelsGained, player.level());
             NeoForge.EVENT_BUS.post(skillPointGainedEvent);
         }
                 

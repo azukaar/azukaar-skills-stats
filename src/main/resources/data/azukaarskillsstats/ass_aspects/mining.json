@@ -4,7 +4,7 @@
   "icon": { "type": "item", "item": "minecraft:netherite_pickaxe" },
   "description": "Earn XP by breaking blocks with the correct tool.",
   "color": "#55FF55",
-  "xp_multiplier": 4.0,
+  "xp_multiplier": 3.0,
   "properties": {
     "require_correct_tool": true
   }

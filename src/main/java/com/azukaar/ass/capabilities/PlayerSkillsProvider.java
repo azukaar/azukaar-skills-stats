@@ -21,68 +21,83 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
-        
-        // Serialize experience
-        CompoundTag experienceTag = new CompoundTag();
-        for (Map.Entry<String, Double> entry : skills.getAllExperience().entrySet()) {
-            experienceTag.putDouble(entry.getKey(), entry.getValue());
+
+        // Serialize aspect levels
+        CompoundTag levelsTag = new CompoundTag();
+        for (Map.Entry<String, Integer> entry : skills.getAllLevels().entrySet()) {
+            levelsTag.putInt(entry.getKey(), entry.getValue());
         }
-        tag.put("experience", experienceTag);
-        
+        tag.put("aspectLevels", levelsTag);
+
+        // Serialize level cap
+        tag.putInt("levelCap", skills.getLevelCap());
+
+        // Serialize XP within current level
+        CompoundTag xpTag = new CompoundTag();
+        for (Map.Entry<String, Double> entry : skills.getAllExperience().entrySet()) {
+            xpTag.putDouble(entry.getKey(), entry.getValue());
+        }
+        tag.put("xpInLevel", xpTag);
+
         // Serialize skill points
         tag.putInt("skillPoints", skills.getSkillPoints());
-        
+
         // Serialize skills
         CompoundTag skillsTag = new CompoundTag();
         for (Map.Entry<String, Integer> entry : skills.getAllSkills().entrySet()) {
             skillsTag.putInt(entry.getKey(), entry.getValue());
         }
         tag.put("skills", skillsTag);
-        
-        // NEW: Serialize active skill slots
+
+        // Serialize active skill slots
         CompoundTag slotsTag = new CompoundTag();
         for (Map.Entry<Integer, String> entry : skills.getAllActiveSkillSlots().entrySet()) {
             slotsTag.putString(String.valueOf(entry.getKey()), entry.getValue());
         }
         tag.put("activeSkillSlots", slotsTag);
-        
-        // NEW: Serialize cooldowns
+
+        // Serialize cooldowns
         CompoundTag cooldownsTag = new CompoundTag();
         for (Map.Entry<String, Long> entry : skills.getAllSkillCooldowns().entrySet()) {
             cooldownsTag.putLong(entry.getKey(), entry.getValue());
         }
         tag.put("skillCooldowns", cooldownsTag);
-        
+
         return tag;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-        // Deserialize experience
-        if (tag.contains("experience")) {
-            CompoundTag experienceTag = tag.getCompound("experience");
-            Map<String, Double> experience = new HashMap<>();
-            for (String key : experienceTag.getAllKeys()) {
-                experience.put(key, experienceTag.getDouble(key));
+        // Deserialize aspect levels
+        if (tag.contains("aspectLevels")) {
+            CompoundTag levelsTag = tag.getCompound("aspectLevels");
+            Map<String, Integer> levels = new HashMap<>();
+            for (String key : levelsTag.getAllKeys()) {
+                levels.put(key, levelsTag.getInt(key));
             }
-            skills.setAllExperience(experience);
-        } else {
-            // Legacy support: if no "experience" tag, read directly from root
-            Map<String, Double> experience = new HashMap<>();
-            for (String key : tag.getAllKeys()) {
-                if (!key.equals("skillPoints") && !key.equals("skills") && 
-                    !key.equals("activeSkillSlots") && !key.equals("skillCooldowns")) {
-                    experience.put(key, tag.getDouble(key));
-                }
-            }
-            skills.setAllExperience(experience);
+            skills.setAllLevels(levels);
         }
-        
+
+        // Deserialize level cap
+        if (tag.contains("levelCap")) {
+            skills.setLevelCap(tag.getInt("levelCap"));
+        }
+
+        // Deserialize XP within current level
+        if (tag.contains("xpInLevel")) {
+            CompoundTag xpTag = tag.getCompound("xpInLevel");
+            Map<String, Double> xp = new HashMap<>();
+            for (String key : xpTag.getAllKeys()) {
+                xp.put(key, xpTag.getDouble(key));
+            }
+            skills.setAllExperience(xp);
+        }
+
         // Deserialize skill points
         if (tag.contains("skillPoints")) {
             skills.setSkillPoints(tag.getInt("skillPoints"));
         }
-        
+
         // Deserialize skills
         if (tag.contains("skills")) {
             CompoundTag skillsTag = tag.getCompound("skills");
@@ -92,8 +107,8 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
             }
             skills.setAllSkills(skillsMap);
         }
-        
-        // NEW: Deserialize active skill slots
+
+        // Deserialize active skill slots
         if (tag.contains("activeSkillSlots")) {
             CompoundTag slotsTag = tag.getCompound("activeSkillSlots");
             for (String key : slotsTag.getAllKeys()) {
@@ -106,8 +121,8 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
                 }
             }
         }
-        
-        // NEW: Deserialize cooldowns
+
+        // Deserialize cooldowns
         if (tag.contains("skillCooldowns")) {
             CompoundTag cooldownsTag = tag.getCompound("skillCooldowns");
             for (String skillId : cooldownsTag.getAllKeys()) {
@@ -117,26 +132,28 @@ public class PlayerSkillsProvider implements INBTSerializable<CompoundTag> {
         }
     }
 
-    // method to sync data to client
     public void syncToClient(ServerPlayer player) {
         var payload = new PlayerSkillsSyncPayload(
+            skills.getAllLevels(),
             skills.getAllExperience(),
+            skills.getLevelCap(),
             skills.getSkillPoints(),
             skills.getAllSkills(),
-            skills.getAllActiveSkillSlots(),    // NEW
-            skills.getAllSkillCooldowns()       // NEW
+            skills.getAllActiveSkillSlots(),
+            skills.getAllSkillCooldowns()
         );
         PacketDistributor.sendToPlayer(player, payload);
     }
 
-    // method to sync to all players tracking an entity
     public void syncToTrackingPlayers(ServerPlayer player) {
         var payload = new PlayerSkillsSyncPayload(
+            skills.getAllLevels(),
             skills.getAllExperience(),
+            skills.getLevelCap(),
             skills.getSkillPoints(),
             skills.getAllSkills(),
-            skills.getAllActiveSkillSlots(),    // NEW
-            skills.getAllSkillCooldowns()       // NEW
+            skills.getAllActiveSkillSlots(),
+            skills.getAllSkillCooldowns()
         );
         PacketDistributor.sendToPlayersTrackingEntity(player, payload);
     }
