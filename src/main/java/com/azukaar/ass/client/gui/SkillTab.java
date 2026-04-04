@@ -59,9 +59,9 @@ public class SkillTab {
             currentKeybind = KeybindRegistry.getInstance().getSkillKeybind(selectedSkill.getId());
         }
         
-        // Modal dimensions (base height, will be adjusted based on content)
-        int modalWidth = 220;
-        int baseModalHeight = 145;
+        // Modal dimensions
+        int modalWidth = 230;
+        int baseModalHeight = 160;
         
         // Track if skill has active effects
         boolean hasActiveEffects = false;
@@ -128,32 +128,44 @@ public class SkillTab {
         // Re-center modal with new height
         // modalY = topPos + (SkillScreen.SCREEN_HEIGHT - modalHeight) / 2;
         
-        // Render semi-transparent backdrop
-        guiGraphics.fill(leftPos, topPos, leftPos + SkillScreen.SCREEN_WIDTH, topPos + SkillScreen.SCREEN_HEIGHT, 0x80000000);
-        
-        // Render modal background
-        guiGraphics.fill(modalX, modalY, modalX + modalWidth, modalY + modalHeight, 0xFF2D2D30);
-        
-        // Render modal border
-        int borderColor = 0xFF666666;
-        guiGraphics.fill(modalX, modalY, modalX + modalWidth, modalY + 1, borderColor); // Top
-        guiGraphics.fill(modalX, modalY + modalHeight - 1, modalX + modalWidth, modalY + modalHeight, borderColor); // Bottom
-        guiGraphics.fill(modalX, modalY, modalX + 1, modalY + modalHeight, borderColor); // Left
-        guiGraphics.fill(modalX + modalWidth - 1, modalY, modalX + modalWidth, modalY + modalHeight, borderColor); // Right
-        
-        // Reset content positioning with new modal position
-        contentStartX = modalX + 10;
-        contentStartY = modalY + 10;
-        currentY = contentStartY;
-        
-        // Render skill icon
-        selectedSkill.getIconData().render(guiGraphics, contentStartX, currentY);
+        // Push entire modal above tab item icons (renderItem uses z~150 internally)
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0, 0, 200);
 
-        // Render skill name next to icon
+        // Render semi-transparent backdrop
+        guiGraphics.fill(leftPos, topPos, leftPos + SkillScreen.SCREEN_WIDTH, topPos + SkillScreen.SCREEN_HEIGHT, 0x88000000);
+
+        // Modal shadow (offset dark rect behind modal)
+        guiGraphics.fill(modalX + 2, modalY + 2, modalX + modalWidth + 2, modalY + modalHeight + 2, 0x40000000);
+
+        // Modal background
+        guiGraphics.fill(modalX, modalY, modalX + modalWidth, modalY + modalHeight, 0xFF1E1E22);
+
+        // Outer border - subtle highlight
+        guiGraphics.fill(modalX, modalY, modalX + modalWidth, modalY + 1, 0xFF555555); // Top
+        guiGraphics.fill(modalX, modalY + modalHeight - 1, modalX + modalWidth, modalY + modalHeight, 0xFF333333); // Bottom
+        guiGraphics.fill(modalX, modalY, modalX + 1, modalY + modalHeight, 0xFF555555); // Left
+        guiGraphics.fill(modalX + modalWidth - 1, modalY, modalX + modalWidth, modalY + modalHeight, 0xFF333333); // Right
+
+        // Inner border - slight bevel
+        guiGraphics.fill(modalX + 1, modalY + 1, modalX + modalWidth - 1, modalY + 2, 0xFF3A3A3E); // Top inner
+        guiGraphics.fill(modalX + 1, modalY + 1, modalX + 2, modalY + modalHeight - 1, 0xFF3A3A3E); // Left inner
+
+        // Content positioning
+        contentStartX = modalX + 10;
+        contentStartY = modalY + 8;
+        currentY = contentStartY;
+
+        // Header area: icon + name
+        selectedSkill.getIconData().render(guiGraphics, contentStartX, currentY);
         guiGraphics.drawString(font, selectedSkill.getDisplayName(),
-            contentStartX + 20, currentY + 4, 0xFFFFFF, false);
-        
-        currentY += 24;
+            contentStartX + 20, currentY + 4, 0xFFFFFF, true);
+
+        currentY += 22;
+
+        // Header separator line
+        guiGraphics.fill(modalX + 6, currentY, modalX + modalWidth - 6, currentY + 1, 0xFF3A3A3E);
+        currentY += 5;
                 
         // Render keybind input if skill has active effects
         if (hasActiveEffects) {
@@ -166,11 +178,11 @@ public class SkillTab {
             int inputY = currentY;
             
             // Render keybind label
-            guiGraphics.drawString(font, "Keybind:", inputX - 45, inputY + inputHeight/2 - lineHeight/2 + 3, 0xCCCCCC, false);
-            
+            guiGraphics.drawString(font, "Keybind:", inputX - 45, inputY + inputHeight/2 - lineHeight/2 + 3, 0xFF9999AA, false);
+
             // Render input background
-            int inputBgColor = keybindInputFocused ? 0xFF4A4A4A : 0xFF333333;
-            int inputBorderColor = keybindInputFocused ? 0xFF8888FF : 0xFF666666;
+            int inputBgColor = keybindInputFocused ? 0xFF3A3A4A : 0xFF2A2A2E;
+            int inputBorderColor = keybindInputFocused ? 0xFF6677CC : 0xFF444448;
             
             guiGraphics.fill(inputX, inputY, inputX + inputWidth, inputY + inputHeight, inputBgColor);
             guiGraphics.fill(inputX, inputY, inputX + inputWidth, inputY + 1, inputBorderColor); // Top
@@ -208,16 +220,16 @@ public class SkillTab {
                 int clearX = inputX + inputWidth + 2;
                 int clearY = inputY;
 
-                guiGraphics.fill(clearX, clearY, clearX + clearSize, clearY + clearSize, 0xFF553333);
-                guiGraphics.fill(clearX, clearY, clearX + clearSize, clearY + 1, 0xFF884444);
-                guiGraphics.fill(clearX, clearY + clearSize - 1, clearX + clearSize, clearY + clearSize, 0xFF884444);
-                guiGraphics.fill(clearX, clearY, clearX + 1, clearY + clearSize, 0xFF884444);
-                guiGraphics.fill(clearX + clearSize - 1, clearY, clearX + clearSize, clearY + clearSize, 0xFF884444);
+                guiGraphics.fill(clearX, clearY, clearX + clearSize, clearY + clearSize, 0xFF3A2A2A);
+                guiGraphics.fill(clearX, clearY, clearX + clearSize, clearY + 1, 0xFF664444);
+                guiGraphics.fill(clearX, clearY + clearSize - 1, clearX + clearSize, clearY + clearSize, 0xFF664444);
+                guiGraphics.fill(clearX, clearY, clearX + 1, clearY + clearSize, 0xFF664444);
+                guiGraphics.fill(clearX + clearSize - 1, clearY, clearX + clearSize, clearY + clearSize, 0xFF664444);
 
-                int xTextWidth = font.width("X");
-                guiGraphics.drawString(font, "X",
+                int xTextWidth = font.width("\u2715");
+                guiGraphics.drawString(font, "\u2715",
                     clearX + (clearSize - xTextWidth) / 2,
-                    clearY + 4, 0xFF6666, false);
+                    clearY + 4, 0xCC6666, false);
 
                 this.keybindClearX = clearX;
                 this.keybindClearY = clearY;
@@ -256,15 +268,15 @@ public class SkillTab {
         modalPane.render(guiGraphics, (g, px, py) -> {
             int cy = py;
 
-            // Level info
+            // Level info — compact badge style
             String levelText;
             int levelColor;
             if (fMaxLevel == 1) {
-                levelText = fCurrentLevel > 0 ? "Unlocked" : "Locked";
-                levelColor = fCurrentLevel > 0 ? 0x00FF00 : 0xFF4444;
+                levelText = fCurrentLevel > 0 ? "\u2713 Unlocked" : "\u2717 Locked";
+                levelColor = fCurrentLevel > 0 ? 0xFF55CC55 : 0xFFAA5555;
             } else {
-                levelText = "Level: " + fCurrentLevel + "/" + fMaxLevel;
-                levelColor = fCurrentLevel > 0 ? 0x00AAFF : 0xFF4444;
+                levelText = "Level " + fCurrentLevel + " / " + fMaxLevel;
+                levelColor = fCurrentLevel > 0 ? 0xFF66AAEE : 0xFFAA5555;
             }
             g.drawString(font, levelText, fContentStartX, cy, levelColor, false);
             cy += lineHeight + 4;
@@ -290,7 +302,11 @@ public class SkillTab {
             try {
                 SkillEffect skillEffect = SkillDataManager.INSTANCE.getSkillEffects(selectedSkill.getId());
                 if (skillEffect != null && skillEffect.getEffects() != null && !skillEffect.getEffects().isEmpty()) {
-                    g.drawString(font, "Effects:", fContentStartX, cy, 0xCCCCCC, false);
+                    // Separator before effects
+                    cy += 2;
+                    g.fill(fContentStartX, cy, fContentStartX + scrollAreaWidth - 10, cy + 1, 0xFF3A3A3E);
+                    cy += 5;
+                    g.drawString(font, "Effects:", fContentStartX, cy, 0xFF9999AA, false);
                     cy += lineHeight;
 
                     for (SkillEffect.Effect effect : skillEffect.getEffects()) {
@@ -406,36 +422,46 @@ public class SkillTab {
         boolean canAfford = availablePoints >= upgradeCost;
         boolean buttonEnabled = canUpgrade && canAfford && prerequisitesMet;
         
-        // Render upgrade button background
-        int buttonBgColor = buttonEnabled ? 0xFF4CAF50 : 0xFF666666;
-        int buttonBorderColor = buttonEnabled ? 0xFF2E7D32 : 0xFF444444;
-        
-        guiGraphics.fill(buttonX, buttonY, buttonX + buttonWidth, buttonY + buttonHeight, buttonBgColor);
-        guiGraphics.fill(buttonX, buttonY, buttonX + buttonWidth, buttonY + 1, buttonBorderColor); // Top
-        guiGraphics.fill(buttonX, buttonY + buttonHeight - 1, buttonX + buttonWidth, buttonY + buttonHeight, buttonBorderColor); // Bottom
-        guiGraphics.fill(buttonX, buttonY, buttonX + 1, buttonY + buttonHeight, buttonBorderColor); // Left
-        guiGraphics.fill(buttonX + buttonWidth - 1, buttonY, buttonX + buttonWidth, buttonY + buttonHeight, buttonBorderColor); // Right
-        
-        // Render button text
+        // Render upgrade button
+        int buttonBgColor, buttonBorderTop, buttonBorderBottom;
         String buttonText;
-        int buttonTextColor = 0xFFFFFF;
-        
+        int buttonTextColor;
+
         if (!canUpgrade) {
-            buttonText = maxLevel == 1 ? "Unlocked" : "Max Level";
-            buttonTextColor = 0xCCCCCC;
+            buttonBgColor = 0xFF3A3A3E;
+            buttonBorderTop = 0xFF4A4A4E;
+            buttonBorderBottom = 0xFF2A2A2E;
+            buttonText = maxLevel == 1 ? "\u2713 Unlocked" : "Max Level";
+            buttonTextColor = 0xFF888888;
         } else if (!prerequisitesMet) {
-            buttonText = "Locked";
-            buttonTextColor = 0xFFAAAA;
+            buttonBgColor = 0xFF3A2A2A;
+            buttonBorderTop = 0xFF4A3A3A;
+            buttonBorderBottom = 0xFF2A1A1A;
+            buttonText = "\u26D4 Locked";
+            buttonTextColor = 0xFFAA6666;
         } else if (!canAfford) {
+            buttonBgColor = 0xFF3A3A2A;
+            buttonBorderTop = 0xFF4A4A3A;
+            buttonBorderBottom = 0xFF2A2A1A;
             buttonText = "Need " + upgradeCost + " SP";
-            buttonTextColor = 0xFFAAAA;
+            buttonTextColor = 0xFFAAAA66;
         } else {
-            buttonText = "Upgrade (" + upgradeCost + " SP)";
+            buttonBgColor = 0xFF2A4A2E;
+            buttonBorderTop = 0xFF3A6A3E;
+            buttonBorderBottom = 0xFF1A3A1E;
+            buttonText = "\u25B2 Upgrade (" + upgradeCost + " SP)";
+            buttonTextColor = 0xFF88DD88;
         }
-        
+
+        guiGraphics.fill(buttonX, buttonY, buttonX + buttonWidth, buttonY + buttonHeight, buttonBgColor);
+        guiGraphics.fill(buttonX, buttonY, buttonX + buttonWidth, buttonY + 1, buttonBorderTop);
+        guiGraphics.fill(buttonX, buttonY + buttonHeight - 1, buttonX + buttonWidth, buttonY + buttonHeight, buttonBorderBottom);
+        guiGraphics.fill(buttonX, buttonY, buttonX + 1, buttonY + buttonHeight, buttonBorderTop);
+        guiGraphics.fill(buttonX + buttonWidth - 1, buttonY, buttonX + buttonWidth, buttonY + buttonHeight, buttonBorderBottom);
+
         int buttonTextWidth = font.width(buttonText);
-        guiGraphics.drawString(font, buttonText, 
-            buttonX + (buttonWidth - buttonTextWidth) / 2, 
+        guiGraphics.drawString(font, buttonText,
+            buttonX + (buttonWidth - buttonTextWidth) / 2,
             buttonY + 4, buttonTextColor, false);
         
         // Store button bounds for click handling
@@ -445,6 +471,20 @@ public class SkillTab {
         this.upgradeButtonHeight = buttonHeight;
         this.upgradeButtonEnabled = buttonEnabled;
         this.upgradeButtonVisible = true;
+
+        // Tooltip on locked button showing missing prerequisites
+        if (!prerequisitesMet && mouseX >= buttonX && mouseX <= buttonX + buttonWidth
+                && mouseY >= buttonY && mouseY <= buttonY + buttonHeight) {
+            java.util.List<Component> tooltip = new java.util.ArrayList<>();
+            for (String missing : selectedSkill.getMissingPrerequisites(player)) {
+                tooltip.add(Component.literal(missing).withStyle(net.minecraft.ChatFormatting.YELLOW));
+            }
+            if (!tooltip.isEmpty()) {
+                guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
+            }
+        }
+
+        guiGraphics.pose().popPose();
     }
     
     protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int contentX, int contentY, Font font, Player player, int leftPos, int topPos) {
