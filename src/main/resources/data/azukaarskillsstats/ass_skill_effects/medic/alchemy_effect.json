@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:alchemy",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:alchemy",
+      "description": "Beneficial potion effects last 20% longer per level"
+    }
+  ]
+}

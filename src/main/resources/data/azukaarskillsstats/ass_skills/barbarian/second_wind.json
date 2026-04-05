@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:second_wind",
+  "display_name": "Second Wind",
+  "description": "Full heal when Berserker triggers",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:totem_of_undying"
+  },
+  "position": {
+    "x": -90.0,
+    "y": -135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

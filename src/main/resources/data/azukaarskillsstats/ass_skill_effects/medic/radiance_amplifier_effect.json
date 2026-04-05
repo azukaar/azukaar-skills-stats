@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:radiance_amplifier",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:radiance_amplifier",
+      "description": "Multiplies all Radiance pulse damage",
+      "data": {
+        "damage_multiplier": {
+          "base": 1.10,
+          "type": "per_level",
+          "multiplier": 0.10
+        }
+      }
+    }
+  ]
+}

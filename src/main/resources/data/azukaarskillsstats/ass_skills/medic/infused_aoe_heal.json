@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:infused_aoe_heal",
+  "display_name": "Infused AoE Heal",
+  "description": "AoE Heal also applies your off-hand potion effect to all healed allies without consuming it",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:lingering_potion"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 180.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:medic"
+}

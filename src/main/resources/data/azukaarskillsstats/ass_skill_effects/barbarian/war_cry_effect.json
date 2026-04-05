@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:war_cry",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:war_cry",
+      "description": "AoE Fear for 10 seconds"
+    }
+  ]
+}

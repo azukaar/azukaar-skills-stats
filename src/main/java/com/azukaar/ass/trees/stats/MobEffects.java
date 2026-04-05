@@ -21,7 +21,7 @@ public class MobEffects {
         () -> new InstinctEffect(MobEffectCategory.BENEFICIAL, 0xFFD700) // Gold color
     );
 
-    public static class InstinctEffect extends MobEffect {
+    public static class InstinctEffect extends com.azukaar.ass.api.UnclearableMobEffect {
         public InstinctEffect(MobEffectCategory category, int color) {
             super(category, color);
         }

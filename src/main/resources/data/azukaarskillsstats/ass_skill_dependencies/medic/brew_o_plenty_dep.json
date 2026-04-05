@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:brew_o_plenty",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:brew_regen",
+      "level": 3
+    }
+  ]
+}

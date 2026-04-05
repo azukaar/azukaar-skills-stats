@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:reactive_cleanse",
+  "display_name": "Reactive Cleanse",
+  "description": "Automatically cleanse debuffs as they are applied, triggering Radiance",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:beacon"
+  },
+  "cooldown": {
+    "base": 2400
+  },
+  "position": {
+    "x": 135.0,
+    "y": 90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:medic"
+}

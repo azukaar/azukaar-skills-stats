@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:brew_strength",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:brew_strength",
+      "description": "Alchemy's Boon also produces Strength potions"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:infused_touch_heal",
+  "display_name": "Infused Touch Heal",
+  "description": "Touch Heal also applies your off-hand potion effect without consuming it",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:splash_potion"
+  },
+  "position": {
+    "x": 45.0,
+    "y": 180.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:medic"
+}

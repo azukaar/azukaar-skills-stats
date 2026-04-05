@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:heal_expert",
+  "display_name": "Heal Expert",
+  "description": "Increase all healing ability potency by 20% per level",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:enchanted_golden_apple"
+  },
+  "position": {
+    "x": 180.0,
+    "y": 45.0
+  },
+  "max_level": 10,
+  "skill_tree": "azukaarskillsstats:medic"
+}

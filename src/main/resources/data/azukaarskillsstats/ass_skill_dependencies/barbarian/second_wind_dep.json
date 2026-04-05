@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:second_wind",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:berserker",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 40
+    }
+  ]
+}

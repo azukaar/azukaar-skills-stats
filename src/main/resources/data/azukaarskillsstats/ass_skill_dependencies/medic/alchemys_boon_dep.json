@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:alchemys_boon",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:alchemy",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:nature",
+      "level": 10
+    }
+  ]
+}

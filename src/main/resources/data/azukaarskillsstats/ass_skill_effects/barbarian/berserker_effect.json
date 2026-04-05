@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:berserker",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:berserker",
+      "description": "+50% damage per level when Gluttony ends"
+    }
+  ]
+}

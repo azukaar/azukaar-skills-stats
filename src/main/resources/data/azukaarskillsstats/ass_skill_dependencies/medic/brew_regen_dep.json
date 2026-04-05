@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:brew_regen",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:alchemys_boon",
+      "level": 1
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:hardy",
+  "display_name": "Hardy",
+  "description": "Healing or Regen triggers absorption hearts",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "cooldown": {
+    "base": 1200
+  },
+  "position": {
+    "x": 135.0,
+    "y": 0.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:medic"
+}

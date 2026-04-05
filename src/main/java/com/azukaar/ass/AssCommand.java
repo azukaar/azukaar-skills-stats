@@ -99,13 +99,41 @@ public class AssCommand {
                                     return addPathXPForTargets(context, path, amount, targets);
                                 })))))
                 
+                // /ass xp remove <amount> [player]
+                .then(Commands.literal("remove")
+                    .then(Commands.argument("amount", DoubleArgumentType.doubleArg(0))
+                        .executes(context -> removeTotalXP(context, DoubleArgumentType.getDouble(context, "amount"), context.getSource().getPlayerOrException()))
+                        .then(Commands.argument("targets", EntityArgument.players())
+                            .executes(context -> {
+                                double amount = DoubleArgumentType.getDouble(context, "amount");
+                                Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                return removeTotalXPForTargets(context, amount, targets);
+                            }))))
+
+                // /ass xp remove <path> <amount> [player]
+                .then(Commands.literal("remove")
+                    .then(Commands.argument("path", ResourceLocationArgument.id())
+                        .suggests(PATH_SUGGESTIONS)
+                        .then(Commands.argument("amount", DoubleArgumentType.doubleArg(0))
+                            .executes(context -> removePathXP(context,
+                                ResourceLocationArgument.getId(context, "path").toString(),
+                                DoubleArgumentType.getDouble(context, "amount"),
+                                context.getSource().getPlayerOrException()))
+                            .then(Commands.argument("targets", EntityArgument.players())
+                                .executes(context -> {
+                                    String path = ResourceLocationArgument.getId(context, "path").toString();
+                                    double amount = DoubleArgumentType.getDouble(context, "amount");
+                                    Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                    return removePathXPForTargets(context, path, amount, targets);
+                                })))))
+
                 // /ass xp get [player]
                 .then(Commands.literal("get")
                     .executes(context -> getXP(context, context.getSource().getPlayerOrException()))
                     .then(Commands.argument("target", EntityArgument.player())
                         .executes(context -> getXP(context, EntityArgument.getPlayer(context, "target"))))))
             
-            // Level commands
+            // Level commands (main level)
             .then(Commands.literal("level")
                 // /ass level set <level> [player]
                 .then(Commands.literal("set")
@@ -117,12 +145,77 @@ public class AssCommand {
                                 Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
                                 return setLevelForTargets(context, level, targets);
                             }))))
-                
+
                 // /ass level get [player]
                 .then(Commands.literal("get")
                     .executes(context -> getLevel(context, context.getSource().getPlayerOrException()))
                     .then(Commands.argument("target", EntityArgument.player())
                         .executes(context -> getLevel(context, EntityArgument.getPlayer(context, "target"))))))
+
+            // Aspect commands
+            .then(Commands.literal("aspect")
+                // /ass aspect set <path> <level> [player]
+                .then(Commands.literal("set")
+                    .then(Commands.argument("path", ResourceLocationArgument.id())
+                        .suggests(PATH_SUGGESTIONS)
+                        .then(Commands.argument("level", IntegerArgumentType.integer(0))
+                            .executes(context -> setPathLevel(context,
+                                ResourceLocationArgument.getId(context, "path").toString(),
+                                IntegerArgumentType.getInteger(context, "level"),
+                                context.getSource().getPlayerOrException()))
+                            .then(Commands.argument("targets", EntityArgument.players())
+                                .executes(context -> {
+                                    String path = ResourceLocationArgument.getId(context, "path").toString();
+                                    int level = IntegerArgumentType.getInteger(context, "level");
+                                    Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                    return setPathLevelForTargets(context, path, level, targets);
+                                })))))
+
+                // /ass aspect add <path> <amount> [player]
+                .then(Commands.literal("add")
+                    .then(Commands.argument("path", ResourceLocationArgument.id())
+                        .suggests(PATH_SUGGESTIONS)
+                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                            .executes(context -> addPathLevel(context,
+                                ResourceLocationArgument.getId(context, "path").toString(),
+                                IntegerArgumentType.getInteger(context, "amount"),
+                                context.getSource().getPlayerOrException()))
+                            .then(Commands.argument("targets", EntityArgument.players())
+                                .executes(context -> {
+                                    String path = ResourceLocationArgument.getId(context, "path").toString();
+                                    int amount = IntegerArgumentType.getInteger(context, "amount");
+                                    Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                    return addPathLevelForTargets(context, path, amount, targets);
+                                })))))
+
+                // /ass aspect remove <path> <amount> [player]
+                .then(Commands.literal("remove")
+                    .then(Commands.argument("path", ResourceLocationArgument.id())
+                        .suggests(PATH_SUGGESTIONS)
+                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                            .executes(context -> removePathLevel(context,
+                                ResourceLocationArgument.getId(context, "path").toString(),
+                                IntegerArgumentType.getInteger(context, "amount"),
+                                context.getSource().getPlayerOrException()))
+                            .then(Commands.argument("targets", EntityArgument.players())
+                                .executes(context -> {
+                                    String path = ResourceLocationArgument.getId(context, "path").toString();
+                                    int amount = IntegerArgumentType.getInteger(context, "amount");
+                                    Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                    return removePathLevelForTargets(context, path, amount, targets);
+                                })))))
+
+                // /ass aspect get <path> [player]
+                .then(Commands.literal("get")
+                    .then(Commands.argument("path", ResourceLocationArgument.id())
+                        .suggests(PATH_SUGGESTIONS)
+                        .executes(context -> getPathLevel(context,
+                            ResourceLocationArgument.getId(context, "path").toString(),
+                            context.getSource().getPlayerOrException()))
+                        .then(Commands.argument("target", EntityArgument.player())
+                            .executes(context -> getPathLevel(context,
+                                ResourceLocationArgument.getId(context, "path").toString(),
+                                EntityArgument.getPlayer(context, "target")))))))
             
             // Skill points commands
             .then(Commands.literal("skillpoints")
@@ -273,6 +366,55 @@ public class AssCommand {
         return targets.size();
     }
 
+    private static int removeTotalXP(CommandContext<CommandSourceStack> context, double amount, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        int pathCount = SkillDataManager.INSTANCE.getAspectIds().size();
+        double xpPerPath = amount / pathCount;
+
+        for (String pathName : SkillDataManager.INSTANCE.getAspectIds()) {
+            double current = skills.getExperience(pathName);
+            skills.setExperience(pathName, Math.max(0, current - xpPerPath));
+        }
+
+        syncToClient(player);
+        context.getSource().sendSuccess(() -> Component.literal("Removed " + amount + " total XP from " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int removeTotalXPForTargets(CommandContext<CommandSourceStack> context, double amount, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            removeTotalXP(context, amount, target);
+        }
+        return targets.size();
+    }
+
+    private static int removePathXP(CommandContext<CommandSourceStack> context, String pathName, double amount, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        double current = skills.getExperience(pathName);
+        skills.setExperience(pathName, Math.max(0, current - amount));
+
+        syncToClient(player);
+        context.getSource().sendSuccess(() -> Component.literal("Removed " + amount + " XP from path " + pathName + " for " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int removePathXPForTargets(CommandContext<CommandSourceStack> context, String pathName, double amount, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            removePathXP(context, pathName, amount, target);
+        }
+        return targets.size();
+    }
+
     private static int getXP(CommandContext<CommandSourceStack> context, ServerPlayer player) {
         IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
         if (skills == null) {
@@ -321,9 +463,87 @@ public class AssCommand {
         return targets.size();
     }
 
+    private static int setPathLevel(CommandContext<CommandSourceStack> context, String pathName, int level, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        skills.setLevel(pathName, level);
+        syncToClient(player);
+        context.getSource().sendSuccess(() -> Component.literal("Set " + pathName + " level to " + level + " for " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int setPathLevelForTargets(CommandContext<CommandSourceStack> context, String pathName, int level, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            setPathLevel(context, pathName, level, target);
+        }
+        return targets.size();
+    }
+
+    private static int addPathLevel(CommandContext<CommandSourceStack> context, String pathName, int amount, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        int current = skills.getLevel(pathName);
+        skills.setLevel(pathName, current + amount);
+
+        syncToClient(player);
+        context.getSource().sendSuccess(() -> Component.literal("Added " + amount + " levels to " + pathName + " for " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int addPathLevelForTargets(CommandContext<CommandSourceStack> context, String pathName, int amount, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            addPathLevel(context, pathName, amount, target);
+        }
+        return targets.size();
+    }
+
+    private static int removePathLevel(CommandContext<CommandSourceStack> context, String pathName, int amount, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        int current = skills.getLevel(pathName);
+        skills.setLevel(pathName, Math.max(0, current - amount));
+
+        syncToClient(player);
+        context.getSource().sendSuccess(() -> Component.literal("Removed " + amount + " levels from " + pathName + " for " + player.getName().getString()), true);
+        return 1;
+    }
+
+    private static int removePathLevelForTargets(CommandContext<CommandSourceStack> context, String pathName, int amount, Collection<ServerPlayer> targets) {
+        for (ServerPlayer target : targets) {
+            removePathLevel(context, pathName, amount, target);
+        }
+        return targets.size();
+    }
+
     private static int getLevel(CommandContext<CommandSourceStack> context, ServerPlayer player) {
         int mainLevel = PlayerData.getMainLevel(player);
         context.getSource().sendSuccess(() -> Component.literal("Main level for " + player.getName().getString() + ": " + mainLevel), false);
+        return 1;
+    }
+
+    private static int getPathLevel(CommandContext<CommandSourceStack> context, String pathName, ServerPlayer player) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) {
+            context.getSource().sendFailure(Component.literal("Failed to get player skills capability"));
+            return 0;
+        }
+
+        int level = skills.getLevel(pathName);
+        double xp = skills.getExperience(pathName);
+        int xpForNext = IPlayerSkills.getScaledXpForLevel(level + 1, skills.getLevelCap());
+        context.getSource().sendSuccess(() -> Component.literal(pathName + ": Level " + level + " (" + (int)xp + "/" + xpForNext + " XP)"), false);
         return 1;
     }
 

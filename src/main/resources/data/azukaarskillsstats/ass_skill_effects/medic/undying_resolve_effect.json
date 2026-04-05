@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:undying_resolve",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:undying_resolve",
+      "description": "Extends Reactive Heal Regeneration duration",
+      "data": {
+        "duration_bonus": {
+          "base": 60,
+          "type": "per_level",
+          "multiplier": 60
+        }
+      }
+    }
+  ]
+}

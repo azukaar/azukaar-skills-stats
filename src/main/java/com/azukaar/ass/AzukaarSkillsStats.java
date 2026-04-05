@@ -153,6 +153,7 @@ public class AzukaarSkillsStats
 
         // Register the Deferred Register to the mod event bus so particle types get registered
         PARTICLE_TYPES.register(modEventBus);
+        com.azukaar.ass.trees.medic.RadianceParticles.PARTICLE_TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (AzukaarSkillsStats) to respond directly to events.
@@ -169,13 +170,16 @@ public class AzukaarSkillsStats
         NeoForge.EVENT_BUS.register(com.azukaar.ass.aspect.CombatAspect.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.aspect.ExplorationAspect.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.aspect.MiningAspect.class);
+        NeoForge.EVENT_BUS.register(com.azukaar.ass.aspect.NatureAspect.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.farmer.TreeEvents.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.farmer.TreeCutter.class);
         NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.barbarian.TreeEvents.class);
+        NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.medic.TreeEvents.class);
 
         com.azukaar.ass.api.AspectTypeRegistry.register(new com.azukaar.ass.aspect.CombatAspect());
         com.azukaar.ass.api.AspectTypeRegistry.register(new com.azukaar.ass.aspect.MiningAspect());
         com.azukaar.ass.api.AspectTypeRegistry.register(new com.azukaar.ass.aspect.ExplorationAspect());
+        com.azukaar.ass.api.AspectTypeRegistry.register(new com.azukaar.ass.aspect.NatureAspect());
 
         BuiltinActiveEffects.registerAll();
 
@@ -233,6 +237,7 @@ public class AzukaarSkillsStats
         {
             NeoForge.EVENT_BUS.register(ExpertiseParticleHandler.class);
             NeoForge.EVENT_BUS.register(GUIClientModEvents.class);
+            NeoForge.EVENT_BUS.register(com.azukaar.ass.trees.medic.RadianceMissileHandler.class);
                         
             KeybindRegistry.getInstance().init();
 
@@ -257,6 +262,10 @@ public class AzukaarSkillsStats
         @SubscribeEvent
         public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
             event.registerSpriteSet(ORB_PARTICLE.get(), OrbParticle.Provider::new);
+            event.registerSpriteSet(
+                com.azukaar.ass.trees.medic.RadianceParticles.RADIANCE_MISSILE.get(),
+                com.azukaar.ass.trees.medic.RadianceMissileParticle.Provider::new
+            );
         }
     }
 

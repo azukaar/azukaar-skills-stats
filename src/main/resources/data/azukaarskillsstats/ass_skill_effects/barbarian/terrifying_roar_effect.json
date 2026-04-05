@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:terrifying_roar",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:terrifying_roar",
+      "description": "War Cry and Taunt also apply Weakness"
+    }
+  ]
+}

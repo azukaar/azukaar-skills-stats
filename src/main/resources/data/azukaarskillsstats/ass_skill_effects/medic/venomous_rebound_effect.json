@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:venomous_rebound",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:venomous_rebound",
+      "description": "Cleansed debuffs are reflected to Radiance targets"
+    }
+  ]
+}

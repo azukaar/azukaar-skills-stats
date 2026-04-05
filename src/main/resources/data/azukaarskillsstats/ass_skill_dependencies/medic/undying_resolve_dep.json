@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:undying_resolve",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:reactive_heal",
+      "level": 1
+    }
+  ]
+}

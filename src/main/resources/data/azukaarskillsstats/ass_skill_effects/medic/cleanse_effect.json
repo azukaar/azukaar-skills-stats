@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:cleanse",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:cleanse",
+      "description": "Remove all negative effects and trigger a Radiance pulse"
+    }
+  ]
+}

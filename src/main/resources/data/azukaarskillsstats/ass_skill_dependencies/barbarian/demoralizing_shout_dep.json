@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:demoralizing_shout",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:war_cry",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 40
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:cleanse",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:hardy",
+      "level": 1
+    }
+  ]
+}

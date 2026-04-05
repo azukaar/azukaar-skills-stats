@@ -56,7 +56,7 @@ public class OverviewTab {
             aspects = repeated;
         }
         for (AspectDefinition aspect : aspects) {
-            String name = aspect.getDisplayNameString() != null ? aspect.getDisplayNameString() : aspect.getId();
+            String name = aspect.getDisplayName() != null ? aspect.getDisplayName().getString() : aspect.getId();
             int level = PlayerData.getPathLevel(player, aspect.getId());
             guiGraphics.drawString(font, name + ": lvl " + level, contentX + 20, contentY + yOffset, 0xFFFFFF);
             float progress = PlayerData.getPathProgress(player, aspect.getId());
@@ -84,11 +84,17 @@ public class OverviewTab {
         int mainBarH = 8;
         if (mouseX >= mainBarX && mouseX <= mainBarX + mainBarW && mouseY >= mainBarY && mouseY <= mainBarY + mainBarH) {
             int mainLevel = PlayerData.getMainLevel(player);
-            double mainXp = PlayerData.getPathExperience(player, IPlayerSkills.MAIN);
             int xpForNext = PlayerData.getXpForMainLevel(mainLevel + 1);
-            guiGraphics.renderTooltip(font,
-                Component.literal((int) mainXp + " / " + xpForNext + " aspect level-ups"),
-                mouseX, mouseY);
+            if (xpForNext <= 0) {
+                guiGraphics.renderTooltip(font,
+                    Component.literal("MAX (Level " + mainLevel + ")"),
+                    mouseX, mouseY);
+            } else {
+                double mainXp = PlayerData.getPathExperience(player, IPlayerSkills.MAIN);
+                guiGraphics.renderTooltip(font,
+                    Component.literal((int) mainXp + " / " + xpForNext + " aspect level-ups"),
+                    mouseX, mouseY);
+            }
         }
 
         yOffset += 16 + 14; // separator + "Aspects" header
@@ -100,11 +106,18 @@ public class OverviewTab {
             int barH = 8;
             if (mouseX >= barX && mouseX <= barX + barW && mouseY >= barY && mouseY <= barY + barH) {
                 int level = PlayerData.getPathLevel(player, aspect.getId());
-                double currentXp = PlayerData.getPathExperience(player, aspect.getId());
-                int xpForNext = PlayerData.getScaledXpForLevel(player, level + 1);
-                guiGraphics.renderTooltip(font,
-                    Component.literal((int) currentXp + " / " + xpForNext + " XP"),
-                    mouseX, mouseY);
+                int cap = PlayerData.getLevelCap(player);
+                if (level >= cap) {
+                    guiGraphics.renderTooltip(font,
+                        Component.literal("MAX (Level " + cap + ")"),
+                        mouseX, mouseY);
+                } else {
+                    double currentXp = PlayerData.getPathExperience(player, aspect.getId());
+                    int xpForNext = PlayerData.getScaledXpForLevel(player, level + 1);
+                    guiGraphics.renderTooltip(font,
+                        Component.literal((int) currentXp + " / " + xpForNext + " XP"),
+                        mouseX, mouseY);
+                }
             }
             yOffset += 12;
         }

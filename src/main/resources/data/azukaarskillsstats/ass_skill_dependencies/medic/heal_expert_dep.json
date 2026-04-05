@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:heal_expert",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:cleanse",
+      "level": 1
+    }
+  ]
+}

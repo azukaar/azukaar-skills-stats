@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:last_stand",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:second_wind",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 50
+    }
+  ]
+}

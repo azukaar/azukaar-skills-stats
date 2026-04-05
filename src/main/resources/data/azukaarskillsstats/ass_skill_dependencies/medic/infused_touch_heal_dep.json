@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:infused_touch_heal",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:touch_heal",
+      "level": 1
+    }
+  ]
+}

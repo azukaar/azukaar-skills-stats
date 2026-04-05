@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:demoralizing_shout",
+  "display_name": "Demoralizing Shout",
+  "description": "War Cry and Taunt also apply Slowness II for 30 seconds. Requires Gluttony II to be active.",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:echo_shard"
+  },
+  "position": {
+    "x": -120.0,
+    "y": -135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

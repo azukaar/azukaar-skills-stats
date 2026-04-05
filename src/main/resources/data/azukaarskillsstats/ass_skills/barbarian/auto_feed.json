@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:auto_feed",
+  "display_name": "Auto-Feed",
+  "description": "Automatically eat from inventory when hunger drops low",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_carrot"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 180.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

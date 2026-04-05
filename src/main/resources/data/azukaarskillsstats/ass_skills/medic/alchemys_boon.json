@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:alchemys_boon",
+  "display_name": "Alchemy's Boon",
+  "description": "Brew potions from nothing. Additional brew skills add potion types",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:potion"
+  },
+  "cooldown": {
+    "base": 6000
+  },
+  "position": {
+    "x": -135.0,
+    "y": 45.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:medic"
+}

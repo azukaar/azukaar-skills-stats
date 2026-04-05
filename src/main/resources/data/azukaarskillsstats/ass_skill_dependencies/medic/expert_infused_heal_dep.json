@@ -1,0 +1,25 @@
+{
+  "skill": "azukaarskillsstats:expert_infused_heal",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:infused_self_heal",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:infused_touch_heal",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:infused_aoe_heal",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:radiance_potion",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:nature",
+      "level": 60
+    }
+  ]
+}

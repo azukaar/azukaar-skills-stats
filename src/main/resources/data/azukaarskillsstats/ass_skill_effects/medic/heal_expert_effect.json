@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:heal_expert",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:heal_expert",
+      "description": "Increases healing potency by 20% per level",
+      "data": {
+        "heal_potency_bonus": {
+          "base": 0.20,
+          "type": "per_level",
+          "multiplier": 0.20
+        }
+      }
+    }
+  ]
+}

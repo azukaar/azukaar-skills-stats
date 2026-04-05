@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:terrifying_roar",
+  "display_name": "Terrifying Roar",
+  "description": "War Cry and Taunt also apply Weakness. Requires Gluttony II to be active.",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:dragon_head"
+  },
+  "position": {
+    "x": -120.0,
+    "y": -180.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

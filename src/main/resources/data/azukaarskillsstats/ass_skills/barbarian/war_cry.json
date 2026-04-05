@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:war_cry",
+  "display_name": "War Cry",
+  "description": "AoE Fear for 10 seconds",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:goat_horn"
+  },
+  "cooldown": {
+    "base": 400
+  },
+  "position": {
+    "x": -120.0,
+    "y": -90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

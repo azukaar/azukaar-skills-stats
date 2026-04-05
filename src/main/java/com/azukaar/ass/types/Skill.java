@@ -102,8 +102,13 @@ public class Skill {
                 int level = PlayerData.getPathLevel(player, prereq.getAspectId());
                 if (level < prereq.getRequiredLevel()) {
                     String name = prereq.getAspectId();
-                    if (name.contains(":")) name = name.substring(name.indexOf(':') + 1);
-                    name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                    var aspect = com.azukaar.ass.SkillDataManager.INSTANCE.getAspect(prereq.getAspectId());
+                    if (aspect != null && aspect.getDisplayName() != null) {
+                        name = aspect.getDisplayName().getString();
+                    } else {
+                        if (name.contains(":")) name = name.substring(name.indexOf(':') + 1);
+                        name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                    }
                     missing.add("Requires " + name + " level " + prereq.getRequiredLevel());
                 }
             } else if (prereq.isSkillPrerequisite()) {

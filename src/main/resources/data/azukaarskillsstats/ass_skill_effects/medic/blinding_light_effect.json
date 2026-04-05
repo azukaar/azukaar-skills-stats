@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:blinding_light",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:blinding_light",
+      "description": "Radiance pulses apply Blindness to hit mobs"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:reactive_cleanse",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:reactive_cleanse",
+      "description": "Automatically cleanses debuffs and triggers Radiance"
+    }
+  ]
+}

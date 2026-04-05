@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:undying_resolve",
+  "display_name": "Undying Resolve",
+  "description": "Reactive Heal's Regeneration lasts longer",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:totem_of_undying"
+  },
+  "position": {
+    "x": -45.0,
+    "y": 45.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:medic"
+}

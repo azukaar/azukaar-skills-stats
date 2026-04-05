@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:second_wind",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:second_wind",
+      "description": "Full heal when Berserker triggers"
+    }
+  ]
+}

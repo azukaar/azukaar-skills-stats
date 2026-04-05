@@ -18,6 +18,10 @@ public class ModMobEffects {
     public static final DeferredHolder<MobEffect, MobEffect> ANIMAL_WHISPERER =
         com.azukaar.ass.trees.farmer.MobEffects.ANIMAL_WHISPERER;
 
+    // Re-export from medic tree
+    public static final DeferredHolder<MobEffect, MobEffect> RADIANCE_POTENCY =
+        com.azukaar.ass.trees.medic.MobEffects.RADIANCE_POTENCY;
+
     // Re-export from barbarian tree
     public static final DeferredHolder<MobEffect, MobEffect> POWERFUL_STRIKE =
         com.azukaar.ass.trees.barbarian.MobEffects.POWERFUL_STRIKE;
@@ -37,5 +41,6 @@ public class ModMobEffects {
         com.azukaar.ass.trees.stats.MobEffects.MOB_EFFECTS.register(modEventBus);
         com.azukaar.ass.trees.farmer.MobEffects.MOB_EFFECTS.register(modEventBus);
         com.azukaar.ass.trees.barbarian.MobEffects.MOB_EFFECTS.register(modEventBus);
+        com.azukaar.ass.trees.medic.MobEffects.MOB_EFFECTS.register(modEventBus);
     }
 }

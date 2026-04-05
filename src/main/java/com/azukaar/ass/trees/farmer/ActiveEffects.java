@@ -5,6 +5,7 @@ import java.util.List;
 import com.azukaar.ass.AzukaarSkillsStats;
 import com.azukaar.ass.api.ActiveSkillEffect;
 import com.azukaar.ass.api.ActiveSkillEffectRegistry;
+import com.azukaar.ass.api.AspectHelper;
 import com.azukaar.ass.api.EffectData;
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.types.SkillEffect;
@@ -33,6 +34,7 @@ import net.minecraft.world.phys.HitResult;
  */
 public class ActiveEffects {
 
+    private static final String NATURE_ASPECT = "azukaarskillsstats:nature";
     private static final String NATURES_DOMAIN_SKILL = "azukaarskillsstats:natures_domain";
     private static final String NATURES_DOMAIN_EFFECT = "azukaarskillsstats:natures_domain";
     private static final String HARVEST_AREA_SKILL = "azukaarskillsstats:harvest_area";
@@ -136,6 +138,7 @@ public class ActiveEffects {
                 int radius = area / 2;
 
                 // Mature all crops (and saplings if skill unlocked) in the area
+                int maturedCount = 0;
                 for (int x = -radius; x <= radius; x++) {
                     for (int z = -radius; z <= radius; z++) {
                         for (int y = -1; y <= 1; y++) {
@@ -145,12 +148,19 @@ public class ActiveEffects {
 
                             if (block instanceof CropBlock crop && !crop.isMaxAge(state)) {
                                 level.setBlock(pos, crop.getStateForAge(crop.getMaxAge()), 2);
+                                maturedCount++;
                             } else if (canGrowSaplings && block instanceof net.minecraft.world.level.block.SaplingBlock sapling) {
                                 // Force grow the sapling into a tree
                                 sapling.advanceTree(level, pos, state, level.random);
+                                maturedCount++;
                             }
                         }
                     }
+                }
+
+                if (maturedCount > 0) {
+                    double cropXp = AspectHelper.getProperty(NATURE_ASPECT, "crop_harvest_xp", 15.0);
+                    AspectHelper.awardXp(NATURE_ASPECT, player, cropXp * maturedCount, player.position());
                 }
 
                 AzukaarSkillsStats.LOGGER.info("Player {} used Green Touch with Nature's Domain (area {}x{})",
@@ -176,6 +186,9 @@ public class ActiveEffects {
                 } else {
                     return false;
                 }
+
+                double cropXp = AspectHelper.getProperty(NATURE_ASPECT, "crop_harvest_xp", 15.0);
+                AspectHelper.awardXp(NATURE_ASPECT, player, cropXp, targetPos.getCenter());
 
                 AzukaarSkillsStats.LOGGER.info("Player {} used Green Touch on single crop",
                     player.getName().getString());
@@ -216,6 +229,8 @@ public class ActiveEffects {
                 replantChance = SkillEffect.getSkillParameter(player, NATURE_RENEWAL_SKILL, NATURE_RENEWAL_EFFECT, "replant_chance") / 100.0;
             }
 
+            double cropXp = AspectHelper.getProperty(NATURE_ASPECT, "crop_harvest_xp", 15.0);
+
             // Harvest all mature crops in the area centered on player
             for (int x = -radius; x <= radius; x++) {
                 for (int z = -radius; z <= radius; z++) {
@@ -236,6 +251,7 @@ public class ActiveEffects {
                                 level.removeBlock(pos, false);
                             }
 
+                            AspectHelper.awardXp(NATURE_ASPECT, player, cropXp, pos.above().getCenter());
                             harvestedCount++;
                         }
                     }
@@ -246,6 +262,7 @@ public class ActiveEffects {
             int herdCommunionLevel = PlayerData.getSkillLevel(player, HERD_COMMUNION_SKILL);
             int animalsLooted = 0;
             if (herdCommunionLevel > 0) {
+                double interactXp = AspectHelper.getProperty(NATURE_ASPECT, "interact_xp", 5.0);
                 double lootChance = SkillEffect.getSkillParameter(player, HERD_COMMUNION_SKILL, HERD_COMMUNION_EFFECT, "loot_chance") / 100.0;
 
                 // Find all animals in the sweep area
@@ -296,6 +313,7 @@ public class ActiveEffects {
                         animal.kill();
                     }
 
+                    AspectHelper.awardXp(NATURE_ASPECT, player, interactXp, animal.position());
                     animalsLooted++;
                 }
             }
@@ -318,6 +336,7 @@ public class ActiveEffects {
 
                                 // Try to start cutting this tree
                                 if (TreeCutter.startCutting(level, pos)) {
+                                    AspectHelper.awardXp(NATURE_ASPECT, player, cropXp, pos.above().getCenter());
                                     treesHarvested++;
 
                                     // Replant sapling if Nature Renewal
@@ -503,6 +522,11 @@ public class ActiveEffects {
                 if (seedStacks.isEmpty()) break;
             }
 
+            if (plantedCount > 0) {
+                double plantXp = AspectHelper.getProperty(NATURE_ASPECT, "crop_harvest_xp", 15.0);
+                AspectHelper.awardXp(NATURE_ASPECT, player, plantXp * plantedCount, player.position());
+            }
+
             AzukaarSkillsStats.LOGGER.info("Player {} used Fast Planting ({}x{} area), planted {} crops",
                 player.getName().getString(), area, area, plantedCount);
 
@@ -580,6 +604,9 @@ public class ActiveEffects {
             boolean started = TreeCutter.startCutting(level, targetPos);
 
             if (started) {
+                double timberXp = AspectHelper.getProperty(NATURE_ASPECT, "crop_harvest_xp", 15.0);
+                AspectHelper.awardXp(NATURE_ASPECT, player, timberXp, targetPos.getCenter());
+
                 // Check for Nature Renewal replanting
                 int renewalLevel = PlayerData.getSkillLevel(player, NATURE_RENEWAL_SKILL);
                 if (renewalLevel > 0 && basePos != null && logState != null) {
@@ -657,6 +684,9 @@ public class ActiveEffects {
 
             // Try to grow the tree over the next ticks (up to 20 attempts)
             scheduleTreeGrowth(level, placePos, 20);
+
+            double treeXp = AspectHelper.getProperty(NATURE_ASPECT, "crop_harvest_xp", 15.0);
+            AspectHelper.awardXp(NATURE_ASPECT, player, treeXp, placePos.getCenter());
 
             AzukaarSkillsStats.LOGGER.info("Player {} used Tree Calling at {}",
                 player.getName().getString(), placePos);

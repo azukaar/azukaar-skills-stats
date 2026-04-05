@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:radiance",
+  "display_name": "Radiance",
+  "description": "Every healing action emits homing missiles that damage nearby hostile mobs",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:glowstone"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 90.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:medic"
+}

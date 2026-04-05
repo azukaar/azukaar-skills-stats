@@ -26,6 +26,10 @@ public class CustomEffectHandler {
             com.azukaar.ass.trees.barbarian.CustomEffects.applyCustomEffect(player, effectType, effect, skillLevel);
             return;
         }
+        if (com.azukaar.ass.trees.medic.CustomEffects.handles(effectType)) {
+            com.azukaar.ass.trees.medic.CustomEffects.applyCustomEffect(player, effectType, effect, skillLevel);
+            return;
+        }
 
         AzukaarSkillsStats.LOGGER.warn("Unknown custom effect type: {}", effectType);
     }
@@ -42,6 +46,9 @@ public class CustomEffectHandler {
         }
         if (com.azukaar.ass.trees.barbarian.CustomEffects.handles(effectType)) {
             com.azukaar.ass.trees.barbarian.CustomEffects.removeCustomEffect(player, effectType, effect);
+        }
+        if (com.azukaar.ass.trees.medic.CustomEffects.handles(effectType)) {
+            com.azukaar.ass.trees.medic.CustomEffects.removeCustomEffect(player, effectType, effect);
         }
     }
 

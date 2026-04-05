@@ -6,6 +6,8 @@ import com.azukaar.ass.api.ActiveSkillEffect;
 import com.azukaar.ass.api.ActiveSkillEffectRegistry;
 import com.azukaar.ass.api.EffectData;
 
+import com.azukaar.ass.api.AspectHelper;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -70,9 +72,14 @@ public class ActiveEffects {
             System.out.println("Executing HealEffect for player: " + player.getName().getString());
 
             // Self heal
+            float missingHealth = player.getMaxHealth() - player.getHealth();
+            float actualHeal = (float) Math.min(amount, missingHealth);
             player.heal((float) amount);
-            AzukaarSkillsStats.LOGGER.info("Player {} healed self for: {}",
-                player.getName().getString(), amount);
+
+            // Grant Nature aspect XP (1 XP per HP healed)
+            if (actualHeal > 0) {
+                AspectHelper.awardXp("azukaarskillsstats:nature", player, actualHeal, player.position());
+            }
 
             return true;
         }

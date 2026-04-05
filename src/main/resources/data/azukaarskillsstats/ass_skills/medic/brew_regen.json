@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:brew_regen",
+  "display_name": "Brew Regen",
+  "description": "Alchemy's Boon also produces a Regeneration potion. Level = potion tier",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:potion"
+  },
+  "position": {
+    "x": -180.0,
+    "y": 90.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:medic"
+}

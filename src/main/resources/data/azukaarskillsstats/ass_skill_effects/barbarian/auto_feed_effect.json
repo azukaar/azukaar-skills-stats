@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:auto_feed",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:auto_feed",
+      "description": "Automatically eat from inventory when hunger drops low"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "skill": "azukaarskillsstats:radiance",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:radiance_on_heal",
+      "description": "Healing emits missiles dealing a percentage of heal as damage",
+      "data": {
+        "damage_percent": {
+          "base": 0.10,
+          "type": "per_level",
+          "multiplier": 0.10
+        },
+        "max_targets": {
+          "base": 2,
+          "type": "per_level",
+          "multiplier": 2
+        }
+      }
+    },
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:radiance_on_regen",
+      "description": "Regeneration activation fires a burst dealing a percentage of max health",
+      "data": {
+        "burst_percent": {
+          "base": 0.05,
+          "type": "per_level",
+          "multiplier": 0.05
+        },
+        "max_targets": {
+          "base": 2,
+          "type": "per_level",
+          "multiplier": 2
+        }
+      }
+    }
+  ]
+}

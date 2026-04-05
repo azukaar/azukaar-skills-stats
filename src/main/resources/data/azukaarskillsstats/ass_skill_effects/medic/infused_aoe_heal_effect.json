@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:infused_aoe_heal",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:infused_aoe_heal",
+      "description": "AoE Heal applies off-hand potion to all targets"
+    }
+  ]
+}

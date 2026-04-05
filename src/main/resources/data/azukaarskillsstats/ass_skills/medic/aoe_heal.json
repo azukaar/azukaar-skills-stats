@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:aoe_heal",
+  "display_name": "AoE Heal",
+  "description": "Heal all nearby allies, harms anything unholy",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:enchanted_golden_apple"
+  },
+  "cooldown": {
+    "base": 1200
+  },
+  "position": {
+    "x": -45.0,
+    "y": 135.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:medic"
+}

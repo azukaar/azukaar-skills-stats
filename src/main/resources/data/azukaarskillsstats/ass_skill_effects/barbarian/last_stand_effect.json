@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:last_stand",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:last_stand",
+      "description": "Invulnerable for 15 seconds at low health while Exhausted"
+    }
+  ]
+}

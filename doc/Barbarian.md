@@ -15,7 +15,7 @@
 - **Purpose:** Single-hit burst damage
 - **Type:** Active
 
-### **Iron Stomach** (1sp)
+### **Iron Stomach** (2sp)
 - **Effect:** Eat raw meat safely as if it were cooked, no hunger/poison effects
 - **Purpose:** Foundation for Consumption branch
 - **Type:** Passive
@@ -24,10 +24,10 @@
 
 ## **Consumption Branch**
 
-### **Gluttony** (2sp, max 5)
+### **Gluttony** (3sp, max 5)
 - **Prerequisite:** Iron Stomach
 - **Aspect Requirement:** Warrior 10
-- **Effect:** Active — Gain a stack of Glutony (potion effect, infinite time). Glutony consumes your hunger (1 food per 5 sec at level I, 1 food per sec at level 5). Activate once for level I, and more for subsequent levels until max stack number (which depends on level). +10% damage per level
+- **Effect:** Active — Gain a stack of Glutony (potion effect, infinite time). Glutony consumes your hunger (1 food per 5 sec at level I, 1 food per sec at level 5). Activate once for level I, and more for subsequent levels until max stack number (which depends on level). +20% damage per level (mult)
 - **Max Benefit:** Gluttony V
 - **Type:** Active
 - **Purpose:** Core resource mechanic for the entire tree
@@ -71,7 +71,7 @@
 - **Type:** Passive
 - **Purpose:** Synergy with Hunter's meat production
 
-### **Feeding Edge** (2sp)
+### **Feeding Edge** (3sp)
 - **Prerequisite:** Gluttony
 - **Aspect Requirement:** Warrior 20
 - **Effect:** Sharpness/Power enchantment levels multiplied by Gluttony level while Carnivorous
@@ -85,7 +85,7 @@
 - **Max Benefit:**: 2 hunger points restored per kill
 - **Type:** Passive
 
-### **Devouring Strike** (4sp)
+### **Devouring Strike** (6sp)
 - **Prerequisite:** Gluttonous Weapon
 - **Aspect Requirement:** Warrior 50
 - **Effect:** Consume ALL Gluttony stacks — deal +2 mult damage per stack consumed (when Gluttony is consummed, apply all the debufs as if it normally expired).
@@ -171,22 +171,28 @@
 - **Effect:** AoE Fear for 10 seconds
 - **Type:** Active
 
-### **Terrifying Roar** (2sp)
+### **Taunt** (3sp)
 - **Prerequisite:** War Cry
 - **Aspect Requirement:** Warrior 30
-- **Effect:** War Cry also applies Weakness. Requires Gluttony II.
-- **Type:** Passive
+- **Effect:** AoE taunt (Draw attention) for 10 seconds
+- **Type:** Active
 
 ### **Demoralizing Shout** (2sp)
-- **Prerequisite:** Terrifying Roar
+- **Prerequisite:** War Cry
 - **Aspect Requirement:** Warrior 40
-- **Effect:** War Cry also applies Slowness II for 30 seconds. Requires Gluttony III.
+- **Effect:** War Cry and Taunt also applies Slowness II for 30 seconds. Requires Gluttony II.
+- **Type:** Passive
+
+### **Terrifying Roar** (2sp)
+- **Prerequisite:** Demoralizing Shout
+- **Aspect Requirement:** Warrior 30
+- **Effect:** War Cry and Taunt  also applies Weakness. Requires Gluttony II.
 - **Type:** Passive
 
 ### **Berserker** (2sp, max 5)
 - **Prerequisite:** Intimidating Presence
 - **Aspect Requirement:** Warrior 30
-- **Effect:** When Gluttony ends (food depleted), gain +200% damage per level for 10 seconds before becoming exhausted
+- **Effect:** When Gluttony ends (food depleted), gain +200% damage per level and Speed II for 10 seconds before becoming exhausted
 - **Max Benefit:** +1000% damage
 - **Type:** Passive (triggers automatically)
 - **Purpose:** Emergency fallback when food runs out
@@ -270,17 +276,17 @@ The Barbarian + Farmer pairing feeds into Hunter paragon:
 
 ## **Total Investment**
 
-### **Minimum for Capstone: ~41 SP**
+### **Minimum for Capstone: ~47 SP**
 
-*Consumption (18 SP):*
-- Iron Stomach: 1 SP
-- Gluttony (1 level): 2 SP
+*Consumption (22 SP):*
+- Iron Stomach: 2 SP
+- Gluttony (1 level): 3 SP
 - Quick Eating: 2 SP
 - Gorge: 3 SP
 - Auto-Feed: 5 SP
-- Feeding Edge: 2 SP
+- Feeding Edge: 3 SP
 - Gluttonous Weapon (1 level): 2 SP
-- Devouring Strike: 4 SP
+- Devouring Strike: 6 SP
 
 *Dominance (15 SP):*
 - Powerful Strike (1 level): 2 SP
@@ -292,23 +298,23 @@ The Barbarian + Farmer pairing feeds into Hunter paragon:
 *Capstone (5 SP):*
 - ???: 5 SP
 
-### **Full Tree Investment: ~85 SP**
+### **Full Tree Investment: ~96 SP**
 
-*Entry (10 SP):*
+*Entry (11 SP):*
 - Powerful Strike (3): 3 SP
-- Iron Stomach: 1 SP
+- Iron Stomach: 2 SP
 
-*Full Consumption (24 SP):*
-- Gluttony (5): 10 SP
+*Full Consumption (33 SP):*
+- Gluttony (5): 15 SP
 - Quick Eating: 2 SP
 - Gorge: 3 SP
 - Auto-Feed: 5 SP
 - Efficient Digestion (3): 3 SP
 - Meat Lover (3): 3 SP
 - Carnivorous: 3 SP
-- Feeding Edge: 2 SP
+- Feeding Edge: 3 SP
 - Gluttonous Weapon (3): 6 SP
-- Devouring Strike: 4 SP
+- Devouring Strike: 6 SP
 
 *Full Axe Mastery (11 SP):*
 - Axe Focus: 2 SP

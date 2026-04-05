@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.azukaar.ass.api.AspectHelper;
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.types.SkillEffect;
 
@@ -164,8 +165,14 @@ public class TreeEvents {
             if (player.getFoodData().getFoodLevel() <= 0) break;
 
             // Heal 2 health, consume 1 hunger
+            float healthBefore = animal.getHealth();
             animal.heal(2.0f);
+            float actualHeal = animal.getHealth() - healthBefore;
             player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - 1);
+
+            if (actualHeal > 0) {
+                AspectHelper.awardXp("azukaarskillsstats:nature", player, actualHeal, animal.position());
+            }
 
             // Play heart particles
             level.sendParticles(

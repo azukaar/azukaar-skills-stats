@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:touch_heal",
+  "display_name": "Touch Heal",
+  "description": "Heal a targeted ally, harms anything unholy",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "cooldown": {
+    "base": 1200
+  },
+  "position": {
+    "x": 45.0,
+    "y": 135.0
+  },
+  "max_level": 5,
+  "skill_tree": "azukaarskillsstats:medic"
+}

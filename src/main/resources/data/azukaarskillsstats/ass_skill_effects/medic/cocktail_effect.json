@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:cocktail",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:cocktail",
+      "description": "Consume potions for a Radiance burst"
+    }
+  ]
+}

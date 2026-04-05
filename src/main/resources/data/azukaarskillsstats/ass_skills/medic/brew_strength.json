@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:brew_strength",
+  "display_name": "Brew Strength",
+  "description": "Alchemy's Boon also produces a Strength potion. Level = potion tier",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:potion"
+  },
+  "position": {
+    "x": -90.0,
+    "y": 90.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:medic"
+}

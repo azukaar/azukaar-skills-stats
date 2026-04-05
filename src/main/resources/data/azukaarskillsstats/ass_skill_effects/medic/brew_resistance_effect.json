@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:brew_resistance",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:brew_resistance",
+      "description": "Alchemy's Boon also produces Resistance potions"
+    }
+  ]
+}

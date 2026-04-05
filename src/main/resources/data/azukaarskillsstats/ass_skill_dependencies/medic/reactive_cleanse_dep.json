@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:reactive_cleanse",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:cleanse",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:nature",
+      "level": 40
+    }
+  ]
+}

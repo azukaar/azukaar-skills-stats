@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:radiance",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:undying_resolve",
+      "level": 1
+    }
+  ]
+}

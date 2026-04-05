@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:touch_heal",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:radiance",
+      "level": 1
+    }
+  ]
+}

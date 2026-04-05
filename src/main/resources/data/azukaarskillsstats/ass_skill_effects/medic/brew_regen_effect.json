@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:brew_regen",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:brew_regen",
+      "description": "Alchemy's Boon also produces Regeneration potions"
+    }
+  ]
+}

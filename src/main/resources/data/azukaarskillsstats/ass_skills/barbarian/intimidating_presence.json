@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:intimidating_presence",
+  "display_name": "Intimidating Presence",
+  "description": "Kills apply Fear to nearby mobs",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "cooldown": {
+    "base": 300
+  },
+  "position": {
+    "x": -90.0,
+    "y": -45.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

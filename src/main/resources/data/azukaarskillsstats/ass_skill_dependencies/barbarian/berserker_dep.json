@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:berserker",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:intimidating_presence",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 30
+    }
+  ]
+}

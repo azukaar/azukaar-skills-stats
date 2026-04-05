@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:brew_resistance",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:alchemys_boon",
+      "level": 1
+    }
+  ]
+}

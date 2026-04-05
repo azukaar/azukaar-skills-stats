@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:radiance_potion",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:radiance_potion",
+      "description": "Alchemy's Boon produces a Radiance Potion"
+    }
+  ]
+}

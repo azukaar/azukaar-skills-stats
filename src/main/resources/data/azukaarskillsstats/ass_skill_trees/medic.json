@@ -1,0 +1,13 @@
+{
+  "id": "azukaarskillsstats:medic",
+  "display_name": "Medic",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "background": "azukaarskillsstats:textures/gui/medic_tree_bg.png",
+  "requirements": [
+    { "skill": "azukaarskillsstats:heal", "level": 1 }
+  ],
+  "locked_hint": "skill_tree.azukaarskillsstats.medic.locked_hint"
+}

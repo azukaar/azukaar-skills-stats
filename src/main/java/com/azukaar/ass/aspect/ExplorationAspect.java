@@ -18,6 +18,7 @@ import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 public class ExplorationAspect implements AspectType {
@@ -92,6 +93,20 @@ public class ExplorationAspect implements AspectType {
             + " | biomes: " + biomeCount + " (" + (int) biomeXp + " XP each)"
             + " | structures: " + structureCount + " (" + (int) structureXp + " XP each)"
             + " | chunk bonus: " + (int) chunkBonusXp + " XP");
+    }
+
+    @SubscribeEvent
+    public static void onXpPickup(PlayerXpEvent.PickupXp event) {
+        if (definition == null) return;
+        if (!(event.getEntity() instanceof net.minecraft.world.entity.player.Player player)) return;
+        if (player.level().isClientSide()) return;
+
+        int xp = event.getOrb().getValue();
+        if (xp > 0) {
+            double multiplier = com.azukaar.ass.trees.stats.CustomEffects.getMinecraftXpBonusMultiplier(player);
+            double explorationXp = Math.min(xp * multiplier, 500.0);
+            AspectHelper.awardXp(definition, player, explorationXp, player.position());
+        }
     }
 
     @SubscribeEvent

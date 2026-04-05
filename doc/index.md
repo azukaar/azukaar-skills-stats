@@ -6,7 +6,7 @@
 The 8 skill trees are organized into 4 distinct aspects that encourage varied gameplay:
 
 - **MINING:** Artisan, Engineer *(XP from mining blocks)*
-- **NATURE:** Farmer, Medic *(XP from harvesting crops, breeding animals)*  
+- **NATURE:** Farmer, Medic *(XP from interacting with living things, trading, healing, harvesting crops, breeding animals, etc...)*  
 - **EXPLORER:** Scholar, Nomad *(XP from discovering biomes/structures/items/blocks)*
 - **WARRIOR:** Barbarian, Rogue *(XP from dealing damage to mobs, killing enemies)*
 
@@ -212,7 +212,7 @@ Additionally, each aspect gets XP from using skills from its trees. That XP bonu
 ### **Paragon Synergy Philosophy**
 The four Paragon classes represent the ultimate fusion of complementary base trees, where opposing mechanics create powerful new capabilities:
 
-- **Hunter (Farmer + Barbarian):** Bridges resource production and consumption - Farmers produce plant food while Barbarians consume it for power. Hunters expand this loop by adding sustainable meat production and sharing consumption bonuses with animal companions, creating renewable resource cycles that fuel pack-wide combat effectiveness.
+- **Beastmaster (Farmer + Barbarian):** Bridges resource production and consumption - Farmers produce plant food while Barbarians consume it for power. Beastmasters expand this loop by adding sustainable meat production and sharing consumption bonuses with animal companions, creating renewable resource cycles that fuel pack-wide combat effectiveness.
 
 - **Sanguinarian (Medic + Rogue):** Balances healing and health expenditure - Medics heal allies while Rogues spend health for power. Sanguinarians control both sides of this equation across entire teams, creating sophisticated life-sharing networks where healing from violence and strategic health distribution become group-wide tactical resources.
 
@@ -222,9 +222,9 @@ The four Paragon classes represent the ultimate fusion of complementary base tre
 
 ---
 
-### **HUNTER** *(Farmer + Barbarian)*
+### **Beastmaster** *(Farmer + Barbarian)*
 **Requirements:** Level 30+ in both Farmer and Barbarian trees
-**Description/Lore:** Primal beast masters who have forged an unbreakable bond with the wild. Hunters create sustainable resource loops between agricultural production and combat consumption while commanding animal armies. They channel their fury through pack coordination, turning individual power into collective dominance.
+**Description/Lore:** Primal beast masters who have forged an unbreakable bond with the wild. Beastmasters create sustainable resource loops between agricultural production and combat consumption while commanding animal armies. They channel their fury through pack coordination, turning individual power into collective dominance.
 
 **General Idea:** Combat alongside animal companions, pack coordination mechanics, resource bridging between Farmer production and Barbarian consumption, sustainable meat supply, and transforming individual abilities into pack-wide effects.
 
@@ -245,20 +245,14 @@ The four Paragon classes represent the ultimate fusion of complementary base tre
 
 ---
 
-### **SANGUINARIAN** *(Medic + Rogue)*
+### **Surgeon** *(Medic + Rogue)*
 **Requirements:** Level 30+ in both Medic and Rogue trees
-**Description/Lore:** Masters of life force circulation who fuse medical knowledge with combat savagery. Sanguinarians can heal allies through violence, share health strategically across teams, and turn the battlefield into a sophisticated network of life energy management where health becomes a tactical resource.
+**Description/Lore:** ...
 
-**General Idea:** Life-sharing networks, healing through violence, tactical health distribution, enhanced life extraction, and team-wide ability synergies that transform individual combat into group resource management.
+**General Idea:** Anti-Radiance (damages burst passive healing), phoenix (resurect stuff?)
 
 **Key Skills:**
-- **Life Network:** Toggle to create life-sharing network - damage and healing distributed among up to 5 players
-- **Combat Symbiosis:** When you activate Combat High, network members gain damage bonuses and share your healing
-- **Battlefield Triage:** Network healing prioritizes lowest health members
-- **Ocular Injection:** While crouching, drain health from any entity you look at
-- **Phoenix Network:** Phoenix Rising can trigger for any network member with reduced cooldown
-- **Master Surgeon:** Instantly redistribute all network health equally among members
-- **Blood Bond Rage:** Your Combat High activation triggers network members' Combat High automatically
+- ?
 
 ---
 

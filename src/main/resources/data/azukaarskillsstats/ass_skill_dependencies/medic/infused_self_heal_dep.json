@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:infused_self_heal",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:reactive_heal",
+      "level": 1
+    }
+  ]
+}

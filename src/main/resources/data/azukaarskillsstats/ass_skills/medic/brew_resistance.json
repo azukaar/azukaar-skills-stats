@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:brew_resistance",
+  "display_name": "Brew Resistance",
+  "description": "Alchemy's Boon also produces a Resistance potion. Level = potion tier",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:potion"
+  },
+  "position": {
+    "x": -135.0,
+    "y": 90.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:medic"
+}

@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:auto_feed",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:gorge",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 50
+    }
+  ]
+}

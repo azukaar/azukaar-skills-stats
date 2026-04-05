@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:infused_aoe_heal",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:aoe_heal",
+      "level": 1
+    }
+  ]
+}

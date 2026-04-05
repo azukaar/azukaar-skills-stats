@@ -174,14 +174,11 @@ public class SkillEffect {
         
         public void apply(Player player, int skillLevel) {
             if ("attribute_modifier".equals(type)) {
-                System.out.println("Applying effect: " + type + " for skill: " + parentSkillId + " at level: " + skillLevel);
                 applyAttributeModifier(player, skillLevel);
             } else if ("active".equals(type)) {
-                System.out.println("Registered active effect: " + type + " for skill: " + parentSkillId + " at level: " + skillLevel);
                 // Active effects don't need to "apply" anything - they're just data definitions
                 // The values are calculated on-demand when skills are used
             } else if ("custom_attribute_modifier".equals(type)) {
-                System.out.println("Applying CUSTOM effect: " + type + " for skill: " + parentSkillId + " at level: " + skillLevel);
                 // Delegate to custom effect handler
                 CustomEffectHandler.applyCustomEffect(player, attribute, this, skillLevel);
             }

@@ -106,6 +106,35 @@ public class PlayerData {
         return skills.getSkillLevel(skillName);
     }
 
+    // --- Cooldown API ---
+
+    public static boolean isSkillOnCooldown(Player player, String skillId) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return false;
+        return skills.isSkillOnCooldown(skillId, player.level().getGameTime());
+    }
+
+    public static void setSkillCooldown(Player player, String skillId, long cooldownEndTime) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return;
+        skills.setSkillCooldown(skillId, cooldownEndTime);
+    }
+
+    /**
+     * Check cooldown and set it if not on cooldown. Returns true if skill was available (cooldown set).
+     */
+    public static boolean trySetCooldown(Player player, String skillId) {
+        IPlayerSkills skills = player.getCapability(AzukaarSkillsStats.PLAYER_SKILLS);
+        if (skills == null) return false;
+        long currentTime = player.level().getGameTime();
+        if (skills.isSkillOnCooldown(skillId, currentTime)) return false;
+        int cooldown = ActiveSkillHandler.getEffectiveCooldown(player, skillId);
+        if (cooldown > 0) {
+            skills.setSkillCooldown(skillId, currentTime + cooldown);
+        }
+        return true;
+    }
+
     // Public API methods that handle client/server logic
     public static double addExperience(String pathName, double experience, Player player, Vec3 position) {
         if (player.level().isClientSide) {

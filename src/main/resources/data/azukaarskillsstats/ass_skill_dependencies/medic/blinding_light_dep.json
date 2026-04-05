@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:blinding_light",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:heal_expert",
+      "level": 1
+    }
+  ]
+}

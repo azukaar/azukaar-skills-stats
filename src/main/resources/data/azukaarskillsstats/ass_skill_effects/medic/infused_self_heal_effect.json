@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:infused_self_heal",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:infused_self_heal",
+      "description": "Reactive Heal applies off-hand potion to self"
+    }
+  ]
+}

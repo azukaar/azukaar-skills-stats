@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:infused_touch_heal",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:infused_touch_heal",
+      "description": "Touch Heal applies off-hand potion"
+    }
+  ]
+}

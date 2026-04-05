@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:venomous_rebound",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:reactive_cleanse",
+      "level": 1
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:alchemys_boon",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:alchemys_boon",
+      "description": "Brew potions from nothing"
+    }
+  ]
+}

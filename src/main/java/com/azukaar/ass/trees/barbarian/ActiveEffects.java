@@ -14,9 +14,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
+
+import java.util.List;
 
 /**
  * Active effects for the Barbarian skill tree
@@ -42,6 +45,16 @@ public class ActiveEffects {
         ActiveSkillEffectRegistry.register(
             ResourceLocation.fromNamespaceAndPath(AzukaarSkillsStats.MODID, "giant_sweep"),
             new GiantSweepActiveEffect()
+        );
+
+        ActiveSkillEffectRegistry.register(
+            ResourceLocation.fromNamespaceAndPath(AzukaarSkillsStats.MODID, "war_cry"),
+            new WarCryActiveEffect()
+        );
+
+        ActiveSkillEffectRegistry.register(
+            ResourceLocation.fromNamespaceAndPath(AzukaarSkillsStats.MODID, "taunt"),
+            new TauntActiveEffect()
         );
     }
 
@@ -349,5 +362,127 @@ public class ActiveEffects {
         }
 
         return foodConsumed;
+    }
+
+    private static final String DEMORALIZING_SHOUT_SKILL = "azukaarskillsstats:demoralizing_shout";
+    private static final String TERRIFYING_ROAR_SKILL = "azukaarskillsstats:terrifying_roar";
+
+    /**
+     * Shared helper: apply Demoralizing Shout (Slowness II) and Terrifying Roar (Weakness)
+     * debuffs to mobs when War Cry or Taunt is used. Both require Gluttony II+ active.
+     */
+    private static void applyDominanceDebuffs(Player player, List<LivingEntity> mobs) {
+        MobEffectInstance gluttonyEffect = player.getEffect(MobEffects.GLUTTONY);
+        if (gluttonyEffect == null || gluttonyEffect.getAmplifier() < 1) return; // Requires Gluttony II+
+
+        int demoralizingLevel = PlayerData.getSkillLevel(player, DEMORALIZING_SHOUT_SKILL);
+        int terrifyingLevel = PlayerData.getSkillLevel(player, TERRIFYING_ROAR_SKILL);
+
+        for (LivingEntity mob : mobs) {
+            if (demoralizingLevel > 0) {
+                mob.addEffect(new MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN,
+                    600, // 30 seconds
+                    1,   // Slowness II
+                    false, true, true
+                ));
+            }
+            if (terrifyingLevel > 0) {
+                mob.addEffect(new MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.WEAKNESS,
+                    200, // 10 seconds
+                    0,
+                    false, true, true
+                ));
+            }
+        }
+    }
+
+    /**
+     * War Cry — AoE Fear for 10 seconds
+     */
+    public static class WarCryActiveEffect implements ActiveSkillEffect {
+        @Override
+        public boolean execute(Player player, String skillId, int skillLevel, EffectData effectData) {
+            float radius = 10.0f;
+
+            AABB area = player.getBoundingBox().inflate(radius);
+            List<LivingEntity> mobs = player.level().getEntitiesOfClass(LivingEntity.class, area,
+                entity -> entity instanceof Monster && entity.isAlive());
+
+            if (mobs.isEmpty()) return false;
+
+            for (LivingEntity mob : mobs) {
+                mob.removeEffect(MobEffects.TAUNT); // Remove opposing effect
+                mob.addEffect(new MobEffectInstance(
+                    MobEffects.FEAR,
+                    200, // 10 seconds
+                    0,
+                    false, true, true
+                ));
+            }
+
+            // Apply Demoralizing Shout / Terrifying Roar debuffs
+            applyDominanceDebuffs(player, mobs);
+
+            // Sound and particles
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.0f, 0.8f);
+
+            if (player.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.SOUL,
+                    player.getX(), player.getY() + 1.0, player.getZ(),
+                    20, 2.0, 0.5, 2.0, 0.02);
+            }
+
+            AzukaarSkillsStats.LOGGER.info("[Barbarian] {} used War Cry, feared {} mobs",
+                player.getName().getString(), mobs.size());
+
+            return true;
+        }
+    }
+
+    /**
+     * Taunt — AoE draw mob attention for 10 seconds
+     */
+    public static class TauntActiveEffect implements ActiveSkillEffect {
+        @Override
+        public boolean execute(Player player, String skillId, int skillLevel, EffectData effectData) {
+            float radius = 10.0f;
+
+            AABB area = player.getBoundingBox().inflate(radius);
+            List<LivingEntity> mobs = player.level().getEntitiesOfClass(LivingEntity.class, area,
+                entity -> entity instanceof Monster && entity.isAlive());
+
+            if (mobs.isEmpty()) return false;
+
+            for (LivingEntity mob : mobs) {
+                mob.removeEffect(MobEffects.FEAR); // Remove opposing effect
+                mob.addEffect(new MobEffectInstance(
+                    MobEffects.TAUNT,
+                    200, // 10 seconds
+                    0,
+                    false, true, true
+                ));
+            }
+
+            // Apply Demoralizing Shout / Terrifying Roar debuffs
+            applyDominanceDebuffs(player, mobs);
+
+            // Sound and particles
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.0f, 1.2f);
+
+            if (player.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER,
+                    player.getX(), player.getY() + 1.0, player.getZ(),
+                    15, 2.0, 0.5, 2.0, 0.02);
+            }
+
+            AzukaarSkillsStats.LOGGER.info("[Barbarian] {} used Taunt, taunted {} mobs",
+                player.getName().getString(), mobs.size());
+
+            return true;
+        }
     }
 }

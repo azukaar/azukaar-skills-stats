@@ -387,7 +387,7 @@ public class SkillTab {
 
                             Map<String, ScalingData> data = effect.getData();
                             if (data != null && !data.isEmpty()) {
-                                int skillLevel = PlayerData.getSkillLevel(player, selectedSkill.getId());
+                                int skillLevel = Math.max(PlayerData.getSkillLevel(player, selectedSkill.getId()), 1);
                                 for (Map.Entry<String, ScalingData> dataEntry : data.entrySet()) {
                                     double val = dataEntry.getValue().getValue(skillLevel);
                                     String dataText = "  " + Utils.toDisplayString(dataEntry.getKey()) + ": " + val;

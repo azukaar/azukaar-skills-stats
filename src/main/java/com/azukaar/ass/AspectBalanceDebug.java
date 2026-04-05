@@ -23,16 +23,35 @@ public class AspectBalanceDebug {
     private static final int BIOMES_PER_HOUR = 1;
     private static final int STRUCTURES_PER_HOUR = 1;
 
+    private static final int ENTITY_INTERACTIONS_PER_HOUR = 20;
+    private static final int BREEDS_PER_HOUR = 5;
+    private static final double AVG_BREED_PARENT_HP = 10.0;
+    private static final double TAMES_PER_HOUR = 0.5;
+    private static final double AVG_TAME_HP = 10.0;
+    private static final int CROP_HARVESTS_PER_HOUR = 40;
+
     public static void generateCsv(String path, MinecraftServer server) {
         try (PrintWriter out = new PrintWriter(new FileWriter(path))) {
             AspectDefinition mining = SkillDataManager.INSTANCE.getAspect("azukaarskillsstats:mining");
             AspectDefinition combat = SkillDataManager.INSTANCE.getAspect("azukaarskillsstats:combat");
             AspectDefinition exploration = SkillDataManager.INSTANCE.getAspect("azukaarskillsstats:exploration");
+            AspectDefinition nature = SkillDataManager.INSTANCE.getAspect("azukaarskillsstats:nature");
 
             double miningMultiplier = mining.getXpMultiplier();
             double combatMultiplier = combat.getXpMultiplier();
+            double natureMultiplier = nature.getXpMultiplier();
             double miningXpPerHour = BLOCKS_PER_HOUR * AVG_BLOCK_DURABILITY * miningMultiplier;
             double combatXpPerHour = MOBS_PER_HOUR * AVG_MOB_HP * combatMultiplier;
+
+            // Nature data from datapack
+            double interactXp = nature.getDouble("interact_xp", 5.0);
+            double breedMultiplier = nature.getDouble("breed_multiplier", 2.0);
+            double tameMultiplier = nature.getDouble("tame_multiplier", 5.0);
+            double cropHarvestXp = nature.getDouble("crop_harvest_xp", 15.0);
+            double natureXpPerHour = (ENTITY_INTERACTIONS_PER_HOUR * interactXp
+                + BREEDS_PER_HOUR * AVG_BREED_PARENT_HP * breedMultiplier
+                + TAMES_PER_HOUR * AVG_TAME_HP * tameMultiplier
+                + CROP_HARVESTS_PER_HOUR * cropHarvestXp) * natureMultiplier;
 
             // Exploration data from datapack + registries
             double chunkBonusXp = exploration.getDouble("chunk_bonus_xp", 0);
@@ -61,6 +80,11 @@ public class AspectBalanceDebug {
                 NEW_CHUNKS_PER_HOUR, chunkBonusXp, BIOMES_PER_HOUR, biomeCount, STRUCTURES_PER_HOUR, structureCount);
             out.printf("  Biome XP: %.0f per discovery (ramp: start after %d, rate %.2f)%n", biomeXpBase, biomeRampStart, biomeRampRate);
             out.printf("  Structure XP: %.0f per discovery (ramp rate %.2f)%n", structureXpBase, structureRampRate);
+            out.printf("Nature: %d interactions/hr * %.0f XP + %d breeds/hr * %.0f HP * %.1f mult + %.1f tames/hr * %.0f HP * %.1f mult + %d crops/hr * %.0f XP = %.0f XP/hr%n",
+                ENTITY_INTERACTIONS_PER_HOUR, interactXp,
+                BREEDS_PER_HOUR, AVG_BREED_PARENT_HP, breedMultiplier,
+                TAMES_PER_HOUR, AVG_TAME_HP, tameMultiplier,
+                CROP_HARVESTS_PER_HOUR, cropHarvestXp, natureXpPerHour);
             out.println();
 
             // --- Unified hour-by-hour simulation ---
@@ -68,11 +92,13 @@ public class AspectBalanceDebug {
             out.println("Hour," +
                 "Mining XP/hr,Mining Cumul,Mining Lvl (Hard),Mining Lvl (Normal),Mining Lvl (Easy)," +
                 "Combat XP/hr,Combat Cumul,Combat Lvl (Hard),Combat Lvl (Normal),Combat Lvl (Easy)," +
-                "Explor XP/hr,Explor Cumul,Biomes Found,Structs Found,Explor Lvl (Hard),Explor Lvl (Normal),Explor Lvl (Easy)");
+                "Explor XP/hr,Explor Cumul,Biomes Found,Structs Found,Explor Lvl (Hard),Explor Lvl (Normal),Explor Lvl (Easy)," +
+                "Nature XP/hr,Nature Cumul,Nature Lvl (Hard),Nature Lvl (Normal),Nature Lvl (Easy)");
 
             double miningCumul = 0;
             double combatCumul = 0;
             double explorationCumul = 0;
+            double natureCumul = 0;
             int biomesDiscovered = 0;
             int structuresDiscovered = 0;
 
@@ -99,8 +125,9 @@ public class AspectBalanceDebug {
                 }
 
                 explorationCumul += explorationThisHour;
+                natureCumul += natureXpPerHour;
 
-                out.printf("%d,%.0f,%.0f,%s,%s,%s,%.0f,%.0f,%s,%s,%s,%.0f,%.0f,%d/%d,%d/%d,%s,%s,%s%n",
+                out.printf("%d,%.0f,%.0f,%s,%s,%s,%.0f,%.0f,%s,%s,%s,%.0f,%.0f,%d/%d,%d/%d,%s,%s,%s,%.0f,%.0f,%s,%s,%s%n",
                     hour,
                     miningXpPerHour, miningCumul,
                     levelStr(miningCumul, IPlayerSkills.HARD_CAP),
@@ -115,7 +142,11 @@ public class AspectBalanceDebug {
                     structuresDiscovered, structureCount,
                     levelStr(explorationCumul, IPlayerSkills.HARD_CAP),
                     levelStr(explorationCumul, IPlayerSkills.NORMAL_CAP),
-                    levelStr(explorationCumul, IPlayerSkills.EASY_CAP));
+                    levelStr(explorationCumul, IPlayerSkills.EASY_CAP),
+                    natureXpPerHour, natureCumul,
+                    levelStr(natureCumul, IPlayerSkills.HARD_CAP),
+                    levelStr(natureCumul, IPlayerSkills.NORMAL_CAP),
+                    levelStr(natureCumul, IPlayerSkills.EASY_CAP));
             }
 
             AzukaarSkillsStats.LOGGER.info("Aspect balance CSV written to {}", path);

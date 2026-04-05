@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:taunt",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:taunt",
+      "description": "AoE taunt, drawing mob attention for 10 seconds"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:taunt",
+  "display_name": "Taunt",
+  "description": "AoE taunt, drawing mob attention for 10 seconds",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:shield"
+  },
+  "cooldown": {
+    "base": 400
+  },
+  "position": {
+    "x": -150.0,
+    "y": -90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:barbarian"
+}

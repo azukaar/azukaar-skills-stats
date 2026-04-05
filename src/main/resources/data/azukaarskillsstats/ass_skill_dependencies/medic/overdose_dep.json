@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:overdose",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:cocktail",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:nature",
+      "level": 50
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:alchemy",
+  "display_name": "Alchemy",
+  "description": "All beneficial potion effects last 20% longer per level",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:brewing_stand"
+  },
+  "position": {
+    "x": -135.0,
+    "y": 0.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:medic"
+}

@@ -105,5 +105,27 @@ public class NetworkHandler {
                         }
                     });
                 });
+
+        // Radiance missile packets
+        registrar.playToClient(
+                com.azukaar.ass.trees.medic.RadianceMissileSpawnPayload.TYPE,
+                com.azukaar.ass.trees.medic.RadianceMissileSpawnPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        com.azukaar.ass.trees.medic.RadianceMissileHandler.onMissileSpawn(payload);
+                    });
+                });
+
+        registrar.playToServer(
+                com.azukaar.ass.trees.medic.RadianceMissileHitPacket.TYPE,
+                com.azukaar.ass.trees.medic.RadianceMissileHitPacket.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        var player = context.player();
+                        if (player instanceof ServerPlayer serverPlayer) {
+                            com.azukaar.ass.trees.medic.TreeEvents.handleMissileHit(serverPlayer, payload);
+                        }
+                    });
+                });
     }
 }

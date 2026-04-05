@@ -28,7 +28,7 @@ public class PlayerSkills implements IPlayerSkills {
 
     @Override
     public void incrementRateLimitCounter(String aspectId) {
-        int val = Math.min(100, getRateLimitCounter(aspectId) + 1);
+        int val = Math.min(100, getRateLimitCounter(aspectId) + 2);
         rateLimitCounters.put(aspectId, val);
     }
 
@@ -62,6 +62,11 @@ public class PlayerSkills implements IPlayerSkills {
         double current = getExperience(pathName);
         double total = current + exp;
         int level = getLevel(pathName);
+
+        int rateCounter = getRateLimitCounter(pathName);
+        System.out.println("[PlayerSkills] Adding " + exp + " XP to " + pathName
+            + " (current: " + current + ", total: " + total + ", level: " + level
+            + ", rate-limit: " + rateCounter + "% reduction)");
 
         // Level up with overflow, respecting cap
         int xpNeeded = IPlayerSkills.getScaledXpForLevel(level + 1, levelCap);

@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:terrifying_roar",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:demoralizing_shout",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 30
+    }
+  ]
+}

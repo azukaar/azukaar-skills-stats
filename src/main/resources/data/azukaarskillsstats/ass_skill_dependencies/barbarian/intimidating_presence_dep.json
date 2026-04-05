@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:intimidating_presence",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:powerful_strike",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 10
+    }
+  ]
+}

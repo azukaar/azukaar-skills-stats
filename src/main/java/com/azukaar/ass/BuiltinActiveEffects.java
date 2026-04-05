@@ -11,5 +11,6 @@ public class BuiltinActiveEffects {
         com.azukaar.ass.trees.stats.ActiveEffects.registerAll();
         com.azukaar.ass.trees.farmer.ActiveEffects.registerAll();
         com.azukaar.ass.trees.barbarian.ActiveEffects.registerAll();
+        com.azukaar.ass.trees.medic.ActiveEffects.registerAll();
     }
 }

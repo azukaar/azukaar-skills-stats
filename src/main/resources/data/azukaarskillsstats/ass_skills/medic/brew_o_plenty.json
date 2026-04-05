@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:brew_o_plenty",
+  "display_name": "Brew o' plenty",
+  "description": "Alchemy's Boon brews one more potion per level",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:potion"
+  },
+  "position": {
+    "x": -180.0,
+    "y": 135.0
+  },
+  "max_level": 2,
+  "skill_tree": "azukaarskillsstats:medic"
+}

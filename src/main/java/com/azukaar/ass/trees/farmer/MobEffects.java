@@ -33,7 +33,7 @@ public class MobEffects {
         () -> new ForagersAppetiteEffect(MobEffectCategory.BENEFICIAL, 0x7CFC00) // Lawn green color
     );
 
-    public static class AnimalWhispererEffect extends MobEffect {
+    public static class AnimalWhispererEffect extends com.azukaar.ass.api.UnclearableMobEffect {
         public AnimalWhispererEffect(MobEffectCategory category, int color) {
             super(category, color);
         }
@@ -84,7 +84,7 @@ public class MobEffects {
     }
 
     // Forager's Appetite: marker effect that makes seeds edible (handled in TreeEvents)
-    public static class ForagersAppetiteEffect extends MobEffect {
+    public static class ForagersAppetiteEffect extends com.azukaar.ass.api.UnclearableMobEffect {
         public ForagersAppetiteEffect(MobEffectCategory category, int color) {
             super(category, color);
         }

@@ -1,5 +1,12 @@
+- nature tree ?
+
 - zoom
 - allow togglable passive type
 
-- dispaly per level and total passive boost on skills 
-- add passives to overveiw
+- refactor trees to be using the API (rather than explciit import in ASS code)
+
+- Barbarian: gluttony should be up to level 3, then Beastmaster has Glutonny overdrive that is more expensive 
+
+- Skill cost!!
+
+- 

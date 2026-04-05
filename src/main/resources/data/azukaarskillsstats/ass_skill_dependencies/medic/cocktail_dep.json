@@ -1,0 +1,21 @@
+{
+  "skill": "azukaarskillsstats:cocktail",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:brew_regen",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:brew_resistance",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:brew_strength",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:nature",
+      "level": 20
+    }
+  ]
+}

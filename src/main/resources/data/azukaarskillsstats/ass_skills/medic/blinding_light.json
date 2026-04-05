@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:blinding_light",
+  "display_name": "Blinding Light",
+  "description": "Radiance pulses also apply Blindness to hit mobs",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:glowstone_dust"
+  },
+  "position": {
+    "x": 180.0,
+    "y": 90.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:medic"
+}

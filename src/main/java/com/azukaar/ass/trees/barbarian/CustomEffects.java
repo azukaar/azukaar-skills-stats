@@ -28,7 +28,16 @@ public class CustomEffects {
                  "azukaarskillsstats:feeding_edge",
                  "azukaarskillsstats:gluttonous_weapon",
                  "azukaarskillsstats:floor_slam",
-                 "azukaarskillsstats:giant_sweep" -> true;
+                 "azukaarskillsstats:giant_sweep",
+                 "azukaarskillsstats:auto_feed",
+                 "azukaarskillsstats:intimidating_presence",
+                 "azukaarskillsstats:war_cry",
+                 "azukaarskillsstats:taunt",
+                 "azukaarskillsstats:demoralizing_shout",
+                 "azukaarskillsstats:terrifying_roar",
+                 "azukaarskillsstats:berserker",
+                 "azukaarskillsstats:second_wind",
+                 "azukaarskillsstats:last_stand" -> true;
             default -> false;
         };
     }

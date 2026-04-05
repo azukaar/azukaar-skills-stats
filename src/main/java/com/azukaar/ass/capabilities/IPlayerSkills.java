@@ -52,7 +52,7 @@ public interface IPlayerSkills {
 
     // Main level XP formula: how many aspect level-ups to reach the next main level
     public static int getXpForMainLevel(int level) {
-        int res = (int)(Math.pow(level, 0.25));
+        int res = (int)(Math.pow(level, 0.27));
         return Math.max(2, res);
     }
 

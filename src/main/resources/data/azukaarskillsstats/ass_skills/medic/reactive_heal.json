@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:reactive_heal",
+  "display_name": "Reactive Heal",
+  "description": "When hit, trigger Regeneration. Higher levels grant stronger Regeneration",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:golden_apple"
+  },
+  "cooldown": {
+    "base": 1800
+  },
+  "position": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "max_level": 3,
+  "skill_tree": "azukaarskillsstats:medic"
+}

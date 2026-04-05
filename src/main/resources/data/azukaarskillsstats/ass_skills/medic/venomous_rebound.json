@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:venomous_rebound",
+  "display_name": "Venomous Rebound",
+  "description": "Cleansed debuffs are applied to Radiance burst targets",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:fermented_spider_eye"
+  },
+  "position": {
+    "x": 135.0,
+    "y": 135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:medic"
+}

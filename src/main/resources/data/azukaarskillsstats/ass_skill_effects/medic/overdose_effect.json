@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:overdose",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:overdose",
+      "description": "Consume all potions for a massive Radiance burst"
+    }
+  ]
+}

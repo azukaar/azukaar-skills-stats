@@ -225,23 +225,26 @@ public class ModEvents {
      */
     @SubscribeEvent
     public static void onEffectRemove(MobEffectEvent.Remove event) {
+        // Only protect effects that extend UnclearableMobEffect
+        if (!(event.getEffect().value() instanceof com.azukaar.ass.api.UnclearableMobEffect)) {
+            return;
+        }
+
+        // Allow if global clear flag is set (from /ass effects clear)
+        if (allowAllRemovals) {
+            return;
+        }
+
+        // Allow if this specific effect was marked for removal
         var effectKey = event.getEffect().getRegisteredName();
-
-        // Protect all effects from our mod (unless we're intentionally removing them)
-        if (effectKey != null && effectKey.startsWith(AzukaarSkillsStats.MODID + ":")) {
-            // Allow if global clear flag is set
-            if (allowAllRemovals) {
-                return;
-            }
-
-            // Allow if this specific effect was marked for removal
+        if (effectKey != null) {
             String removalKey = event.getEntity().getUUID() + ":" + effectKey;
             if (pendingRemovals.remove(removalKey)) {
                 return;
             }
-
-            event.setCanceled(true);
         }
+
+        event.setCanceled(true);
     }
 
     /**

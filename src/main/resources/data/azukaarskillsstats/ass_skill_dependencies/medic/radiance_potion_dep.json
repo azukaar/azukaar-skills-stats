@@ -1,0 +1,9 @@
+{
+  "skill": "azukaarskillsstats:radiance_potion",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:cocktail",
+      "level": 1
+    }
+  ]
+}

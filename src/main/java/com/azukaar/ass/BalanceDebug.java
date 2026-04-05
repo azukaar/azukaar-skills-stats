@@ -62,10 +62,10 @@ public class BalanceDebug {
 
     private static void writeMainSheet(PrintWriter out) {
         out.println("=== MAIN LEVEL SCALING ===");
-        out.println("Main Level,Aspect Level-ups Needed,Cumul Level-ups,Est. Hours (Easy 3 aspects),Est. Hours (Normal 3 aspects),Est. Hours (Hard 3 aspects)");
+        out.println("Main Level,Aspect Level-ups Needed,Cumul Level-ups,Est. Hours (Easy 4 aspects),Est. Hours (Normal 4 aspects),Est. Hours (Hard 4 aspects)");
 
         int cumulLevelUps = 0;
-        int numAspects = 3;
+        int numAspects = 4;
 
         int maxEasyLevelUps = numAspects * IPlayerSkills.EASY_CAP;
         int maxNormalLevelUps = numAspects * IPlayerSkills.NORMAL_CAP;
@@ -92,7 +92,7 @@ public class BalanceDebug {
         out.println("=== MAIN LEVEL BY HOUR (for graphing) ===");
         out.println("Hour,Main Level (Easy),Main Level (Normal),Main Level (Hard)");
 
-        int numAspects = 3;
+        int numAspects = 4;
         int[] caps = { IPlayerSkills.EASY_CAP, IPlayerSkills.NORMAL_CAP, IPlayerSkills.HARD_CAP };
 
         // Track per difficulty: aspect XP, aspect levels, main XP, main level

@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:radiance_amplifier",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:blinding_light",
+      "level": 1
+    },
+    {
+      "skill": "azukaarskillsstats:venomous_rebound",
+      "level": 1
+    }
+  ]
+}

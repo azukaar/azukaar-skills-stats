@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:expert_infused_heal",
+  "display_name": "Expert Infused Heal",
+  "description": "????",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:enchanted_golden_apple"
+  },
+  "position": {
+    "x": 0.0,
+    "y": 225.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:medic"
+}

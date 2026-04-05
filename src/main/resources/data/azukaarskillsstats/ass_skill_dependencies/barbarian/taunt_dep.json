@@ -1,0 +1,13 @@
+{
+  "skill": "azukaarskillsstats:taunt",
+  "prerequisites": [
+    {
+      "skill": "azukaarskillsstats:war_cry",
+      "level": 1
+    },
+    {
+      "aspect": "azukaarskillsstats:combat",
+      "level": 30
+    }
+  ]
+}

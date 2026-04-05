@@ -1,6 +1,6 @@
 {
   "id": "azukaarskillsstats:exploration",
-  "display_name": "Exploration",
+  "display_name": "aspect.azukaarskillsstats.exploration",
   "icon": { "type": "item", "item": "minecraft:compass" },
   "description": "Earn XP by discovering new chunks, biomes, and structures.",
   "color": "#55FFFF",

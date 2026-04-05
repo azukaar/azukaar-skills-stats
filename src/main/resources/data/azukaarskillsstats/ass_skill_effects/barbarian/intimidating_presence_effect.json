@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:intimidating_presence",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:intimidating_presence",
+      "description": "Kills apply Fear to nearby mobs"
+    }
+  ]
+}

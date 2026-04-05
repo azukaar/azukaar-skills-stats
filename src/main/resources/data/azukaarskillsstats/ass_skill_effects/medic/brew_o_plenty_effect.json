@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:brew_o_plenty",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:brew_o_plenty",
+      "description": "Alchemy's Boon brews extra potions"
+    }
+  ]
+}

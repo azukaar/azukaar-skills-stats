@@ -1,0 +1,18 @@
+{
+  "id": "azukaarskillsstats:cocktail",
+  "display_name": "Cocktail",
+  "description": "Consume one of each potion type, triggering a Radiance burst",
+  "icon": {
+    "type": "item",
+    "item": "minecraft:potion"
+  },
+  "cooldown": {
+    "base": 1000
+  },
+  "position": {
+    "x": -135.0,
+    "y": 135.0
+  },
+  "max_level": 1,
+  "skill_tree": "azukaarskillsstats:medic"
+}

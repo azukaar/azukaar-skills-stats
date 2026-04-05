@@ -1,220 +1,204 @@
 # MEDIC *(Nature → Healing & Vitality)*
 
-## **Overview**
-The Medic tree focuses on healing, status effect management, group support, and scientific life extraction. It features five main progression paths with strategic Nature Aspect gates to ensure meaningful progression.
+## **Core Philosophy:**
+**Battlefield Healer** - Keeps allies alive through active healing and potion mastery
+**Radiance Engine** - Healing emits damaging pulses to nearby hostiles, rewarding aggressive support
+**Resilient Specialist** - Builds endurance through constitution, turning debuffs into offensive triggers
 
 ---
 
-## **Core Entry Skills** *(No Aspect Requirements)*
-
-### **First Aid** (1sp, max 3)
-- **Effect:** Heal yourself for 3 hearts per level (2min cooldown)
-- **Max Benefit:** 9 hearts healing at level 3
-- **Purpose:** Foundation for all healing abilities
-
-### **Hardy Constitution** (1sp, max 3) 
-- **Effect:** Poison/wither effects last 20% less time per level
-- **Max Benefit:** 60% duration reduction at level 3
-- **Purpose:** Entry point for status management
-
-### **Field Medicine** (2sp)
-- **Effect:** Create basic healing potions from nothing (costs XP, 5min cooldown)
-- **Potions:** Healing I, Regeneration I
-- **Purpose:** Emergency potion access and foundation for group healing
-
-### **Vital Scan** (1sp, max 3)
-- **Effect:** See health bars of players within 15 blocks per level
-- **Max Range:** 45 blocks at level 3
-- **Purpose:** Player health awareness and triage
-
-### **Combat Medic** (2sp)
-- **Prerequisite:** First Aid
-- **Effect:** First Aid cooldown reduces by 30 seconds when in combat
-- **Purpose:** Encourages active battlefield healing
+## **Core Mechanic: Radiance**
+Every healing action emits a damaging pulse to nearby hostile mobs. No cooldown — the healing abilities themselves have cooldowns. Invest in the Constitution tree to amplify its radius and damage, and in the Potion tree to trigger burst pulses via Cocktail.
 
 ---
 
-## **Group Healing Branch** *(Branches from Field Medicine)*
+## **Main Tree** *(No Aspect Requirements)*
 
-### **Group Heal** (3sp)
-- **Prerequisite:** Field Medicine
-- **Effect:** Heal all nearby players and pets for 4 hearts (5min cooldown, 10 block radius)
-- **Purpose:** Foundation for team support
+### **Reactive Heal** (1sp, max 3)
+- **Effect:** Passive — when hit, trigger Regen I (level 2 → Regen II, level 3 → Regen III)
+- **Purpose:** Automatic sustain on taking damage, bridges naturally into Rogue self-damage playstyle
 
-### **Enhanced Aura** (1sp, max 3)
-- **Prerequisite:** Group Heal
-- **Effect:** +3 blocks radius per level to Group Heal
-- **Max Benefit:** 19 block radius at level 3
+### **Undying Resolve** (1sp, max 3)
+- **Prerequisite:** Reactive Heal
+- **Effect:** Extends Reactive Heal's Regeneration duration by 3 seconds per level
+- **Max Benefit:** +9 seconds (5s base → 14s at level 3)
+- **Purpose:** Sustain investment — longer Regen means more total healing per hit
 
-### **Healing Amplifier** (2sp)
-- **Prerequisite:** Group Heal
-- **Effect:** Group Heal restores +2 hearts (6 total)
-- **Scaling:** Improves group healing effectiveness
+### **Infused Self Heal** (2sp)
+- **Prerequisite:** Reactive Heal
+- **Effect:** Self Heal also applies the effect of your left-hand potion without consuming it
+- **Purpose:** Cross-tree synergy with Potion tree
 
-### **Rapid Response** (2sp)
-- **Prerequisite:** Enhanced Aura
-- **Effect:** Group Heal cooldown reduced by 2 minutes (3min total)
-- **Efficiency:** More frequent team healing
+### **✦ Radiance** (2sp, max 5)
+- **Prerequisite:** Undying Resolve
+- **Effect:** Passive — two triggers:
+  - **Per heal:** Each heal >= 1 HP fires golden homing missiles at nearby angry mobs, dealing 10-50% of heal amount as damage (scales with level)
+  - **On Regen activation:** Burst dealing 5-25% of max health as flat damage (scales with level)
+- **Targets:** 2 to 10 closest angry mobs within 16 blocks (scales with level)
+- **Purpose:** Core mechanic of the Medic tree — turns healing into offense
 
-### **Life Bond** (4sp) 🔒
-- **Prerequisites:** Healing Amplifier + Rapid Response + **Nature Aspect 60**
-- **Effect:** Toggle to link with one targeted willing ally - share 50% of damage taken between you two
-- **Ultimate:** Damage distribution for survival (toggleable, single target)
+### **Touch Heal** (2sp, max 5)
+- **Prerequisite:** Radiance
+- **Effect:** Heal a targeted ally for 8+4/level HP (1min cooldown). Triggers Radiance from healed ally's position. Harms undead
+- **Max Benefit:** 28 HP (14 hearts) at level 5
+- **Purpose:** Single-target ally healing + offensive Radiance
 
----
+### **Infused Touch Heal** (2sp)
+- **Prerequisite:** Touch Heal
+- **Effect:** Touch Heal also applies your off-hand potion effect to the target without consuming it
+- **Purpose:** Potion delivery to allies
 
-## **Status Management Branch**
+### **AoE Heal** (2sp, max 5)
+- **Prerequisite:** Radiance
+- **Effect:** Heal all nearby allies for 6+2/level HP in a 5+2/level block radius (1min cooldown). Triggers Radiance from each healed ally's position. Harms undead
+- **Max Benefit:** 16 HP, 15 block radius at level 5
+- **Purpose:** Group healing + multi-point Radiance
 
-### **Antidote** (2sp)
-- **Prerequisites:** Hardy Constitution level 2
-- **Effect:** Remove all negative effects from self (3min cooldown)
-- **Cleansing:** Personal debuff removal
-
-### **Cleansing Aura** (2sp)
-- **Prerequisite:** Antidote
-- **Effect:** Antidote now affects nearby allies (5 block radius)
-- **Expansion:** Group debuff cleansing
-
-### **Immunity** (3sp) 🔒
-- **Prerequisites:** Cleansing Aura + **Nature Aspect 50**
-- **Effect:** Complete immunity to poison, wither, and hunger effects
-- **Ultimate:** Personal status immunity
-
-### **Rally** (4sp) 🔒
-- **Prerequisites:** Immunity + **Nature Aspect 70**
-- **Effect:** Remove fear/weakness effects from all nearby allies and grant temporary damage immunity (10sec immunity, 20min cooldown)
-- **Ultimate:** Team status clearing and protection
+### **Infused AoE Heal** (2sp)
+- **Prerequisite:** AoE Heal
+- **Effect:** AoE Heal also applies your off-hand potion effect to all healed allies without consuming it
+- **Purpose:** Mass potion distribution
 
 ---
 
-## **Life Extraction Branch**
+## **Potion Tree**
 
-### **Vital Drain Serum** (2sp) 🔒
-- **Prerequisites:** Field Medicine + **Nature Aspect 20**
-- **Effect:** Touch enemy to apply serum, drain 1 heart per second for 3 seconds, heal yourself for same amount
-- **Foundation:** Scientific life extraction
+### **Alchemy** (2sp, max 3)
+- **Effect:** Passive — all brewed potions last 20% longer per level
+- **Purpose:** Entry point and quality foundation for the branch
 
-### **Concentrated Formula** (2sp)
-- **Prerequisite:** Vital Drain Serum
-- **Effect:** Vital Drain now extracts 2 hearts per second for 3 seconds
-- **Enhancement:** Improved extraction efficiency
+### **Alchemy's Boon** (2sp, max 3) 🔒
+- **Prerequisite:** Alchemy
+- **Aspect Requirement:** Nature 10
+- **Effect:** Active — brew a Healing potion from nothing (5min cooldown). Additional brew skills add their potion type to this single action
+- **Purpose:** The one active brew skill
 
-### **Aerosol Compound** (3sp)
-- **Prerequisites:** Concentrated Formula + Vital Scan level 2
-- **Effect:** Vital Drain now works at 5-block range via airborne compound
-- **Range:** Ranged life extraction
+### **Brew Regen** (1sp, max 3)
+- **Prerequisite:** Alchemy's Boon
+- **Effect:** Passive — Alchemy's Boon also produces a Regeneration potion. Level = potion tier (Regen I → II → III)
 
-### **Multi-Target Extraction** (3sp)
-- **Prerequisite:** Aerosol Compound
-- **Effect:** Aerosol Compound affects up to 3 enemies simultaneously
-- **Scaling:** Multiple target extraction
+### **Brew Resistance** (1sp, max 3)
+- **Prerequisite:** Alchemy's Boon
+- **Effect:** Passive — Alchemy's Boon also produces a Resistance potion. Level = potion tier (Resistance I → II → III)
 
-### **Enhanced Extraction** (4sp) 🔒
-- **Prerequisites:** Multi-Target Extraction + **Nature Aspect 50**
-- **Effect:** Extraction rate doubles (2 hearts per second for 3 seconds) and heals nearby allies for 50% of drained amount
-- **Ultimate:** Fast extraction with ally healing
+### **Brew Strength** (1sp, max 3)
+- **Prerequisite:** Alchemy's Boon
+- **Effect:** Passive — Alchemy's Boon also produces a Strength potion. Level = potion tier (Strength I → II → III)
 
----
+### **Brew o' plenty** (3sp, max 2)
+- **Prerequisite:** Brew Regen lvl 3
+- **Effect:** Alchemy's Boon brews one more potion per level
 
-## **Advanced Medicine Branch**
+### **Cocktail** (3sp) 🔒
+- **Prerequisites:** Brew Regen + Brew Resistance + Brew Strength
+- **Aspect Requirement:** Nature 20
+- **Effect:** Active — consume one of each potion type from inventory simultaneously. Triggers a Radiance pulse multiplied by the number of potion types consumed. Damage is 5 + (5 x potion level) (so starts at 10) (5min cooldown)
+- **Purpose:** Burst Radiance trigger, rewards maintaining all four potion types
 
-### **Regeneration** (2sp) 🔒
-- **Prerequisites:** Hardy Constitution level 3 + **Nature Aspect 30**
-- **Effect:** Slowly heal when below half health (0.5 hearts per 10 seconds)
-- **Passive:** Automatic low-health recovery
+### **Overdose** (3sp) 🔒
+- **Prerequisite:** Cocktail
+- **Aspect Requirement:** Nature 50
+- **Effect:** Active — consume ALL potions in your inventory simultaneously, triggering a massive Radiance burst. Scales with total potions consumed (10min cooldown)
+- **Purpose:** Powerful burst opener — stays relevant even after Expert Cocktail automates regular Cocktail
 
-### **Medical Knowledge** (2sp)
-- **Prerequisites:** Field Medicine + Vital Scan
-- **Effect:** Create advanced potions (Healing II, Regeneration II, Resistance) (10min cooldown)
-- **Advancement:** Better potion access
-
-### **Efficient Brewing** (1sp, max 5)
-- **Prerequisite:** Medical Knowledge
-- **Effect:** Potion creation cooldown reduced by 1 minute per level
-- **Max Benefit:** 5 minute reduction (5min cooldown total)
-
-### **Advanced Formulations** (3sp)
-- **Prerequisites:** Medical Knowledge + Efficient Brewing level 2
-- **Effect:** Create splash healing potions and higher-tier potions (Healing III, Regeneration III)
-- **Sharing:** Throwable healing + enhanced potions
-
-### **Biochemical Mastery** (3sp) 🔒
-- **Prerequisites:** Advanced Formulations + **Nature Aspect 40**
-- **Effect:** Apply off-hand potion effects to nearby allies without consuming the potion (you do NOT get the effect, 5min cooldown)
-- **Sharing:** Distribute potion effects to others only
-
-### **Emergency Stims** (4sp) 🔒
-- **Prerequisites:** Biochemical Mastery + Regeneration + **Nature Aspect 60**
-- **Effect:** Instantly restore any closeby ally to full health  (10min cooldown)
-- **Ultimate:** Emergency full heal
+### **Radiance Potion** (2sp, max 3)
+- **Prerequisite:** Cocktail
+- **Effect:** Alchemy's Boon also produces a Radiance Potion — when consumed, temporarily boosts Radiance damage and max distance for 30 seconds. (Cocktail and Overdose seek those first to ensure the effect is applied to current usage)
+- **Purpose:** On-demand Radiance amplification
 
 ---
 
-## **Vitality Mastery Branch**
+## **Capstone**
 
-### **Instant Nourishment** (2sp) 🔒
-- **Prerequisites:** Regeneration + **Nature Aspect 30**
-- **Effect:** Food instantly heals 1 heart when consumed (in addition to normal hunger restoration)
-- **Enhancement:** Food provides immediate health
+### **Expert Infused Heal** (3sp) 🔒
+- **Prerequisites:** Infused Self Heal + Infused Touch Heal + Infused AoE Heal + Radiance Potion
+- **Aspect Requirement:** Nature 80
+- **Effect:** All Infused healing skills now trigger cocktail, consuming the potion to the (player only) target(s) and triggering radiance
+- **Purpose:** Removes left-hand restriction, enables fluid multi-potion usage
 
-### **Shared Vitality** (3sp)
-- **Prerequisites:** Instant Nourishment + Group Heal
-- **Effect:** When you eat food, nearby allies gain the instant health benefit as well
-- **Sharing:** Nutritional healing support
+---
 
-### **Life Force Mastery** (4sp) 🔒
-- **Prerequisites:** Shared Vitality + Enhanced Extraction + **Nature Aspect 70**
-- **Effect:** Convert your own health into healing energy for allies (2:3 ratio - spend 2 hearts to heal ally 3 hearts)
-- **Advanced:** Health conversion abilities
+## **Constitution Tree**
 
-### **Aquatic Regeneration** (5sp) 🔒
-- **Prerequisites:** Life Force Mastery + Emergency Stims + **Nature Aspect 80**
-- **Effect:** Slowly regenerate health and hunger when submerged in water (0.5 hearts per 5 seconds)
-- **Ultimate:** Water-based sustenance
+### **Hardy** (1sp, max 5)
+- **Effect:** Healing or Regen triggers absorption hearts (1min cooldown). Level = absorption hearts granted per 5 hearts healed (1 → 2 → 3 → 4 → 5) / for Regen X heart per level of regen
+- **Purpose:** Converts healing output into a defensive buffer
+
+### **Cleanse** (2sp)
+- **Prerequisite:** Hardy
+- **Effect:** Active — remove all negative effects from yourself, triggers a Radiance pulse that damages 3hp per effects level per effects (3min cooldown)
+- **Purpose:** Personal debuff removal that feeds into Radiance offensively
+
+### **Heal Expert** (1sp, max 10)
+- **Prerequisite:** Cleanse
+- **Effect:** Increase all healing abilities (heal from stats tree, reactive (for +duration on regen) touch and AoE) potency by 20% per level
+- **Max Benefit:** +200% at level 10
+
+### **Blinding Light** (2sp)
+- **Prerequisite:** Heal Expert
+- **Effect:** Radiance pulses also apply Blindness to hit mobs for 3 seconds
+- **Purpose:** Offensive utility on top of Radiance damage
+
+### **Reactive Cleanse** (3sp) 🔒
+- **Prerequisite:** Cleanse
+- **Aspect Requirement:** Nature 40
+- **Effect:** Passive — automatically cleanse debuffs as they are applied. Each blocked debuff triggers a Radiance pulse (Same damage as Cleanse)
+- **Purpose:** Immunity that converts debuffs into offensive Radiance triggers — strong synergy with Rogue's self-inflicted bleed/poison
+
+### **Venomous Rebound** (2sp)
+- **Prerequisite:** Reactive Cleanse
+- **Effect:** Cleansed debuffs (via Cleanse or Reactive Cleanse) have their effect added to the Radiance burst that follows the cleanse
+- **Purpose:** Punishes enemies for applying debuffs, rewards Rogue self-poisoning loop
+
+### **Radiance Amplifier** (3sp, max 3)
+- **Prerequisites:** Blinding Light + Venomous Rebound
+- **Effect:** Flat damage multiplier on all Radiance pulses per level (×1.10 → ×1.20 → ×1.30)
+- **Purpose:** Raw Radiance damage investment, required for Expert Cocktail capstone
 
 ---
 
 ## **Progression Gates Summary**
 
-| Nature Aspect Level | Unlocked Skills | Impact |
-|-------------------|-----------------|---------|
-| **20** | Vital Drain Serum | Life extraction begins |
-| **30** | Regeneration + Instant Nourishment | Passive healing + food enhancement |
-| **40** | Biochemical Mastery | Potion sharing (allies only) |
-| **50** | Immunity + Enhanced Extraction | Personal immunity + advanced extraction |
-| **60** | Life Bond + Emergency Stims | Damage sharing + emergency healing |
-| **70** | Rally + Life Force Mastery | Ultimate status control + health conversion |
-| **80** | Aquatic Regeneration | Water-based regeneration |
+| Nature Aspect | Unlocked |
+|--------------|----------|
+| **10** | Alchemy's Boon |
+| **20** | Cocktail |
+| **40** | Reactive Cleanse |
+| **60** | Overdose + Expert Heal |
+| **80** | Expert Cocktail |
+
+---
 
 ## **Synergy Examples**
 
-### **Field Medic Combo:**
-1. **Field Medicine** + **Advanced Formulations** → Create and throw splash healing potions
-2. **Group Heal** + **Enhanced Aura** → 19-block radius team healing
-3. **Biochemical Mastery** → Share potion effects without consuming them
-4. **Emergency Stims** → Instant full heal for critical situations
+### **Radiance Maximiser:**
+1. **Radiance** → pulse on every heal
+2. **Radiance Radius** (max) + **Radiance Amplifier** (max) → wide, hard-hitting pulses
+3. **Reactive Cleanse** → every blocked debuff fires a pulse
+4. **Overdose** opener → massive burst, then Cocktail mid-fight
 
-### **Life Extraction Master:**
-1. **Vital Drain Serum** → **Enhanced Extraction** → Extract 2 hearts/second from 3 enemies
-2. **Aerosol Compound** → 5-block range extraction
-3. **Life Force Mastery** → Convert your health to ally healing efficiently
-4. **Aquatic Regeneration** → Sustain yourself in water for extended operations
+### **Full Potion Medic:**
+1. **Alchemy's Boon** + all Brew skills + **Skillful Brewer** → produce 3 of every potion per cast
+2. **Infused Touch/AoE Heal** → deliver potions to allies without consuming
+3. **Expert Heal** → draw from hotbar freely
+4. **Expert Cocktail** → Cocktail fires automatically on every Infused heal
 
-### **Support Specialist:**
-1. **Vital Scan** (max) → See all player health within 45 blocks
-2. **Life Bond** → Share damage with most vulnerable ally
-3. **Rally** → Remove debuffs and grant team immunity
-4. **Shared Vitality** → Eating food heals nearby allies
+### **Rogue Synergy Loop:**
+1. **Reactive Heal** → Rogue self-damage triggers Regen passively
+2. **Reactive Cleanse** → Rogue's self-inflicted bleed/poison is auto-cleansed, firing Radiance
+3. **Venomous Rebound** → cleansed poison reflected back to attacker
+4. **Hardy** → healing from Self Heal generates absorption buffer
 
-### **Combat Medic Setup:**
-1. **Combat Medic** → Reduced First Aid cooldown in combat
-2. **Rapid Response** → 3-minute Group Heal cooldown
-3. **Cleansing Aura** → Remove debuffs from team
-4. **Instant Nourishment** → Food provides immediate health
+### **Combat Opener:**
+1. **Overdose** → dump all inventory potions for massive Radiance burst
+2. **Cocktail** → mid-fight burst pulses
+3. **Expert Cocktail** → passive Cocktail on every Infused heal throughout fight
+4. **Alchemy's Boon** + **Skillful Brewer** → restock 3× potions for next fight
+
+---
 
 ## **Total Investment**
-- **Maximum possible skill points:** ~75 SP if everything is maxed
-- **Typical specialization:** 15-25 SP per focused branch
-- **Hybrid builds:** 35-50 SP across multiple branches
-- **Entry level:** 6-10 SP for basic functionality
-- **Full combat medic:** 25-35 SP for comprehensive battlefield support
+- **Main Tree only:** 12-18 SP for core healing + Radiance
+- **Potion focused:** 20-28 SP for full brewing + Cocktail
+- **Constitution focused:** 15-22 SP for full debuff/Radiance scaling
+- **Full capstone build:** 50+ SP across all three trees

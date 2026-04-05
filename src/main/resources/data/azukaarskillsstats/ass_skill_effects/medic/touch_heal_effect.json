@@ -1,0 +1,17 @@
+{
+  "skill": "azukaarskillsstats:touch_heal",
+  "effects": [
+    {
+      "type": "active",
+      "active_effect": "azukaarskillsstats:touch_heal",
+      "description": "Heal a targeted ally",
+      "data": {
+        "heal_amount": {
+          "base": 8,
+          "type": "per_level",
+          "multiplier": 4
+        }
+      }
+    }
+  ]
+}

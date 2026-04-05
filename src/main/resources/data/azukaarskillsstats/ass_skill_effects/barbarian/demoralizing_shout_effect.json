@@ -1,0 +1,10 @@
+{
+  "skill": "azukaarskillsstats:demoralizing_shout",
+  "effects": [
+    {
+      "type": "custom_attribute_modifier",
+      "attribute": "azukaarskillsstats:demoralizing_shout",
+      "description": "War Cry and Taunt also apply Slowness II"
+    }
+  ]
+}

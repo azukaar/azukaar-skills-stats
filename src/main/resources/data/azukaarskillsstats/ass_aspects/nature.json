@@ -1,0 +1,15 @@
+{
+  "id": "azukaarskillsstats:nature",
+  "display_name": "aspect.azukaarskillsstats.nature",
+  "icon": { "type": "item", "item": "minecraft:oak_sapling" },
+  "description": "Earn XP by interacting with living things, farming, breeding, and trading.",
+  "color": "#00AA00",
+  "properties": {
+    "interact_xp": 5.0,
+    "interact_cooldown_ticks": 100,
+    "breed_multiplier": 2.0,
+    "tame_multiplier": 5.0,
+    "crop_harvest_xp": 15.0,
+    "cleanup_interval_ticks": 1200
+  }
+}
