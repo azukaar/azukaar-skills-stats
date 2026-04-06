@@ -4,7 +4,8 @@
   "description": "Brew potions from nothing. Additional brew skills add potion types",
   "icon": {
     "type": "item",
-    "item": "minecraft:potion"
+    "item": "minecraft:potion",
+    "components": { "minecraft:potion_contents": { "potion": "minecraft:water" } }
   },
   "cooldown": {
     "base": 6000
@@ -14,5 +15,6 @@
     "y": 45.0
   },
   "max_level": 3,
+  "cost": 2,
   "skill_tree": "azukaarskillsstats:medic"
 }

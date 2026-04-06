@@ -11,5 +11,6 @@
     "y": 0.0
   },
   "max_level": 3,
+  "cost": 2,
   "skill_tree": "azukaarskillsstats:medic"
 }

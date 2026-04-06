@@ -10,6 +10,7 @@
     "x": 0.0,
     "y": -45.0
   },
-  "max_level": 20,
+  "max_level": 50,
+  "cost": {"pow": 0.3},
   "skill_tree": "azukaarskillsstats:stats"
 }

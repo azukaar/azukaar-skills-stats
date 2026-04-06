@@ -14,5 +14,6 @@
     "y": 63.64
   },
   "max_level": 6,
+  "cost": 2,
   "skill_tree": "azukaarskillsstats:stats"
 }

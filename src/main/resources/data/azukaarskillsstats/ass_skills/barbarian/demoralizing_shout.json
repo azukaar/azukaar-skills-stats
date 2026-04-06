@@ -7,9 +7,10 @@
     "item": "minecraft:echo_shard"
   },
   "position": {
-    "x": -120.0,
-    "y": -135.0
+    "x": -180.0,
+    "y": -45.0
   },
   "max_level": 1,
+  "cost": 2,
   "skill_tree": "azukaarskillsstats:barbarian"
 }

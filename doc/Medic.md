@@ -120,11 +120,11 @@ Every healing action emits a damaging pulse to nearby hostile mobs. No cooldown 
 
 ## **Constitution Tree**
 
-### **Hardy** (1sp, max 5)
+### **Hardy** (2sp, max 5)
 - **Effect:** Healing or Regen triggers absorption hearts (1min cooldown). Level = absorption hearts granted per 5 hearts healed (1 → 2 → 3 → 4 → 5) / for Regen X heart per level of regen
 - **Purpose:** Converts healing output into a defensive buffer
 
-### **Cleanse** (2sp)
+### **Cleanse** (4sp)
 - **Prerequisite:** Hardy
 - **Effect:** Active — remove all negative effects from yourself, triggers a Radiance pulse that damages 3hp per effects level per effects (3min cooldown)
 - **Purpose:** Personal debuff removal that feeds into Radiance offensively
@@ -134,18 +134,18 @@ Every healing action emits a damaging pulse to nearby hostile mobs. No cooldown 
 - **Effect:** Increase all healing abilities (heal from stats tree, reactive (for +duration on regen) touch and AoE) potency by 20% per level
 - **Max Benefit:** +200% at level 10
 
-### **Blinding Light** (2sp)
+### **Blinding Light** (4sp)
 - **Prerequisite:** Heal Expert
 - **Effect:** Radiance pulses also apply Blindness to hit mobs for 3 seconds
 - **Purpose:** Offensive utility on top of Radiance damage
 
-### **Reactive Cleanse** (3sp) 🔒
+### **Reactive Cleanse** (5sp) 🔒
 - **Prerequisite:** Cleanse
 - **Aspect Requirement:** Nature 40
 - **Effect:** Passive — automatically cleanse debuffs as they are applied. Each blocked debuff triggers a Radiance pulse (Same damage as Cleanse)
 - **Purpose:** Immunity that converts debuffs into offensive Radiance triggers — strong synergy with Rogue's self-inflicted bleed/poison
 
-### **Venomous Rebound** (2sp)
+### **Venomous Rebound** (3sp)
 - **Prerequisite:** Reactive Cleanse
 - **Effect:** Cleansed debuffs (via Cleanse or Reactive Cleanse) have their effect added to the Radiance burst that follows the cleanse
 - **Purpose:** Punishes enemies for applying debuffs, rewards Rogue self-poisoning loop

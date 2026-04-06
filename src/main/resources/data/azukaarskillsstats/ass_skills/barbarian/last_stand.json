@@ -10,9 +10,10 @@
     "base": 24000
   },
   "position": {
-    "x": -90.0,
-    "y": -180.0
+    "x": -225.0,
+    "y": -90.0
   },
   "max_level": 1,
+  "cost": 5,
   "skill_tree": "azukaarskillsstats:barbarian"
 }

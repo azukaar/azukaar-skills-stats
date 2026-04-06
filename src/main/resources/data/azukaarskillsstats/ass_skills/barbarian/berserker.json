@@ -7,9 +7,10 @@
     "item": "minecraft:blaze_powder"
   },
   "position": {
-    "x": -90.0,
+    "x": -135.0,
     "y": -90.0
   },
   "max_level": 6,
+  "cost": 2,
   "skill_tree": "azukaarskillsstats:barbarian"
 }

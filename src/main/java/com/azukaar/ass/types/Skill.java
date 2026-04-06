@@ -35,6 +35,9 @@ public class Skill {
     @Expose @SerializedName("description")
     private String description;
 
+    @Expose @SerializedName("cost")
+    private CostData cost;
+
     private Component displayName;
     private final List<Prerequisite> prerequisites;
     private final List<Skill> children;
@@ -74,6 +77,11 @@ public class Skill {
     public String getSkillTree() { return skillTree; }
     public ScalingData getCooldown() { return cooldown; }
     public String getDescription() { return description; }
+
+    public int getUpgradeCost(int currentLevel) {
+        if (cost == null) return 1;
+        return cost.calculateCost(currentLevel);
+    }
 
     public void addPrerequisite(Prerequisite prereq) {
         prerequisites.add(prereq);

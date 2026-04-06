@@ -1,9 +1,13 @@
 package com.azukaar.ass.types;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.serialization.JsonOps;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +22,11 @@ public class IconData {
     @Expose
     private String texture;
 
+    @Expose
+    private JsonObject components;
+
+    private ItemStack cachedStack;
+
     public IconData(String item) {
         this.type = "item";
         this.item = item;
@@ -30,14 +39,31 @@ public class IconData {
     public boolean isTexture() { return "texture".equals(type); }
 
     public ItemStack getItemStack() {
+        if (cachedStack != null) return cachedStack;
+
         if (item == null || item.isEmpty()) {
             return ItemStack.EMPTY;
         }
+
+        if (components != null) {
+            var mc = Minecraft.getInstance();
+            if (mc.level != null) {
+                JsonObject fullItem = new JsonObject();
+                fullItem.addProperty("id", item);
+                fullItem.add("components", components);
+                var ops = RegistryOps.create(JsonOps.INSTANCE, mc.level.registryAccess());
+                var result = ItemStack.CODEC.parse(ops, fullItem);
+                cachedStack = result.resultOrPartial(err -> {}).orElse(ItemStack.EMPTY);
+                return cachedStack;
+            }
+        }
+
         Item itemObj = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(item));
         if (itemObj == null) {
             return ItemStack.EMPTY;
         }
-        return new ItemStack(itemObj, 1);
+        cachedStack = new ItemStack(itemObj, 1);
+        return cachedStack;
     }
 
     public void render(GuiGraphics graphic, int x, int y, float alpha) {

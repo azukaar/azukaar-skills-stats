@@ -417,7 +417,7 @@ public class SkillTab {
         int maxLevel = fMaxLevel;
         boolean canUpgrade = currentLevel < maxLevel;
         boolean prerequisitesMet = selectedSkill.arePrerequisitesMet(player);
-        int upgradeCost = 1;
+        int upgradeCost = selectedSkill.getUpgradeCost(fCurrentLevel);
         int availablePoints = PlayerData.getSkillPoints(player);
         boolean canAfford = availablePoints >= upgradeCost;
         boolean buttonEnabled = canUpgrade && canAfford && prerequisitesMet;
@@ -668,8 +668,9 @@ public class SkillTab {
                 // Perform the upgrade
                 int currentLevel = PlayerData.getSkillLevel(player, selectedSkill.getId());
                 if (currentLevel < selectedSkill.getMaxLevel()) {
+                    int cost = selectedSkill.getUpgradeCost(currentLevel);
                     System.out.println("Spending skill point on: " + selectedSkill.getId());
-                    PlayerData.spendSkillPoint(player, 1, selectedSkill.getId());
+                    PlayerData.spendSkillPoint(player, cost, selectedSkill.getId());
                     return true; // Consumed the click
                 }
             }

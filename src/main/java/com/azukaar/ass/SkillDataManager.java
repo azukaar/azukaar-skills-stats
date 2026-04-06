@@ -12,6 +12,7 @@ import com.azukaar.ass.api.AspectDefinition;
 import com.azukaar.ass.api.AspectType;
 import com.azukaar.ass.api.AspectTypeRegistry;
 import com.azukaar.ass.api.PlayerData;
+import com.azukaar.ass.types.CostData;
 import com.azukaar.ass.types.DependencyData;
 import com.azukaar.ass.types.Prerequisite;
 import com.azukaar.ass.types.Skill;
@@ -19,6 +20,8 @@ import com.azukaar.ass.types.SkillEffect;
 import com.azukaar.ass.types.SkillTree;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import java.io.Reader;
 
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +37,19 @@ public class SkillDataManager implements PreparableReloadListener {
     private static final Gson GSON = new GsonBuilder()
         .excludeFieldsWithoutExposeAnnotation()
         .setPrettyPrinting()
+        .registerTypeAdapter(CostData.class, (JsonDeserializer<CostData>) (json, typeOfT, context) -> {
+            if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber()) {
+                return new CostData(json.getAsDouble(), 0, 0);
+            }
+            JsonElement constEl = json.getAsJsonObject().get("const");
+            JsonElement linEl = json.getAsJsonObject().get("lin");
+            JsonElement powEl = json.getAsJsonObject().get("pow");
+            return new CostData(
+                constEl != null ? constEl.getAsDouble() : 0,
+                linEl != null ? linEl.getAsDouble() : 1,
+                powEl != null ? powEl.getAsDouble() : 1
+            );
+        })
         .create();
     
     private final Map<ResourceLocation, Skill> skills = new HashMap<>();

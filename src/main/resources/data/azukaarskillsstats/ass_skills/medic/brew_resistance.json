@@ -4,12 +4,14 @@
   "description": "Alchemy's Boon also produces a Resistance potion. Level = potion tier",
   "icon": {
     "type": "item",
-    "item": "minecraft:potion"
+    "item": "minecraft:potion",
+    "components": { "minecraft:potion_contents": { "potion": "minecraft:turtle_master" } }
   },
   "position": {
     "x": -135.0,
     "y": 90.0
   },
   "max_level": 3,
+  "cost": 1,
   "skill_tree": "azukaarskillsstats:medic"
 }

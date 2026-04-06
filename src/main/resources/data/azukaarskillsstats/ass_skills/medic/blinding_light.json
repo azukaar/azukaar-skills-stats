@@ -8,8 +8,9 @@
   },
   "position": {
     "x": 180.0,
-    "y": 90.0
+    "y": 120.0
   },
   "max_level": 1,
+  "cost": 4,
   "skill_tree": "azukaarskillsstats:medic"
 }

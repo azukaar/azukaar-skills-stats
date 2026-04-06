@@ -10,6 +10,7 @@ import com.azukaar.ass.capabilities.IPlayerSkills;
 import com.azukaar.ass.network.AddExperiencePacket;
 import com.azukaar.ass.network.AddSkillPointPacket;
 import com.azukaar.ass.network.SpendSkillPointPacket;
+import com.azukaar.ass.types.Skill;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -270,12 +271,17 @@ public class PlayerData {
             return;
         }
 
-        if (skills.getSkillPoints() >= amount) {
-            skills.setSkillPoints(skills.getSkillPoints() - amount);
-            skills.addSkillLevel(skill, amount);
+        // Calculate cost server-side based on skill definition
+        Skill skillData = SkillDataManager.INSTANCE.findSkillById(skill);
+        int currentLevel = skills.getSkillLevel(skill);
+        int cost = skillData != null ? skillData.getUpgradeCost(currentLevel) : 1;
+
+        if (skills.getSkillPoints() >= cost) {
+            skills.setSkillPoints(skills.getSkillPoints() - cost);
+            skills.addSkillLevel(skill, 1);
 
             // Fire Post event
-            NeoForge.EVENT_BUS.post(new SkillPointSpent(player, amount, skill, player.level()));
+            NeoForge.EVENT_BUS.post(new SkillPointSpent(player, cost, skill, player.level()));
 
             SkillDataManager.INSTANCE.updateSkillEffects(player, skill);
 

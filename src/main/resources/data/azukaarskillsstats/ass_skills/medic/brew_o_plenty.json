@@ -4,12 +4,14 @@
   "description": "Alchemy's Boon brews one more potion per level",
   "icon": {
     "type": "item",
-    "item": "minecraft:potion"
+    "item": "minecraft:potion",
+    "components": { "minecraft:potion_contents": { "potion": "minecraft:thick" } }
   },
   "position": {
     "x": -180.0,
     "y": 135.0
   },
   "max_level": 2,
+  "cost": 3,
   "skill_tree": "azukaarskillsstats:medic"
 }

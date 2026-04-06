@@ -4,12 +4,14 @@
   "description": "Alchemy's Boon also produces a Radiance Potion that boosts Radiance damage and radius",
   "icon": {
     "type": "item",
-    "item": "minecraft:potion"
+    "item": "minecraft:potion",
+    "components": { "minecraft:potion_contents": { "potion": "minecraft:luck" } }
   },
   "position": {
     "x": -180.0,
     "y": 180.0
   },
   "max_level": 3,
+  "cost": 2,
   "skill_tree": "azukaarskillsstats:medic"
 }

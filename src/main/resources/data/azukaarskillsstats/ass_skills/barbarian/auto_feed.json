@@ -11,5 +11,6 @@
     "y": 180.0
   },
   "max_level": 1,
+  "cost": 5,
   "skill_tree": "azukaarskillsstats:barbarian"
 }

@@ -4,6 +4,7 @@ import com.azukaar.ass.AzukaarSkillsStats;
 import com.azukaar.ass.SkillDataManager;
 import com.azukaar.ass.api.PlayerData;
 import com.azukaar.ass.capabilities.IPlayerSkills;
+import com.azukaar.ass.types.Skill;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -623,10 +624,15 @@ public class AssCommand {
             return 0;
         }
 
-        // Count total skill points spent
+        // Count total skill points spent based on actual costs per level
         int pointsSpent = 0;
-        for (int level : skills.getAllSkills().values()) {
-            pointsSpent += level;
+        for (var entry : skills.getAllSkills().entrySet()) {
+            String skillId = entry.getKey();
+            int level = entry.getValue();
+            Skill skillData = SkillDataManager.INSTANCE.findSkillById(skillId);
+            for (int i = 0; i < level; i++) {
+                pointsSpent += skillData != null ? skillData.getUpgradeCost(i) : 1;
+            }
         }
 
         if (pointsSpent == 0) {

@@ -11,5 +11,6 @@
     "y": 0.0
   },
   "max_level": 5,
+  "cost": 1,
   "skill_tree": "azukaarskillsstats:farmer"
 }

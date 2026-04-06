@@ -2,7 +2,7 @@
   "skill": "azukaarskillsstats:expert_infused_heal",
   "prerequisites": [
     {
-      "skill": "azukaarskillsstats:infused_self_heal",
+      "skill": "azukaarskillsstats:venomous_rebound",
       "level": 1
     },
     {
@@ -14,7 +14,7 @@
       "level": 1
     },
     {
-      "skill": "azukaarskillsstats:radiance_potion",
+      "skill": "azukaarskillsstats:overdose",
       "level": 1
     },
     {
